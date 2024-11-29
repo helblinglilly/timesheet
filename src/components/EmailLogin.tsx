@@ -5,7 +5,6 @@ import {
 	initialLoginState,
 	initialSignupState,
 } from "@/app/actions/auth/types";
-import { log } from "@/utils/log";
 import React, { useActionState, useEffect, useRef, useState } from "react";
 
 export default function EmailLogin() {
@@ -44,14 +43,6 @@ export default function EmailLogin() {
 
 	return (
 		<div className="p-4 grid gap-4">
-			<button
-				type="button"
-				onClick={() => {
-					log({ message: "testing from browser" });
-				}}
-			>
-				Send log
-			</button>
 			<h1 className="text-2xl font-bold">Let's get you started</h1>
 			{signupState.isSuccessful && (
 				<p className="isSuccess">Account created - you can now sign in</p>

@@ -11,12 +11,16 @@ export async function log(
 			runtime: "server",
 		});
 	} else {
-		await fetch("/api/log", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({ ...details, runtime: "client" }),
-		});
+		try {
+			await fetch("/api/log", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ ...details, runtime: "client" }),
+			});
+		} catch (err) {
+			console.log("Failed to send log message to internal API endpoint");
+		}
 	}
 }

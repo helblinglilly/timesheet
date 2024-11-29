@@ -11,6 +11,12 @@ export default async function newrelicLog(
 	});
 
 	try {
+		if (
+			process.env.NODE_ENV !== "production" ||
+			!process.env.NEWRELIC_LICENSE_KEY
+		) {
+			return;
+		}
 		await fetch(
 			`https://log-api.eu.newrelic.com/log/v1?Api-Key=${process.env.NEWRELIC_LICENSE_KEY}`,
 			{
@@ -25,6 +31,6 @@ export default async function newrelicLog(
 			},
 		);
 	} catch (err) {
-		console.log(err);
+		console.log("Failed to send log to NR", err);
 	}
 }

@@ -3,6 +3,7 @@
 import type { PocketbaseError } from "@/lib/pocketbase.types";
 import { log } from "@/utils/log";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import Pocketbase from "pocketbase";
 import {
 	AuthFormFields,
@@ -84,6 +85,7 @@ export async function signUp(
 		});
 
 		await pb.collection("users").requestVerification(email);
+		await log({ message: "Email account signup", success: true });
 	} catch (err) {
 		const pocketbaseError = err as PocketbaseError;
 
@@ -97,6 +99,7 @@ export async function signUp(
 				errorMessage = `${pocketbaseError.response.data.password.message}`;
 			}
 		}
+		await log({ message: "Email account signup", success: false });
 		return {
 			inputs,
 			errors: [
@@ -125,7 +128,6 @@ export async function emailLogin(
 ): Promise<LoginActionType> {
 	const rawEmail = formData.get("email") as string | undefined;
 	const rawPassword = formData.get("password") as string | undefined;
-	log({ message: "testing from server" });
 	const inputs: LoginActionType["inputs"] = {
 		email: rawEmail,
 		password: rawPassword,
@@ -154,18 +156,14 @@ export async function emailLogin(
 
 		const cookieStore = await cookies();
 		cookieStore.set("pb_auth", `${authData.token}`);
+		await log({ message: "Email login", success: true });
 	} catch (err) {
+		await log({ message: "Email login", success: false });
 		return {
 			inputs,
 			error: "Email and password do not match",
 		};
 	}
 
-	return {
-		inputs,
-	};
-
-	// return {
-	// 	isSuccessful: true,
-	// };
+	redirect("/");
 }
