@@ -3,13 +3,32 @@ import React, { Suspense } from "react";
 import SocialAuthMethods from "./socialAuth";
 
 export default function Login() {
-	return (
-		<div>
-			<EmailLogin />
+	const expectedAuthMethods = ["github", "google"];
 
-			<Suspense fallback={<p>Loading auth methods</p>}>
-				<SocialAuthMethods />
-			</Suspense>
+	return (
+		<div className="p-4 w-full flex justify-center">
+			<div className="grid gap-4 w-full md:w-[50%] max-w-[600px]">
+				<EmailLogin />
+
+				<Suspense
+					fallback={
+						<div className="animate-pulse grid gap-2">
+							{expectedAuthMethods.map((method) => {
+								return (
+									<div
+										key={method}
+										className={`p-4 h-14 animate-pulse text-center ${method}`}
+									>
+										Loading
+									</div>
+								);
+							})}
+						</div>
+					}
+				>
+					<SocialAuthMethods />
+				</Suspense>
+			</div>
 		</div>
 	);
 }

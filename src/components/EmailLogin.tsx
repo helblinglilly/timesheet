@@ -42,7 +42,7 @@ export default function EmailLogin() {
 	const confirmPasswordRef = useRef<HTMLInputElement>(null);
 
 	return (
-		<div className="p-4 grid gap-4">
+		<>
 			<h1 className="text-2xl font-bold">Let's get you started</h1>
 			{signupState.isSuccessful && (
 				<p className="isSuccess">Account created - you can now sign in</p>
@@ -105,6 +105,6 @@ export default function EmailLogin() {
 					</button>
 				</div>
 			</form>
-		</div>
+		</>
 	);
 }

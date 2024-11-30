@@ -25,3 +25,15 @@ p.isError {
 p.isSuccess {
     @apply font-semibold text-green-500 dark:text-green-600
 }
+
+.github {
+    background-color: #24292e;
+    color: #ededed;
+    @apply rounded-md
+}
+
+.google {
+    background-color: #fff;
+    color: #171717;
+    @apply rounded-md
+}
