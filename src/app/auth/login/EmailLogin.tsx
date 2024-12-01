@@ -1,11 +1,8 @@
 "use client";
 
-import { emailLogin, signUp } from "@/app/actions/auth/actions";
-import {
-	initialLoginState,
-	initialSignupState,
-} from "@/app/actions/auth/types";
 import React, { useActionState, useEffect, useRef, useState } from "react";
+import { emailLogin, signUp } from "./actions";
+import { initialLoginState, initialSignupState } from "./types";
 
 export default function EmailLogin() {
 	const [isSignUp, setIsSignUp] = useState(false);

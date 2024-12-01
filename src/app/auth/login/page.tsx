@@ -1,5 +1,5 @@
-import EmailLogin from "@/components/EmailLogin";
 import React, { Suspense } from "react";
+import EmailLogin from "./EmailLogin";
 import SocialAuthMethods from "./SocialAuthMethods";
 
 export default function Login() {
