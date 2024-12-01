@@ -12,3 +12,13 @@ export type PocketbaseError = {
 		>;
 	};
 };
+
+export type PocketbaseAuthMethods = {
+	name: "google" | "github";
+	displayName: "Google" | "Github";
+	state: string;
+	authUrl: string;
+	codeVerifier: string;
+	codeChallenge: string;
+	codeChallengeMethod: string;
+};

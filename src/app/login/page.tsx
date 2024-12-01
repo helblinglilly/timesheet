@@ -1,6 +1,6 @@
 import EmailLogin from "@/components/EmailLogin";
 import React, { Suspense } from "react";
-import SocialAuthMethods from "./socialAuth";
+import SocialAuthMethods from "./SocialAuthMethods";
 
 export default function Login() {
 	const expectedAuthMethods = ["github", "google"];
@@ -12,7 +12,7 @@ export default function Login() {
 
 				<Suspense
 					fallback={
-						<div className="animate-pulse grid gap-2">
+						<div className="animate-pulse grid gap-4">
 							{expectedAuthMethods.map((method) => {
 								return (
 									<div
