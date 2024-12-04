@@ -2,8 +2,6 @@ import React, { Suspense } from "react";
 import EmailLogin from "./EmailLogin";
 import SocialAuthMethods from "./SocialAuthMethods";
 
-export const runtime = "edge";
-
 export default function Login() {
 	const expectedAuthMethods = ["github", "google"];
 
