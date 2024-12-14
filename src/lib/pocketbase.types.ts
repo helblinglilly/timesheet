@@ -22,3 +22,38 @@ export type PocketbaseAuthMethods = {
 	codeChallenge: string;
 	codeChallengeMethod: string;
 };
+
+export type PBOAuthResponseGoogle = {
+	id: string;
+	name: string;
+	/**
+		@ignore
+		Will be empty for OAuth users
+		 */
+	username: string;
+	avatarUrl: string;
+	accessToken: string;
+	refreshToken: string;
+	/**
+    @type Date ISO 8601
+    */
+	expiry: string;
+	isNew: boolean;
+};
+
+export type PBAuthResponse = {
+	meta?: PBOAuthResponseGoogle;
+	record: {
+		avatar: string;
+		collectionId: string;
+		collectionName: string;
+		created: string;
+		email: string;
+		emailVisibility: boolean;
+		id: string;
+		username: string;
+		updated: string;
+		verified: boolean;
+	};
+	token: string;
+};

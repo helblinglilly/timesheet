@@ -1,6 +1,6 @@
 "use client";
 
-export const setCookie = (
+export const setCookieClient = (
 	name: string,
 	value: string,
 	overrideOptions?: {
@@ -30,4 +30,19 @@ export const setCookie = (
 		updatedCookie += `; ${key}=${value}`;
 	}
 	document.cookie = updatedCookie;
+};
+
+export const getCookieClient = (name: string) => {
+	if (typeof document === "undefined") {
+		return undefined;
+	}
+	const matches = document.cookie.match(
+		new RegExp(
+			// biome-ignore lint/style/useTemplate: Behaves differently with template strings
+			"(?:^|; )" +
+				name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
+				"=([^;]*)",
+		),
+	);
+	return matches ? decodeURIComponent(matches[1]) : undefined;
 };

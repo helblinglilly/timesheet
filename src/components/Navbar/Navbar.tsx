@@ -1,23 +1,26 @@
 import Link from "next/link";
 import React from "react";
+import AuthButton from "./AuthButton";
 import ThemeToggle from "./ThemeToggle";
 
-export default function Navbar() {
+export default async function Navbar() {
 	const links = [
 		{
 			name: "Home",
 			href: "/",
 		},
 		{
-			name: "Login",
-			href: "/auth/login",
+			name: "auth_data",
+			href: "",
 		},
 	];
 	return (
 		<nav className="w-full inline-flex justify-between p-4 bg-zinc-800 dark:bg-zinc-950">
 			<div className="flex gap-4">
 				{links.map(({ name, href }) => {
-					return (
+					return name === "auth_data" ? (
+						<AuthButton key={href} />
+					) : (
 						<Link href={href} key={href}>
 							<button
 								type="button"

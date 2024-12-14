@@ -1,7 +1,8 @@
 "use server";
 
-import type { PocketbaseError } from "@/lib/pocketbase.types";
+import type { PBAuthResponse, PocketbaseError } from "@/lib/pocketbase.types";
 import { log } from "@/utils/log";
+import { authDataToCookie } from "@/utils/pb";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Pocketbase from "pocketbase";
@@ -78,6 +79,7 @@ export async function signUp(
 	try {
 		const record = await pb.collection("users").create({
 			username: email.split("@")[0],
+			name: email.split("@")[0],
 			email,
 			emailVisibility: false,
 			password: password,
@@ -150,12 +152,19 @@ export async function emailLogin(
 	const pb = new Pocketbase(process.env.POCKETBASE_URL);
 
 	try {
-		const authData = await pb
+		const authData = (await pb
 			.collection("users")
-			.authWithPassword(rawEmail, rawPassword);
+			.authWithPassword(rawEmail, rawPassword)) as PBAuthResponse;
 
+		const expires = new Date();
+		expires.setDate(expires.getDate() + 30);
 		const cookieStore = await cookies();
-		cookieStore.set("pb_auth", `${authData.token}`);
+		cookieStore.set("pb_auth", JSON.stringify(authDataToCookie(authData)), {
+			secure: process.env.NODE_ENV === "production",
+			sameSite: "lax",
+			path: "/",
+			expires,
+		});
 		await log({ message: "Email login", success: true });
 	} catch (err) {
 		await log({ message: "Email login", success: false });
