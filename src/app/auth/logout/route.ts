@@ -1,4 +1,3 @@
-import type { PBAuthResponse } from "@/lib/pocketbase.types";
 import { serverSideAuth } from "@/utils/pb/server";
 import { type NextRequest, NextResponse } from "next/server";
 

@@ -4,6 +4,7 @@ import Script from "next/script";
 import type React from "react";
 import "./globals.css";
 import Navbar from "@/components/Navbar/Navbar";
+import { AuthProvider } from "@/context/AuthContext";
 
 const interSans = localFont({
 	src: "./fonts/Inter/Inter-VariableFont_opsz,wght.ttf",
@@ -37,8 +38,10 @@ export default function RootLayout({
 					src={"/newrelic.js"}
 				/>
 
-				<Navbar />
-				{children}
+				<AuthProvider>
+					<Navbar />
+					{children}
+				</AuthProvider>
 			</body>
 		</html>
 	);

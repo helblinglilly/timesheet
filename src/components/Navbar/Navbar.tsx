@@ -1,26 +1,36 @@
+"use client";
+
+import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 import React from "react";
-import AuthButton from "./AuthButton";
 import ThemeToggle from "./ThemeToggle";
 
-export default async function Navbar() {
+export default function Navbar() {
+	const { isAuthenticated } = useAuth();
+
 	const links = [
 		{
 			name: "Home",
 			href: "/",
 		},
 		{
-			name: "auth_data",
-			href: "",
+			name: isAuthenticated ? "Logout" : "Login",
+			href: isAuthenticated ? "/auth/logout" : "/auth/login",
 		},
 	];
+
+	if (isAuthenticated) {
+		links.push({
+			name: "Dashboard",
+			href: "/dashboard",
+		});
+	}
+
 	return (
 		<nav className="w-full inline-flex justify-between p-4 bg-zinc-800 dark:bg-zinc-950">
 			<div className="flex gap-4">
 				{links.map(({ name, href }) => {
-					return name === "auth_data" ? (
-						<AuthButton key={href} />
-					) : (
+					return (
 						<Link href={href} key={href}>
 							<button
 								type="button"
