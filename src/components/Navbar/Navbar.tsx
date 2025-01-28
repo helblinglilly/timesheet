@@ -34,7 +34,7 @@ export default function Navbar() {
 						<Link href={href} key={href}>
 							<button
 								type="button"
-								className="bg-violet-100 hover:bg-violet-300 dark:bg-violet-400 dark:hover:bg-violet-500 dark:text-white h-12 rounded-md px-4"
+								className="bg-violet-100 hover:bg-violet-300 dark:bg-violet-400 dark:hover:bg-violet-500 dark:text-black h-12 rounded-md px-4"
 							>
 								{name}
 							</button>

@@ -1,4 +1,6 @@
 import { serverSideAuth } from "@/utils/pb/server";
+import Form from "next/form";
+import DashboardSetup from "./Setup";
 
 export default async function NewTimesheet() {
 	async function formAction(formData: FormData) {
@@ -23,50 +25,10 @@ export default async function NewTimesheet() {
 	}
 
 	return (
-		<main>
-			<h1 className="text-3xl font-bold">New Timesheet</h1>
-
-			<form action={formAction} className="flex flex-col md:flex-row p-8">
-				<div className="flex gap-4">
-					<label htmlFor="name">Name</label>
-					<input name="name" type="string" minLength={1} required />
-				</div>
-
-				<div className="flex gap-4">
-					<label htmlFor="workingDays">Workdays</label>
-					<input
-						name="workingDays"
-						type="number"
-						min={0}
-						max={7}
-						defaultValue={5}
-					/>
-				</div>
-
-				<div className="flex gap-4">
-					<label htmlFor="dailyWorkMinutes">Weekly Minutes</label>
-					<input
-						name="dailyWorkMinutes"
-						type="number"
-						min={1}
-						max={168}
-						defaultValue={40}
-						required
-					/>
-				</div>
-
-				<div className="flex gap-4">
-					<label htmlFor="dailyBreakMinutes">Daily break minutes</label>
-					<input
-						name="dailyBreakMinutes"
-						type="number"
-						min={0}
-						max={1440}
-						defaultValue={30}
-					/>
-				</div>
-				<button type="submit">Submit</button>
-			</form>
+		<main className="grid justify-center pt-4 md:pt-8">
+			<Form action={formAction} className="flex flex-col md:flex-row p-8">
+				<DashboardSetup />
+			</Form>
 		</main>
 	);
 }
