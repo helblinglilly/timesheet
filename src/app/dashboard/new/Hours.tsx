@@ -4,7 +4,15 @@ import InputWithLabel from "@/components/Inputs/InputWithLabel";
 import InputHourMinutes from "@/components/Inputs/Time/HourMinutes";
 import { useState } from "react";
 
-export default function OfficeHours() {
+export default function OfficeHours({
+	action,
+}: {
+	action: (
+		minutesPerDay: number,
+		daysPerWeek: number,
+		lunchMinutes: number,
+	) => void;
+}) {
 	const [minutesPerDay, setMinutesPerDay] = useState(0);
 	const [daysPerWeek, setDaysPerWeek] = useState(5);
 	const [lunchMinutes, setLunchMinutes] = useState(30);
@@ -65,6 +73,16 @@ export default function OfficeHours() {
 					and <b>{(lunchMinutes * daysPerWeek) / 60}</b> hours/week in breaks
 				</p>
 			</div>
+
+			<button
+				type="button"
+				onClick={() => {
+					action(minutesPerDay, daysPerWeek, lunchMinutes);
+				}}
+				className="h-12 rounded-md bg-violet-100 hover:bg-violet-300 dark:bg-violet-400 dark:hover-bg-violet-500 dark:text-black"
+			>
+				Next
+			</button>
 		</>
 	);
 }
