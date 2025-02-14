@@ -1,34 +1,39 @@
 import { serverSideAuth } from "@/utils/pb/server";
 import Form from "next/form";
 import DashboardSetup from "./Setup";
+import { redirect } from "next/navigation";
 
 export default async function NewTimesheet() {
-	async function formAction(formData: FormData) {
-		"use server";
-		const pb = await serverSideAuth();
+  async function formAction(formData: FormData) {
+    "use server";
+    const pb = await serverSideAuth();
 
-		// const [name, dailyWorkMinutes, workingDays, dailyUnpaidBreakMinutes] = [
-		// 	formData.get("name"),
-		// 	formData.get("dailyWorkMinutes"),
-		// 	formData.get("workingDays"),
-		// 	formData.get("dailyBreakMinutes"),
-		// ];
+    const [kind, name, minutesPerDay, daysPerWeek, lunchMinutes] = [
+      formData.get("kind"),
+      formData.get("name"),
+      formData.get("minutesPerDay"),
+      formData.get("daysPerWeek"),
+      formData.get("lunchMinutes"),
+    ];
 
-		// console.log(pb.authStore.record);
-		// await pb.collection("timesheet").create({
-		// 	name,
-		// 	user: pb.authStore.record?.id,
-		// 	dailyWorkMinutes,
-		// 	workingDays,
-		// 	dailyUnpaidBreakMinutes,
-		// });
-	}
+    await pb.collection("timesheet").create({
+      user: pb.authStore.record?.id,
+      kind,
+      name,
+      minutesPerDay,
+      daysPerWeek,
+      lunchMinutes
+    });
 
-	return (
-		<main className="grid justify-center pt-4 md:pt-8">
-			<Form action={formAction} className="flex flex-col md:flex-row p-8">
-				<DashboardSetup />
-			</Form>
-		</main>
-	);
+    redirect('/dashboard');
+  }
+
+
+  return (
+    <main className="grid justify-center pt-4 md:pt-8">
+      <Form action={formAction} className="flex flex-col md:flex-row p-8">
+        <DashboardSetup />
+      </Form>
+    </main>
+  );
 }
