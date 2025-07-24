@@ -32,11 +32,11 @@ export default function RootLayout({
 			<body
 				className={`${interSans.variable} ${interMono.variable} antialiased`}
 			>
-				<Script
+				{/* <Script
 					id="new-relic-browser-snippet"
 					strategy="beforeInteractive"
 					src={"/newrelic.js"}
-				/>
+				/> */}
 
 				<AuthProvider>
 					<Navbar />
