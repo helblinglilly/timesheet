@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Fragment } from "react";
-import { useBreakIn, useBreakOut, useClockIn, useGetTodaysTimesheet } from "./hooks";
+import { useBreakIn, useBreakOut, useClockIn, useClockOut, useGetTodaysTimesheet } from "./hooks";
 
 export const RecordToday = (
   { timesheetId }: { timesheetId: string },
@@ -10,9 +10,8 @@ export const RecordToday = (
   const { data, isLoading, error: _error } = useGetTodaysTimesheet(timesheetId);
   const { mutate: clockIn } = useClockIn();
   const { mutate: breakIn } = useBreakIn();
-  const { mutate: _breakOut } = useBreakOut();
-
-
+  const { mutate: breakOut } = useBreakOut();
+  const { mutate: clockOut } = useClockOut();
 
   if (isLoading || !data){
     return <p>Loading</p>;
@@ -20,13 +19,7 @@ export const RecordToday = (
 
   return (
     <div className="grid gap-4">
-      <p>Hello</p>
-      <div>
-      </div>
       <div className="grid md:flex gap-4">
-        <p>{data?.timesheetId}</p>
-
-
         <Button
           disabled={ !!data?.clockOut }
           onClick={() => {
@@ -36,14 +29,29 @@ export const RecordToday = (
 
         <Button
           disabled={ !!data?.clockOut }
-          onClick={async () => {
+          onClick={() => {
             breakIn(data?.id ?? "");
           }}
         >Break in</Button>
         <Button
           disabled={ !!data?.clockOut }
+          onClick={() => {
+            const id = (data.breaks ?? []).filter(a => {
+              return !a.breakOut;
+            });
+
+            breakOut({
+              inOutRecordId: id[0].id,
+              timesheetId: data?.id ?? "",
+            });
+          }}
         >Break out</Button>
-        <Button disabled={ !!data?.clockOut }>Clock Out</Button>
+        <Button
+          disabled={ !!data?.clockOut }
+          onClick={() => {
+            clockOut(data.timesheetId);
+          }}
+        >Clock Out</Button>
       </div>
 
       <div className="grid gap-4">

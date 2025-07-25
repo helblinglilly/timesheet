@@ -1,6 +1,6 @@
 import { getQueryClient } from "@/app/react-query";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { clockIn, breakIn, getTodaysEntries, breakOut } from "./api";
+import { breakIn, breakOut, clockIn, clockOut, getTodaysEntries } from "./api";
 
 export const useGetTodaysTimesheet = (timesheetId: string) =>  {
   return useQuery({
@@ -35,11 +35,25 @@ export const useBreakIn = () => {
 
 export const useBreakOut = () => {
   return useMutation({
-    mutationFn: async (inOutRecordId: string) => {
-      await breakOut(inOutRecordId);
+    mutationFn: async (ids: {
+        inOutRecordId: string;
+        timesheetId: string;
+    }) => {
+      await breakOut(ids.inOutRecordId);
     },
-    onSuccess: (_data, inOutRecordId) => {
-      getQueryClient().invalidateQueries({ queryKey: ["today", inOutRecordId] });
+    onSuccess: (_data, ids) => {
+      getQueryClient().invalidateQueries({ queryKey: ["today", ids.timesheetId] });
+    },
+  });
+};
+
+export const useClockOut = () => {
+  return useMutation({
+    mutationFn: async (timesheetEntryId: string) => {
+      await clockOut(timesheetEntryId);
+    },
+    onSuccess: (_data, timesheetEntryId) => {
+      getQueryClient().invalidateQueries({ queryKey: ["today", timesheetEntryId] });
     },
   });
 };
