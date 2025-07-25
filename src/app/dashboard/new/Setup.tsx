@@ -26,7 +26,9 @@ export default function DashboardSetup() {
       <button hidden type="submit" ref={submitRef}>Finish</button>
 
       <div className="grid gap-4">
-        {["start"].some((a) => a === screen) && (
+        {["start"].some((a) => {
+          return a === screen;
+        }) && (
           <Kind
             action={(value) => {
               if (kindRef.current) {

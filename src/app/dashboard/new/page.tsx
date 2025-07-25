@@ -1,7 +1,8 @@
+/* eslint-disable react/jsx-no-bind */
 import { serverSideAuth } from "@/utils/pb/server";
 import Form from "next/form";
-import DashboardSetup from "./Setup";
 import { redirect } from "next/navigation";
+import DashboardSetup from "./Setup";
 
 export default async function NewTimesheet() {
   async function formAction(formData: FormData) {
@@ -22,16 +23,19 @@ export default async function NewTimesheet() {
       name,
       minutesPerDay,
       daysPerWeek,
-      lunchMinutes
+      lunchMinutes,
     });
 
-    redirect('/dashboard');
+    redirect("/dashboard");
   }
 
 
   return (
     <main className="grid justify-center pt-4 md:pt-8">
-      <Form action={formAction} className="flex flex-col md:flex-row p-8">
+      <Form
+        action={formAction}
+        className="flex flex-col md:flex-row p-8"
+      >
         <DashboardSetup />
       </Form>
     </main>

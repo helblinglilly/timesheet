@@ -7,22 +7,24 @@ interface InputWithLabelProps extends React.HTMLProps<HTMLInputElement> {
 }
 
 const InputWithLabel = forwardRef<HTMLInputElement, InputWithLabelProps>(
-	(inputProps, ref) => {
-		const { labelText = "hours", ...rest } = inputProps;
-		const id = useId();
+  (inputProps, ref) => {
+    const { labelText = "hours", ...rest } = inputProps;
+    const id = useId();
 
-		return (
-			<div className="flex items-center rounded-md bg-white outline-gray-300 w-fit">
-				<WritableInput {...rest} ref={ref} />
-				<label
-					htmlFor={id}
-					className="text-base pr-2 text-gray-500 select-none sm:text-sm/6"
-				>
-					{labelText}
-				</label>
-			</div>
-		);
-	},
+    return (
+      <div className="flex items-center rounded-md bg-white outline-gray-300 w-fit">
+        <WritableInput {...rest} ref={ref} />
+        <label
+          htmlFor={id}
+          className="text-base pr-2 text-gray-500 select-none sm:text-sm/6"
+        >
+          {labelText}
+        </label>
+      </div>
+    );
+  },
 );
+
+InputWithLabel.displayName = "InputWithLabel";
 
 export default InputWithLabel;

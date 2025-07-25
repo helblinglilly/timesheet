@@ -1,7 +1,5 @@
-"use client"
-
-import React from "react"
+"use client";
 
 export default function activeTheme() {
-  return localStorage.getItem('theme');
+  return localStorage.getItem("theme");
 }

@@ -1,5 +1,5 @@
-"use client"
-import React from 'react';
+"use client";
+import React from "react";
 
 
 export class ErrorBoundary extends React.Component {
@@ -8,7 +8,7 @@ export class ErrorBoundary extends React.Component {
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(error: Error) {
+  static getDerivedStateFromError(_error: Error) {
     return { hasError: true }; // Update state to show fallback UI.
   }
 
@@ -17,12 +17,12 @@ export class ErrorBoundary extends React.Component {
   }
 
   render() {
-    // @ts-expect-error
+    // @ts-expect-error Inconsistent return type
     if (this.state.hasError) {
-    // @ts-expect-error
+    // @ts-expect-error Inconsistent return type
       return this.props.fallback || <h1>Something went wrong.</h1>;
     }
-    // @ts-expect-error
-    return this.props.children; // Render child components if no error.
+    // @ts-expect-error Inconsistent return type
+    return this.props.children;
   }
 }

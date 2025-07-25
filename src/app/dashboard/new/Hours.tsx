@@ -31,7 +31,8 @@ export default function OfficeHours({
         <InputHourMinutes onInput={(e) => {
           console.log(e);
           setMinutesPerDay(e);
-        }} />
+        }}
+        />
       </div>
 
       <h4 className="text-xl font-bold text-center">

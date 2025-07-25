@@ -9,43 +9,43 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType>({
-	isAuthenticated: false,
-	updateAuthStatus: () => {},
+  isAuthenticated: false,
+  updateAuthStatus: () => {},
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
-	children,
+  children,
 }) => {
-	const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
 
-	useEffect(() => {
-		checkAuthStatus();
-	}, []);
+  useEffect(() => {
+    checkAuthStatus();
+  }, []);
 
-	const checkAuthStatus = async () => {
-		try {
-			const res = await fetch("/auth/me");
-			setIsAuthenticated(res.status === 200);
-		} catch (error) {
-			setIsAuthenticated(false);
-		}
-	};
+  const checkAuthStatus = async () => {
+    try {
+      const res = await fetch("/auth/me");
+      setIsAuthenticated(res.status === 200);
+    } catch {
+      setIsAuthenticated(false);
+    }
+  };
 
-	const updateAuthStatus = (status: boolean) => {
-		setIsAuthenticated(status);
-	};
+  const updateAuthStatus = (status: boolean) => {
+    setIsAuthenticated(status);
+  };
 
-	return (
-		<AuthContext.Provider value={{ isAuthenticated, updateAuthStatus }}>
-			{children}
-		</AuthContext.Provider>
-	);
+  return (
+    <AuthContext.Provider value={{ isAuthenticated, updateAuthStatus }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export const useAuth = () => {
-	const context = useContext(AuthContext);
-	if (!context) {
-		throw new Error("useAuth must be used within an AuthProvider");
-	}
-	return context;
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
 };

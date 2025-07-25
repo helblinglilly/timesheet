@@ -18,12 +18,12 @@ export type SignupActionType = {
 };
 
 export const initialSignupState: SignupActionType = {
-	errors: [],
-	inputs: {
-		email: undefined,
-		password: undefined,
-		password_confirmation: undefined,
-	},
+  errors: [],
+  inputs: {
+    email: undefined,
+    password: undefined,
+    password_confirmation: undefined,
+  },
 };
 
 export type LoginActionType = {
@@ -35,8 +35,8 @@ export type LoginActionType = {
 };
 
 export const initialLoginState: LoginActionType = {
-	inputs: {
-		email: undefined,
-		password: undefined,
-	},
+  inputs: {
+    email: undefined,
+    password: undefined,
+  },
 };

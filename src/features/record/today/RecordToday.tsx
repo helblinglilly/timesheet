@@ -1,25 +1,28 @@
-"use client"
+"use client";
 
-import React, { Fragment } from 'react'
-import { Button } from '@/components/ui/button';
-import { useBreakIn, useBreakOut, useClockIn, useGetTodaysTimesheet } from './hooks';
+import { Button } from "@/components/ui/button";
+import { Fragment } from "react";
+import { useBreakIn, useBreakOut, useClockIn, useGetTodaysTimesheet } from "./hooks";
 
 export const RecordToday = (
-  { timesheetId }: { timesheetId: string }
+  { timesheetId }: { timesheetId: string },
 ) => {
-  const { data, isLoading, error } = useGetTodaysTimesheet(timesheetId);
+  const { data, isLoading, error: _error } = useGetTodaysTimesheet(timesheetId);
   const { mutate: clockIn } = useClockIn();
   const { mutate: breakIn } = useBreakIn();
-  const { mutate: breakOut } = useBreakOut();
+  const { mutate: _breakOut } = useBreakOut();
 
 
 
   if (isLoading || !data){
-    return <p>Loading</p>
+    return <p>Loading</p>;
   }
 
   return (
     <div className="grid gap-4">
+      <p>Hello</p>
+      <div>
+      </div>
       <div className="grid md:flex gap-4">
         <p>{data?.timesheetId}</p>
 
@@ -29,12 +32,12 @@ export const RecordToday = (
           onClick={() => {
             clockIn(timesheetId);
           }}
-          >Clock In</Button>
+        >Clock In</Button>
 
         <Button
           disabled={ !!data?.clockOut }
           onClick={async () => {
-            breakIn(data?.id ?? '')
+            breakIn(data?.id ?? "");
           }}
         >Break in</Button>
         <Button
@@ -53,7 +56,7 @@ export const RecordToday = (
                 <p>Break In: {breakEntry.breakIn}</p>
                 <p>Break Out: {breakEntry.breakOut}</p>
               </Fragment>
-            )
+            );
           })
         }
         <p>Clock Out: {data.clockOut}</p>
@@ -62,4 +65,4 @@ export const RecordToday = (
       </div>
     </div>
   );
-}
+};
