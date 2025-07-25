@@ -1,43 +1,64 @@
 "use client"
 
+import React, { Fragment } from 'react'
 import { Button } from '@/components/ui/button';
-import React, { use } from 'react'
-import { breakIn, clockIn, clockOut, getTodaysEntries } from './server/actions';
+import { useBreakIn, useBreakOut, useClockIn, useGetTodaysTimesheet } from './hooks';
 
 export const RecordToday = (
-  { getTodaysEntriesPromise } : { getTodaysEntriesPromise: ReturnType<typeof getTodaysEntries>}
+  { timesheetId }: { timesheetId: string }
 ) => {
-  const entry = use(getTodaysEntriesPromise);
+  const { data, isLoading, error } = useGetTodaysTimesheet(timesheetId);
+  const { mutate: clockIn } = useClockIn();
+  const { mutate: breakIn } = useBreakIn();
+  const { mutate: breakOut } = useBreakOut();
+
+
+
+  if (isLoading || !data){
+    return <p>Loading</p>
+  }
 
   return (
     <div className="grid gap-4">
       <div className="grid md:flex gap-4">
-        <Button
-          disabled={ !!entry.clockOut }
-          onClick={async () => {
-            await clockIn(
-              entry.timesheetId,
-            );
-        }}>Clock In</Button>
+        <p>{data?.timesheetId}</p>
 
-        <Button disabled={ !!entry.clockOut} onClick={async () => {
-          await breakIn(
-            entry.id ?? '',
-          )
-        }}>Break in</Button>
-        <Button disabled={ !!entry.clockOut}>Break out</Button>
-        <Button disabled={ !!entry.clockOut } onClick={async () => {
-          await clockOut(entry.timesheetId);
-        }}>Clock Out</Button>
+
+        <Button
+          disabled={ !!data?.clockOut }
+          onClick={() => {
+            clockIn(timesheetId);
+          }}
+          >Clock In</Button>
+
+        <Button
+          disabled={ !!data?.clockOut }
+          onClick={async () => {
+            breakIn(data?.id ?? '')
+          }}
+        >Break in</Button>
+        <Button
+          disabled={ !!data?.clockOut }
+        >Break out</Button>
+        <Button disabled={ !!data?.clockOut }>Clock Out</Button>
       </div>
 
       <div className="grid gap-4">
         <h2 className="text-2xl">Entries:</h2>
+        <p>Clock In: {data.clockIn}</p>
         {
-          entry.clockIn && (
-          <p suppressHydrationWarning={true}>Clock In:</p>
-          )
+          (data.breaks ?? []).map((breakEntry) => {
+            return (
+              <Fragment key={breakEntry.id}>
+                <p>Break In: {breakEntry.breakIn}</p>
+                <p>Break Out: {breakEntry.breakOut}</p>
+              </Fragment>
+            )
+          })
         }
+        <p>Clock Out: {data.clockOut}</p>
+
+
       </div>
     </div>
   );

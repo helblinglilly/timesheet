@@ -5,6 +5,7 @@ import type React from "react";
 import "./globals.css";
 import Navbar from "@/components/Navbar/Navbar";
 import { AuthProvider } from "@/context/AuthContext";
+import Providers from "./providers";
 
 const interSans = localFont({
 	src: "./fonts/Inter/Inter-VariableFont_opsz,wght.ttf",
@@ -28,19 +29,25 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en">
+		<html lang="en" suppressHydrationWarning>
 			<body
 				className={`${interSans.variable} ${interMono.variable} antialiased`}
 			>
-				{/* <Script
-					id="new-relic-browser-snippet"
-					strategy="beforeInteractive"
-					src={"/newrelic.js"}
-				/> */}
+			{/* {
+			  process.env.NODE_ENV === 'production' && (
+					<Script
+						id="new-relic-browser-snippet"
+						strategy="beforeInteractive"
+						src={"/newrelic.js"}
+					/>
+					)
+			} */}
 
 				<AuthProvider>
-					<Navbar />
-					{children}
+				    <Providers>
+						  <Navbar />
+					    {children}
+						</Providers>
 				</AuthProvider>
 			</body>
 		</html>
