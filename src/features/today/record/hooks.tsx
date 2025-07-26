@@ -1,15 +1,9 @@
-import { getQueryClient } from "@/app/react-query";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { breakIn, breakOut, clockIn, clockOut, getTodaysEntries } from "./api";
+"use client";
 
-export const useGetTodaysTimesheet = (timesheetId: string) =>  {
-  return useQuery({
-    queryKey: ["today", timesheetId],
-    queryFn: ({ queryKey }) => {
-      return getTodaysEntries(queryKey[1]);
-    },
-  });
-};
+import { getQueryClient } from "@/app/react-query";
+import { useMutation } from "@tanstack/react-query";
+
+import { breakIn, breakOut, clockIn, clockOut } from "./api";
 
 export const useClockIn = () => {
   return useMutation({

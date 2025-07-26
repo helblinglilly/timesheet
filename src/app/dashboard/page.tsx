@@ -1,38 +1,41 @@
-import { RecordToday } from "@/features/record/today/RecordToday";
+import { getTodaysEntries } from "@/features/today/api";
+import Today from "@/features/today/Today";
 import { serverSideAuth } from "@/utils/pb/server";
 import { Timesheet } from "@/utils/pb/types";
 import { HydrationBoundary } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
 import { ListResult } from "pocketbase";
-import React from "react";
 
 export default async function Dashboard() {
   const pb = await serverSideAuth();
-  const timesheets: ListResult<Timesheet> = await pb.collection("timesheet").getList(1, 20);
+  const timesheets: ListResult<Timesheet> = await pb.collection("timesheet").getList(1, 20, {
+    sort: "-updated",
+  });
 
   if (timesheets.items.length === 0) {
     redirect("/dashboard/new");
   }
 
-  // look ma, no await
-  // queryClient.prefetchQuery({
-  //   queryKey: ['posts'],
-  //   queryFn: getPosts,
-  // })
+  const timesheetData = (await Promise.allSettled(
+    timesheets.items.map((timesheet) => {
+      return getTodaysEntries(timesheet.id);
+    }),
+  )).filter((a) => {
+    return a.status === "fulfilled";
+  }).map((a) => {
+    return a.value;
+  });
 
+  console.log(timesheetData);
 
   return (
     <HydrationBoundary>
       <div className="p-4">
         <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
-
         {
-          timesheets.items.map((timesheet) => {
+          timesheetData.map((timesheet) => {
             return (
-              <div key={timesheet.id} className="grid gap-6">
-                <h2 className="text-xl font-bold">{timesheet.name}</h2>
-                <RecordToday timesheetId={timesheet.id} />
-              </div>
+              <Today timesheet={timesheet} key={timesheet.id ?? ""} />
             );
           })
         }
