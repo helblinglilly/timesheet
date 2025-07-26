@@ -5,6 +5,9 @@
 import "./src/env.js";
 
 /** @type {import("next").NextConfig} */
-const config = {};
+const config = {
+  // We're using middleware for i18n routing
+  // instead of built-in i18n support
+};
 
 export default config;

@@ -1,0 +1,52 @@
+{
+  "common": {
+    "welcome": "Bienvenido a la aplicación Timesheet",
+    "language": "Idioma",
+    "loading": "Cargando..."
+  },
+  "navigation": {
+    "home": "Inicio",
+    "dashboard": "Panel",
+    "settings": "Configuración"
+  },
+  "home": {
+    "title": "Sistema de Gestión de Hojas de Tiempo",
+    "subtitle": "Registra tus horas de trabajo eficientemente",
+    "description": "Administra y registra fácilmente tus horas de trabajo, genera informes y optimiza tu flujo de trabajo",
+    "getStarted": "Comenzar",
+    "learnMore": "Más información"
+  },
+  "dashboard": {
+    "title": "Panel",
+    "today": "Hoy",
+    "thisWeek": "Esta semana",
+    "thisMonth": "Este mes",
+    "hoursLogged": "Horas registradas",
+    "projectsWorked": "Proyectos trabajados"
+  },
+  "timeEntry": {
+    "project": "Proyecto",
+    "task": "Tarea",
+    "startTime": "Hora de inicio",
+    "endTime": "Hora de finalización",
+    "duration": "Duración",
+    "description": "Descripción",
+    "save": "Guardar entrada",
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "delete": "Eliminar"
+  },
+  "settings": {
+    "title": "Configuración",
+    "theme": "Tema",
+    "language": "Idioma",
+    "notifications": "Notificaciones",
+    "saveChanges": "Guardar cambios"
+  },
+  "errors": {
+    "somethingWentWrong": "Algo salió mal",
+    "tryAgain": "Por favor, inténtalo de nuevo",
+    "requiredField": "Este campo es obligatorio",
+    "invalidFormat": "Formato inválido"
+  }
+}

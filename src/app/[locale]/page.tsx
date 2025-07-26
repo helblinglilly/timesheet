@@ -1,15 +1,23 @@
-import Link from "next/link";
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import { ClientTranslationComponent } from '~/app/_components/i18n/ClientTranslationComponent';
+import { ServerTranslationComponent } from '~/app/_components/i18n/ServerTranslationComponent';
+import { LatestPost } from '~/app/_components/post';
+import { languages } from '~/i18n/settings';
+import { api, HydrateClient } from '~/trpc/server';
 
-import { ClientTranslationComponent } from "~/app/_components/i18n/ClientTranslationComponent";
-import { ServerTranslationComponent } from "~/app/_components/i18n/ServerTranslationComponent";
-import { LatestPost } from "~/app/_components/post";
-import { api, HydrateClient } from "~/trpc/server";
+interface HomeProps {
+  params: {
+    locale: string;
+  };
+}
 
-export default async function Home({
-  params: { locale = "en" } = {},
-}: {
-  params?: { locale?: string };
-}) {
+export default async function Home({ params: { locale } }: HomeProps) {
+  // Validate that locale is supported
+  if (!languages.includes(locale)) {
+    redirect('/en'); // Redirect to default locale if not supported
+  }
+
   const hello = await api.post.hello({ text: "from tRPC" });
 
   void api.post.getLatest.prefetch();
@@ -36,7 +44,7 @@ export default async function Home({
             <Link
               className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
               href="https://create.t3.gg/en/introduction"
-              target="_blank"
+
             >
               <h3 className="text-2xl font-bold">Documentation →</h3>
               <div className="text-lg">
@@ -50,6 +58,7 @@ export default async function Home({
               {hello ? hello.greeting : "Loading tRPC query..."}
             </p>
           </div>
+
 
           {/* i18n Demo Components */}
           <div className="w-full max-w-4xl">

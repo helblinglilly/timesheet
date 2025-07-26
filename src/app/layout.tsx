@@ -3,6 +3,8 @@ import "~/styles/globals.css";
 import { type Metadata } from "next";
 import { Geist } from "next/font/google";
 
+import { TranslationProvider } from "~/app/_components/i18n/TranslationProvider";
+import { languages } from "~/i18n/settings";
 import { TRPCReactProvider } from "~/trpc/react";
 
 export const metadata: Metadata = {
@@ -18,11 +20,22 @@ const geist = Geist({
 
 export default function RootLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+  params: { locale = "en" } = {},
+}: Readonly<{
+  children: React.ReactNode;
+  params?: { locale?: string };
+}>) {
+  // Validate that the incoming locale is supported
+  const lang = languages.includes(locale) ? locale : "en";
+
   return (
-    <html lang="en" className={`${geist.variable}`}>
+    <html lang={lang} className={`${geist.variable}`}>
       <body>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <TRPCReactProvider>
+          <TranslationProvider locale={lang}>
+            {children}
+          </TranslationProvider>
+        </TRPCReactProvider>
       </body>
     </html>
   );
