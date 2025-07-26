@@ -8,6 +8,7 @@ import "./src/env.js";
 const config = {
   // We're using middleware for i18n routing
   // instead of built-in i18n support
+   output: "standalone",
 };
 
 export default config;

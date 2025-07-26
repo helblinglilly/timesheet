@@ -2,7 +2,7 @@ name: Build and Publish Docker Image
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "t3" ]
 
 env:
   # Use docker.io for Docker Hub if your registry is different

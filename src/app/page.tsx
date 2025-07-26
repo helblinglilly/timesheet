@@ -5,11 +5,7 @@ import { ServerTranslationComponent } from "~/app/_components/i18n/ServerTransla
 import { LatestPost } from "~/app/_components/post";
 import { api, HydrateClient } from "~/trpc/server";
 
-export default async function Home({
-  params: { locale = "en" } = {},
-}: {
-  params?: { locale?: string };
-}) {
+export default async function Home() {
   const hello = await api.post.hello({ text: "from tRPC" });
 
   void api.post.getLatest.prefetch();
@@ -54,7 +50,7 @@ export default async function Home({
           {/* i18n Demo Components */}
           <div className="w-full max-w-4xl">
             {/* Server Component Demo */}
-            <ServerTranslationComponent locale={locale} />
+            <ServerTranslationComponent />
 
             {/* Client Component Demo */}
             <ClientTranslationComponent />

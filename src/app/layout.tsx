@@ -1,10 +1,11 @@
 import "~/styles/globals.css";
 
+import newrelic from 'newrelic';
 import { type Metadata } from "next";
 import { Geist } from "next/font/google";
 
+import Script from "next/script";
 import { TranslationProvider } from "~/app/_components/i18n/TranslationProvider";
-import { languages } from "~/i18n/settings";
 import { TRPCReactProvider } from "~/trpc/react";
 
 export const metadata: Metadata = {
@@ -18,21 +19,26 @@ const geist = Geist({
   variable: "--font-geist-sans",
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
-  params: { locale = "en" } = {},
 }: Readonly<{
   children: React.ReactNode;
-  params?: { locale?: string };
 }>) {
-  // Validate that the incoming locale is supported
-  const lang = languages.includes(locale) ? locale : "en";
+  // eslint-disable-next-line
+  const browserTimingHeader: string = newrelic.getBrowserTimingHeader({
+    hasToRemoveScriptWrapper: true,
+    allowTransactionlessInjection: true,
+  });
 
   return (
-    <html lang={lang} className={`${geist.variable}`}>
+    <html lang={"en"} className={`${geist.variable}`} suppressHydrationWarning={true}>
+      <Script
+        id="nr-browser-agent"
+        dangerouslySetInnerHTML={{ __html: browserTimingHeader }}
+      />
       <body>
         <TRPCReactProvider>
-          <TranslationProvider locale={lang}>
+          <TranslationProvider locale={"en"}>
             {children}
           </TranslationProvider>
         </TRPCReactProvider>

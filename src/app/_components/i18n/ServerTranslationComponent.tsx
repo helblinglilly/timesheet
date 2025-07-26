@@ -1,12 +1,8 @@
 import { createTranslation } from '~/i18n/server';
 
 // Server component that uses translations
-export async function ServerTranslationComponent({
-  locale = 'en',
-}: {
-  locale?: string;
-}) {
-  const { t } = await createTranslation(locale, 'translation');
+export async function ServerTranslationComponent() {
+  const { t } = await createTranslation('translation');
 
   return (
     <div className="p-6 bg-purple-900 rounded-lg shadow-md my-4">
