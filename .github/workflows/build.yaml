@@ -10,7 +10,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     permissions:
       contents: read
       packages: write
@@ -39,27 +39,39 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=tag
+            type=ref,event=pr
             type=sha
 
-      # Set additional Docker tags for main branch
-      - name: Set latest tag if on main
-        if: github.ref == 'refs/heads/main'
-        run: echo "EXTRA_TAGS=latest" >> $GITHUB_ENV
-
-      # Set branch-sha tag for non-main branches
-      - name: Set branch-sha tag if not on main
-        if: github.ref != 'refs/heads/main'
-        run: echo "EXTRA_TAGS=$(echo ${GITHUB_REF_NAME} | tr '/' '-')-sha-${GITHUB_SHA}" >> $GITHUB_ENV
-
-      # Build and push Docker image
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           push: ${{ github.event_name != 'pull_request' }}
-          tags: |
-            ${{ steps.meta.outputs.tags }}
-            ${{ env.EXTRA_TAGS }}
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          platforms: linux/arm64,linux/amd64
+          platforms: linux/arm64
+          # platforms: linux/arm64,linux/amd64
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          build-args: |
+            POCKETBASE_URL=${{ secrets.POCKETBASE_URL }}
+            NODE_ENV=production
+
+  deploy:
+    runs-on: production
+    needs: build
+    steps:
+      - name: Stop and remove old container
+        run: |
+          docker compose -f ~/timesheet.docker-compose.yaml down || true
+
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u helblinglilly --password-stdin
+
+      - name: Launch docker-compose
+        run: docker compose -f ~/timesheet.docker-compose.yaml up -d
+
+      - name: Remove dangling images
+        run: docker image prune -a -f

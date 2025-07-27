@@ -30,6 +30,14 @@ export default tseslint.config(
       "error",
       { checksVoidReturn: { attributes: false } },
     ],
+    "no-console": "warn",
+    "no-restricted-syntax": [
+      "warn",
+      {
+        selector: "MemberExpression[object.name='process'][property.name='env']",
+        message: "Do not use process.env directly. Use ~/env instead"
+      }
+    ]
   },
   },
   {

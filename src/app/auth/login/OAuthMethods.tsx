@@ -1,4 +1,5 @@
 "use client";
+
 import type { PocketbaseAuthMethods } from "~/pocketbase/builtin.types";
 import { setCookieClient } from "~/utils/cookies";
 

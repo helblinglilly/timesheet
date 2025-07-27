@@ -1,52 +1,9 @@
 {
+  "authentication": {
+    "signing_in": "Signing in...",
+    "redirecting": "Redirecting..."
+  },
   "common": {
-    "welcome": "Welcome to Timesheet App",
-    "language": "Language",
-    "loading": "Loading..."
-  },
-  "navigation": {
-    "home": "Home",
-    "dashboard": "Dashboard",
-    "settings": "Settings"
-  },
-  "home": {
-    "title": "Timesheet Management System",
-    "subtitle": "Track your working hours efficiently",
-    "description": "Easily manage and track your working hours, generate reports, and streamline your workflow",
-    "getStarted": "Get Started",
-    "learnMore": "Learn More"
-  },
-  "dashboard": {
-    "title": "Dashboard",
-    "today": "Today",
-    "thisWeek": "This Week",
-    "thisMonth": "This Month",
-    "hoursLogged": "Hours Logged",
-    "projectsWorked": "Projects Worked"
-  },
-  "timeEntry": {
-    "project": "Project",
-    "task": "Task",
-    "startTime": "Start Time",
-    "endTime": "End Time",
-    "duration": "Duration",
-    "description": "Description",
-    "save": "Save Entry",
-    "cancel": "Cancel",
-    "edit": "Edit",
-    "delete": "Delete"
-  },
-  "settings": {
-    "title": "Settings",
-    "theme": "Theme",
-    "language": "Language",
-    "notifications": "Notifications",
-    "saveChanges": "Save Changes"
-  },
-  "errors": {
-    "somethingWentWrong": "Something went wrong",
-    "tryAgain": "Please try again",
-    "requiredField": "This field is required",
-    "invalidFormat": "Invalid format"
+    "loading": "Loading"
   }
 }

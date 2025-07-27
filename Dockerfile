@@ -13,8 +13,10 @@ RUN npm i
 ##### BUILDER
 
 FROM node:20-alpine AS builder
-ARG DATABASE_URL
+
 ARG NEXT_PUBLIC_CLIENTVAR
+ARG POCKETBASE_URL
+
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -23,6 +25,8 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV NEW_RELIC_NO_CONFIG_FILE=true
 
 ENV SKIP_ENV_VALIDATION=1
+ENV POCKETBASE_URL=$POCKETBASE_URL
+ENV NEXT_PUBLIC_HOST=https://timesheet.helbling.uk
 RUN npm run build
 
 ##### RUNNER
