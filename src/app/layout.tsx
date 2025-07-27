@@ -24,7 +24,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // eslint-disable-next-line
   const browserTimingHeader: string = newrelic.getBrowserTimingHeader({
     hasToRemoveScriptWrapper: true,
     allowTransactionlessInjection: true,
