@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { fallbackLng, languages } from './src/i18n/settings';
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   // Get pathname from the URL
   const { pathname } = request.nextUrl;
 

@@ -1,5 +1,6 @@
 "use server"
 
+import { redirect } from "next/navigation";
 import { serverSideAuth } from "~/pocketbase/server";
 
 
@@ -8,7 +9,9 @@ export default async function Dashboard() {
 
   const timesheet = await pb.collection('timesheet').getFullList();
 
-  console.log(pb.authStore, timesheet);
+  if (timesheet.length === 0){
+    redirect('/timesheet/new')
+  }
 
   return (
     <p>{JSON.stringify(pb.authStore.record)}</p>

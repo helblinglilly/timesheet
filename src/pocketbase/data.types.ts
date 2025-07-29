@@ -4,7 +4,8 @@ export interface Timesheet extends RecordModel {
   name: string;
   minutesPerDay: number;
   daysPerWeek: number;
-  lunchMinutes: number;
+  paidLunchMinutes: number;
+  unpaidLunchMinutes: number;
   kind: "office" | "freelance";
 }
 

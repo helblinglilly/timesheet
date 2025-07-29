@@ -4,6 +4,65 @@
     "redirecting": "Redirecting..."
   },
   "common": {
-    "loading": "Loading"
+    "loading": "Loading",
+    "units": {
+      "hour_short": "{{count}} h",
+      "hour_long_one": "{{count}} hour",
+      "hour_long_other": "{{count}} hours",
+
+      "minute_short": "{{count}} min",
+      "minute_long_one": "{{count}} minute",
+      "minute_long_other": "{{count}} minutes"
+    }
+  },
+  "timesheet": {
+    "new": {
+      "title": "New Timesheet",
+      "required": "* marks required fields",
+      "hours_worked": "How much you work",
+      "hours_worked_description": "We will keep track of how much you work on a weekly basis and tell you how much overtime you've worked that week, or if you need to make up some hours.",
+      "fields": {
+        "name": {
+          "label": "What's this gig called?*",
+          "placeholder": "Facebook",
+          "description": "This will be the name for this timesheet",
+          "error_short": "Must be at least 3 characters"
+        },
+        "minutesPerDay": {
+          "label": "How long's each day?",
+          "description": "",
+          "hours": {
+            "placeholder": "7 hours",
+            "label": "hours*",
+            "error_max": "Can't work more than 24h/day"
+          },
+          "minutes": {
+            "placeholder": "30 minutes",
+            "label": "minutes*",
+            "error_max": "No more than 59 minutes in an hour"
+          }
+        },
+        "daysPerWeek": {
+          "label": "How many days do you work in a week?*",
+          "placeholder": "5 days/week",
+          "description": "If your days vary, put down your average",
+          "error_max": "No more than 7 days in a week"
+        },
+        "breaks": {
+          "label": "How much you rest",
+          "description": "This will be used to predict when you've reached your hours for the day.",
+          "unpaid": {
+            "label": "Unpaid (mins)",
+            "placeholder": "60 minutes",
+            "description": "Will not count as hours worked."
+          },
+          "paid": {
+            "label": "Paid (mins)",
+            "placeholder": "60 minutes",
+            "description": "Will count towards hours worked."
+          }
+        }
+      }
+    }
   }
 }

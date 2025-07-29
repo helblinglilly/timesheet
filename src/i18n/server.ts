@@ -17,11 +17,11 @@ const initI18next = async (lng: string, ns: string) => {
   return i18nInstance;
 };
 
-export async function createTranslation( ns: string) {
-  const i18nextInstance = await initI18next("en", ns);
+export async function createTranslation(namespace = 'translation') {
+  const i18nextInstance = await initI18next("en", namespace);
 
   return {
-    t: i18nextInstance.getFixedT("en", typeof ns === 'string' ? ns : Array.isArray(ns) ? ns[0] : undefined),
+    t: i18nextInstance.getFixedT("en", typeof namespace === 'string' ? namespace : Array.isArray(namespace) ? namespace[0] : undefined),
     i18n: i18nextInstance
   };
 }
