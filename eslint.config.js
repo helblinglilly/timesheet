@@ -1,5 +1,6 @@
 import { FlatCompat } from "@eslint/eslintrc";
 import tseslint from 'typescript-eslint';
+import stylistic from '@stylistic/eslint-plugin';
 
 const compat = new FlatCompat({
   baseDirectory: import.meta.dirname,
@@ -12,6 +13,7 @@ export default tseslint.config(
   ...compat.extends("next/core-web-vitals"),
   {
     files: ['**/*.ts', '**/*.tsx'],
+    plugins: { '@stylistic': stylistic },
 		extends: [
 			...tseslint.configs.recommended,
 			...tseslint.configs.recommendedTypeChecked,
@@ -20,6 +22,7 @@ export default tseslint.config(
       rules: {
     "@typescript-eslint/array-type": "off",
     "@typescript-eslint/consistent-type-definitions": "off",
+    "@stylistic/indent": ["error", 2],
     "@typescript-eslint/consistent-type-imports": [
       "warn",
       { prefer: "type-imports", fixStyle: "inline-type-imports" },

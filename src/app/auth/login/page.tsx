@@ -28,10 +28,10 @@ export default async function Login() {
   return (
     <div className="p-4 w-full flex justify-center">
       <div className="grid gap-4 w-full md:w-[50%] max-w-[600px]">
-      {mappedAuthMethods.map((authMethod) => {
-        return <OAuthMethod authMethod={authMethod} key={authMethod.name} />;
-      })}
-    </div>
+        {mappedAuthMethods.map((authMethod) => {
+          return <OAuthMethod authMethod={authMethod} key={authMethod.name} />;
+        })}
+      </div>
     </div>
   );
 

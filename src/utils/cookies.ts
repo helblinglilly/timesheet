@@ -4,11 +4,11 @@ export const setCookieClient = (
   name: string,
   value: string,
   overrideOptions?: {
-		expires?: Date;
-		path?: string;
-		SameSite?: "Lax";
-		"max-age"?: number;
-	},
+    expires?: Date;
+    path?: string;
+    SameSite?: "Lax";
+    "max-age"?: number;
+  },
 ) => {
   let expires = new Date();
   expires.setDate(expires.getDate() + 90);
@@ -37,10 +37,9 @@ export const getCookieClient = (name: string) => {
     return undefined;
   }
   const matches = new RegExp(
-      // biome-ignore lint/style/useTemplate: Behaves differently with template strings
-      "(?:^|; )" +
+    "(?:^|; )" +
 				name.replace(/([.$?*|{}()[\]/+^])/g, "\\$1") +
 				"=([^;]*)",
-    ).exec(document.cookie);
+  ).exec(document.cookie);
   return matches ? decodeURIComponent(matches[1] ?? '') : undefined;
 };

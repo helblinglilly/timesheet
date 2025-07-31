@@ -26,18 +26,18 @@ export default function NewTimesheetPage() {
   type FormValues = z.infer<ReturnType<typeof formSchema>>;
 
   const form = useForm<FormValues>({
-     resolver: zodResolver(formSchema(t)),
-     defaultValues: {
-       name: "",
-       minutesPerDay: {
-         hours: undefined,
-         minutes: undefined
-       },
-       daysPerWeek: undefined,
-       unpaidLunchMinutes: undefined,
-       paidLunchMinutes: undefined,
-     },
-   });
+    resolver: zodResolver(formSchema(t)),
+    defaultValues: {
+      name: "",
+      minutesPerDay: {
+        hours: undefined,
+        minutes: undefined
+      },
+      daysPerWeek: undefined,
+      unpaidLunchMinutes: undefined,
+      paidLunchMinutes: undefined,
+    },
+  });
 
   function onSubmit(){
     console.log('submitting');
@@ -62,9 +62,9 @@ export default function NewTimesheetPage() {
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
-          )}
+              )}
 
-        />
+            />
           </CardContent>
         </Card>
 
@@ -90,12 +90,12 @@ export default function NewTimesheetPage() {
                         type="number"
                         placeholder={t('timesheet.new.fields.minutesPerDay.hours.placeholder')}
                         {...field}
-                          />
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
-                  )}
-                />
+                )}
+              />
               <FormField
                 control={form.control}
                 name="minutesPerDay.minutes"
@@ -107,8 +107,8 @@ export default function NewTimesheetPage() {
                     </FormControl>
                     <FormMessage />
                   </FormItem>
-                  )}
-                />
+                )}
+              />
             </div>
 
             <FormField
@@ -125,8 +125,8 @@ export default function NewTimesheetPage() {
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
-                )}
-              />
+              )}
+            />
           </CardContent>
         </Card>
 
@@ -155,8 +155,8 @@ export default function NewTimesheetPage() {
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
-                  )}
-                />
+                )}
+              />
 
               <FormField
                 control={form.control}
@@ -172,8 +172,8 @@ export default function NewTimesheetPage() {
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
-                  )}
-                />
+                )}
+              />
             </div>
           </CardContent>
         </Card>
