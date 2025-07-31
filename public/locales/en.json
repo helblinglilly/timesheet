@@ -18,7 +18,7 @@
   "timesheet": {
     "new": {
       "title": "New Timesheet",
-      "required": "* marks required fields",
+      "required": "required field",
       "hours_worked": "How much you work",
       "hours_worked_description": "We will keep track of how much you work on a weekly basis and tell you how much overtime you've worked that week, or if you need to make up some hours.",
       "fields": {

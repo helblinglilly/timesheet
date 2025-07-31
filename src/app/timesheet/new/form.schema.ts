@@ -6,14 +6,14 @@ export const formSchema = (t: TFunction<"translation", undefined>) => z.object({
     message: t('timesheet.new.fields.name.error_short'),
   }),
   minutesPerDay: z.object({
-    hours:  z.coerce.number().min(0).max(24, {
+    hours: z.coerce.number().min(0).max(24, {
       message: t('timesheet.new.fields.minutesPerDay.hours.error_max')
     }),
     minutes:  z.coerce.number().min(0).max(59, {
       message: t('timesheet.new.fields.minutesPerDay.minutes.error_max')
     })
-  }),
-  daysPerWeek: z.coerce.number().min(0).max(7, {
+  }).required(),
+  daysPerWeek: z.coerce.number().min(0.5).max(7, {
     message: t('timesheet.new.fields.daysPerWeek.error_max')
   }),
   unpaidLunchMinutes: z.coerce.number().optional(),
