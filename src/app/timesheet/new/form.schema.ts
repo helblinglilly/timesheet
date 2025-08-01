@@ -1,7 +1,7 @@
-import type { TFunction } from "i18next"
+import type { Namespace, TFunction } from "i18next"
 import z from "zod"
 
-export const formSchema = (t: TFunction<"translation", undefined>) => z.object({
+export const formSchema = (t: TFunction<Namespace, undefined>) => z.object({
   name: z.string().min(3, {
     message: t('timesheet.new.fields.name.error_short'),
   }),

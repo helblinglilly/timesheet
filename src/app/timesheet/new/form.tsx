@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { type z } from "zod"
+import { startTransition, useActionState } from "react"
 
 import { Button } from "~/components/ui/button"
 import {
@@ -18,8 +19,7 @@ import {
 import { Input } from "~/components/ui/input"
 import { formSchema } from "./form.schema"
 import { Card, CardContent, CardHeader } from "~/components/ui/card"
-
-
+import { createTimesheetWithState, type TimesheetFormState } from "./action"
 
 export default function NewTimesheetPage() {
   const { t } = useTranslation();
@@ -39,13 +39,27 @@ export default function NewTimesheetPage() {
     },
   });
 
-  function onSubmit(){
-    console.log('submitting');
-  }
+
+  const [state, formAction, isPending] = useActionState<TimesheetFormState, FormData>(createTimesheetWithState, {});
+
+  // This will handle client-side validation and then call the server action
+  const onSubmit = async (data: FormValues) => {
+    const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("minutesPerDay.hours", (data.minutesPerDay.hours ?? '').toString());
+    formData.append("minutesPerDay.minutes", (data.minutesPerDay.minutes ?? '').toString());
+    formData.append("daysPerWeek", (data.daysPerWeek ?? '').toString());
+    formData.append("unpaidLunchMinutes", (data.unpaidLunchMinutes ?? '').toString());
+    formData.append("paidLunchMinutes", (data.paidLunchMinutes ?? '').toString());
+
+    startTransition(() => {
+      formAction(formData);
+    });
+  };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+    <Form {...form} >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 md:max-w-1/2 md:justify-self-center">
         <Card>
           <CardContent>
             <FormField
@@ -69,7 +83,6 @@ export default function NewTimesheetPage() {
         </Card>
 
         <Card>
-
           <CardHeader>
             <FormLabel className="text-xl mb-2">{ t('timesheet.new.hours_worked')}</FormLabel>
             <FormDescription>{ t('timesheet.new.hours_worked_description')}</FormDescription>
@@ -77,7 +90,7 @@ export default function NewTimesheetPage() {
           </CardHeader>
           <CardContent className="gap-4 grid">
 
-            <FormLabel className="">{ t('timesheet.new.fields.minutesPerDay.label')}</FormLabel>
+            <FormLabel>{ t('timesheet.new.fields.minutesPerDay.label')}</FormLabel>
             <div className="flex gap-4">
               <FormField
                 control={form.control}
@@ -178,9 +191,14 @@ export default function NewTimesheetPage() {
           </CardContent>
         </Card>
 
-
         <div className="grid w-full">
-          <Button type="submit" className="w-full md:max-w-96 md:justify-self-center">Submit</Button>
+          <div className="w-full md:max-w-96 md:justify-self-center">
+            {state && (
+              <div className="text-red-500">{state.message}</div>
+            )}
+            <Button type="submit" className="w-full">{isPending ? t('timesheet.new.loading') : t('timesheet.new.submit')}</Button>
+          </div>
+
         </div>
       </form>
     </Form>
