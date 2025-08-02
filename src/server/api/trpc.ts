@@ -9,6 +9,7 @@
 import { initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import { serverSideAuth } from "~/pocketbase/server";
 import log from "~/utils/log";
 
 /**
@@ -24,8 +25,10 @@ import log from "~/utils/log";
  * @see https://trpc.io/docs/server/context
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
+  const pb = await serverSideAuth();
   return {
     ...opts,
+    pb,
   };
 };
 
@@ -102,3 +105,16 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
  * are logged in.
  */
 export const publicProcedure = t.procedure.use(timingMiddleware);
+
+const signedInMiddleware = t.middleware(({ ctx, next }) => {
+  if (!ctx.pb?.authStore?.isValid) {
+    throw new Error("Not authenticated");
+  }
+  return next({
+    ctx: {
+      pb: ctx.pb,
+    },
+  });
+});
+
+export const signedInProcedure = t.procedure.use(signedInMiddleware);

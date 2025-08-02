@@ -23,7 +23,8 @@ const handler = (req: NextRequest) =>
     router: appRouter,
     createContext: () => createContext(req),
     onError:
-      env.NODE_ENV === "development"
+      // eslint-disable-next-line no-restricted-syntax
+      process.env.NODE_ENV === "development"
         ? ({ path, error }) => {
           log.error(`X tRPC failed on ${path ?? "<no-path>"}`, error);
         }

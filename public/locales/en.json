@@ -15,6 +15,9 @@
       "minute_long_other": "{{count}} minutes"
     }
   },
+  "dashboard": {
+    "greeting": "Hi {{name}}"
+  },
   "timesheet": {
     "new": {
       "title": "New Timesheet",
@@ -66,6 +69,25 @@
             "description": "Will count towards hours worked."
           }
         }
+      }
+    },
+    "today": {
+      "actions": {
+        "clock_in": {
+          "cta": "Clock in"
+        },
+        "break_in": {
+          "cta": "Break in"
+        },
+        "break_out": {
+          "cta": "Break out"
+        },
+        "clock_out": {
+          "cta": "Clock out"
+        }
+      },
+      "log": {
+        "title": "Workday"
       }
     }
   }

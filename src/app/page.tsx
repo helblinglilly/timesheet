@@ -1,7 +1,5 @@
 import Link from "next/link";
 
-import { ClientTranslationComponent } from "~/app/_components/i18n/ClientTranslationComponent";
-import { ServerTranslationComponent } from "~/app/_components/i18n/ServerTranslationComponent";
 import { LatestPost } from "~/app/_components/post";
 import { api, HydrateClient } from "~/trpc/server";
 
@@ -45,15 +43,6 @@ export default async function Home() {
             <p className="text-2xl text-white">
               {hello ? hello.greeting : "Loading tRPC query..."}
             </p>
-          </div>
-
-          {/* i18n Demo Components */}
-          <div className="w-full max-w-4xl">
-            {/* Server Component Demo */}
-            <ServerTranslationComponent />
-
-            {/* Client Component Demo */}
-            <ClientTranslationComponent />
           </div>
 
           <LatestPost />

@@ -31,10 +31,10 @@ export default async function RootLayout({
 
   return (
     <html lang={"en"} className={`${geist.variable}`} suppressHydrationWarning={true}>
-      <Script
+      {/*<Script
         id="nr-browser-agent"
         dangerouslySetInnerHTML={{ __html: browserTimingHeader }}
-      />
+      />*/}
       <body>
         <TRPCReactProvider>
           <TranslationProvider locale={"en"}>

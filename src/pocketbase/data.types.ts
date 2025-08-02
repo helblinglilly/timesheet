@@ -18,3 +18,7 @@ export interface TimesheetBreaks extends RecordModel {
   breakIn: string;
   breakOut?: string;
 }
+
+export interface User extends RecordModel {
+  name: string;
+}
