@@ -27,11 +27,17 @@ export default function TimesheetDay({
       await apiUtils.timesheet.getTimesheetDayById.invalidate({id, day})
     }
   });
+  const clockOutMutation = api.timesheet.clockOut.useMutation({
+    onSuccess: async () => {
+      await apiUtils.timesheet.getTimesheetDayById.invalidate({id, day})
+    }
+  });
 
   return (
     <div className="grid gap-4">
-      <div>
+      <div className="flex gap-4 w-full">
         <Button
+          disabled={!!timesheet.clockIn || !timesheet}
           onClick={() => {
             clockInMutation.mutate({
               id: id,
@@ -39,6 +45,19 @@ export default function TimesheetDay({
             });
           }}
         >{ t('timesheet.today.actions.clock_in.cta')}</Button>
+
+        <Button
+          disabled={!timesheet?.clockIn || !!timesheet.clockOut}
+          onClick={() => {
+            if (!timesheet.timesheet_entry_id){
+              throw new Error('Tried to clock out but was not aware for which entry');
+            }
+
+            clockOutMutation.mutate({
+              timesheetEntryId: timesheet.timesheet_entry_id
+            });
+          }}
+        >{ t('timesheet.today.actions.clock_out.cta')}</Button>
       </div>
 
 
@@ -46,12 +65,12 @@ export default function TimesheetDay({
         <h3 className="text-lg font-semibold">{ t('timesheet.today.log.title') }</h3>
 
         {
-          timesheet?.clockIn && (
+          timesheet.clockIn && (
             <p>{format(new Date(timesheet.clockIn), 'HH:mm')} { t('timesheet.today.actions.clock_in.cta') }</p>
           )
         }
         {
-          timesheet?.breaks?.map((breakEntry) => {
+          timesheet.breaks?.map((breakEntry) => {
             return (
               <React.Fragment key={breakEntry.breakEntryId}>
                 <p>{format(new Date(breakEntry.breakIn), 'HH:mm')} { t('timesheet.today.actions.break_in.cta') }</p>
@@ -66,7 +85,7 @@ export default function TimesheetDay({
           })
         }
         {
-          timesheet?.clockOut && (
+          timesheet.clockOut && (
             <p>{format(new Date(timesheet.clockOut), 'HH:mm')} { t('timesheet.today.actions.clock_out.cta') }</p>
           )
         }

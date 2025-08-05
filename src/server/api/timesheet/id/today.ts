@@ -67,12 +67,18 @@ export async function clockIn(pb: Client, id: string, date: Date, time?: Date){
       config: id,
       clockIn: time ?? new Date()
     })
-
     return;
   }
+
   await pb.collection('timesheet_entries').create({
     user: pb.authStore?.record?.id,
     config: id,
     clockIn: time ?? new Date()
+  })
+}
+
+export async function clockOut(pb: Client, timesheetEntryId: string){
+  await pb.collection('timesheet_entries').update(timesheetEntryId, {
+    clockOut: new Date(),
   })
 }
