@@ -87,7 +87,9 @@
         }
       },
       "log": {
-        "title": "Workday"
+        "title": "Logged",
+        "total": "Total",
+        "target": "Target"
       }
     }
   }
