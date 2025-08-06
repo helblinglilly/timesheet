@@ -2,6 +2,7 @@
 
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import ClockInButton from "~/components/ClockInActions/ClockInButton";
 import { Button } from "~/components/ui/button";
 import { hasIncompleteBreakEntry } from "~/lib/workday";
 import { api } from "~/trpc/react";
@@ -29,11 +30,7 @@ export default function TimesheetDay({
   }, [timesheet])
 
 
-  const clockInMutation = api.timesheet.clockIn.useMutation({
-    onSuccess: async () => {
-      await apiUtils.timesheet.getTimesheetDayById.invalidate({id, day})
-    }
-  });
+
   const clockOutMutation = api.timesheet.clockOut.useMutation({
     onSuccess: async () => {
       await apiUtils.timesheet.getTimesheetDayById.invalidate({id, day})
@@ -54,16 +51,13 @@ export default function TimesheetDay({
 
   return (
     <div className="grid md:flex gap-4 w-full md:justify-between">
-      <Button
+
+      <ClockInButton
         className="md:w-1/5"
-        disabled={!!timesheet.clockIn || !timesheet}
-        onClick={() => {
-          clockInMutation.mutate({
-            id: id,
-            day: day
-          });
-        }}
-      >{ t('timesheet.today.actions.clock_in.cta')}</Button>
+        timesheetId={id}
+        day={day}
+      />
+
 
       <Button
         className="md:w-1/5"

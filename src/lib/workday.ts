@@ -7,13 +7,13 @@ export function hasIncompleteBreakEntry(breaks: Pick<TimesheetBreaks, 'breakIn' 
 }
 
 
-export const workDurationInDay = (
+export const workMillisecondsInDay = (
   timesheetEntry: Awaited<ReturnType<typeof getTimesheetByDate>>
 ) => {
   const { clockIn, clockOut, breaks } = timesheetEntry;
 
   if (clockIn === undefined || clockIn === null) {
-    return intervalToDuration({ start: new Date(), end: new Date() });
+    return 0;
   }
 
   const intervals: { start: Date; end: Date }[] = [];
@@ -45,9 +45,16 @@ export const workDurationInDay = (
     totalMilliseconds += end.getTime() - start.getTime();
   }
 
-  // Return interval as duration object
+  return totalMilliseconds;
+};
+
+export const workDurationInDay = (
+  timesheetEntry: Awaited<ReturnType<typeof getTimesheetByDate>>
+) => {
+  const milliseconds = workMillisecondsInDay(timesheetEntry);
+
   return intervalToDuration({
     start: new Date(0),
-    end: new Date(totalMilliseconds),
+    end: new Date(milliseconds),
   });
-};
+}

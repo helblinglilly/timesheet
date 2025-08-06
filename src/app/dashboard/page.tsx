@@ -10,6 +10,9 @@ import { Card, CardContent, CardFooter, CardHeader } from "~/components/ui/card"
 import WorkdayLog from "./WorkdayLog";
 import HoursWorked from "./HoursWorked";
 import TargetHours from "./TargetHours";
+import { Button } from "~/components/ui/button";
+import Link from "next/link";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "~/components/ui/hover-card";
 
 
 export default async function Dashboard() {
@@ -47,12 +50,23 @@ export default async function Dashboard() {
                 </CardContent>
 
                 <CardFooter>
+                  <HoverCard>
+                    <HoverCardTrigger asChild>
+                      <button className="flex gap-2 w-full">
+                        <HoursWorked id={timesheet.id} day={today} />
+                      </button>
+                    </HoverCardTrigger>
+                    <HoverCardContent className="w-70">
+                      <TargetHours id={timesheet.id} day={today} />
+                    </HoverCardContent>
+                  </HoverCard>
 
 
-                  <div className="flex justify-between w-full">
-                    <HoursWorked id={timesheet.id} day={today} />
-                    <TargetHours id={timesheet.id} day={today} />
-                  </div>
+                  <Link href={`/timesheet/${timesheet.id}`} className="w-full md:max-w-1/5">
+                    <Button variant='outline' className="w-full">
+                      {t('dashboard.show_more')}
+                    </Button>
+                  </Link>
                 </CardFooter>
 
               </Card>

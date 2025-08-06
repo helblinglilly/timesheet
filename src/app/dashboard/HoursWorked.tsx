@@ -1,10 +1,10 @@
 "use client"
 
 import { api } from "~/trpc/react";
-import { useTranslation } from "react-i18next";
 import React, { useEffect, useState } from "react";
 import { workDurationInDay } from "~/lib/workday";
 import { formatDuration } from "date-fns";
+import { useTranslation } from "react-i18next";
 
 export default function HoursWorked({
   id,
@@ -14,7 +14,6 @@ export default function HoursWorked({
   day: string;
 }) {
   const { t } = useTranslation();
-
   const [timesheet] = api.timesheet.getTimesheetDayById.useSuspenseQuery({
     id,
     day,
@@ -39,10 +38,10 @@ export default function HoursWorked({
   }
 
   return (
-    <div className="grid gap-2">
-      <p className="font-bold">{ t('timesheet.today.log.total') }</p>
-      <p >{formatDuration(duration, { format: ['hours', 'minutes'] })}</p>
-    </div>
+    <>
+      <b>{t('timesheet.today.log.total')}</b>
+      <p>{formatDuration(duration, { format: ['hours', 'minutes'] })}</p>
+    </>
   );
 
 };

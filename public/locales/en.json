@@ -16,7 +16,8 @@
     }
   },
   "dashboard": {
-    "greeting": "Hi {{name}}"
+    "greeting": "Hi {{name}}",
+    "show_more": "See more"
   },
   "timesheet": {
     "new": {
@@ -74,13 +75,14 @@
     "today": {
       "actions": {
         "clock_in": {
-          "cta": "Clock in"
+          "cta": "Clock in",
+          "disabled": "You already clocked in"
         },
         "break_in": {
-          "cta": "Break in"
+          "cta": "Start break"
         },
         "break_out": {
-          "cta": "Break out"
+          "cta": "End break"
         },
         "clock_out": {
           "cta": "Clock out"
@@ -88,8 +90,10 @@
       },
       "log": {
         "title": "Logged",
-        "total": "Total",
-        "target": "Target"
+        "total": "Total:",
+        "target": "Target:",
+        "overtime": "Overtime:",
+        "to_go": "Left:"
       }
     }
   }

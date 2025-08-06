@@ -1,9 +1,10 @@
 "use client"
 
 import { api } from "~/trpc/react";
+import React, { useEffect, useState } from "react";
+import { addMilliseconds, addMinutes, formatDuration, intervalToDuration, isBefore } from "date-fns";
 import { useTranslation } from "react-i18next";
-import React from "react";
-import { addMinutes, formatDuration, intervalToDuration } from "date-fns";
+import { workDurationInDay, workMillisecondsInDay } from "~/lib/workday";
 
 export default function TargetHours({
   id,
@@ -13,7 +14,6 @@ export default function TargetHours({
   day: string;
 }) {
   const { t } = useTranslation();
-
   const [minutesPerDay] = api.timesheet.getMinutesPerDay.useSuspenseQuery({
     id,
   });
@@ -21,13 +21,33 @@ export default function TargetHours({
     id,
     day,
   });
+  const [workedMilliseconds, setWorkedMilliseconds] = useState(workMillisecondsInDay(timesheet));
 
 
-  const start = new Date(0, 0, 0, 0, 0);
-  const end = addMinutes(start, minutesPerDay);
+  const targetDuration = intervalToDuration({
+    start: new Date(0),
+    end: addMinutes(new Date(0), minutesPerDay)
+  });
 
-  const duration = intervalToDuration({ start, end });
-  const formatted = formatDuration(duration, { format: ['hours', 'minutes'] });
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setWorkedMilliseconds(workMillisecondsInDay(timesheet));
+    }, 60000);
+
+    setWorkedMilliseconds(workMillisecondsInDay(timesheet));
+    return () => clearInterval(interval);
+  }, [timesheet])
+
+
+  const targetDate = addMinutes(new Date(0), minutesPerDay);
+  const workedDate = addMilliseconds(new Date(0), workedMilliseconds);
+
+  const isOvertime = isBefore(targetDate, workedDate);
+
+  const difference = intervalToDuration({
+    start: isOvertime ? targetDate : workedDate,
+    end: isOvertime ? workedDate : targetDate
+  })
 
 
   if (!timesheet.clockIn){
@@ -35,10 +55,17 @@ export default function TargetHours({
   }
 
   return (
-    <div className="grid gap-2">
-      <p className="font-bold text-end">{ t('timesheet.today.log.target') }</p>
-      <p>{formatted}</p>
-    </div>
+    <>
+      <div className="flex gap-2 justify-between">
+        <b>{ t('timesheet.today.log.target') }</b>
+        <p> {formatDuration(targetDuration, { format: ['hours', 'minutes'] })}</p>
+      </div>
+
+      <div className="flex gap-2 justify-between">
+        <b>{ isOvertime ? t('timesheet.today.log.overtime') : t('timesheet.today.log.to_go') }</b>
+        <p>{formatDuration(difference, { format: ['hours', 'minutes'] })}</p>
+      </div>
+    </>
   );
 
 };
