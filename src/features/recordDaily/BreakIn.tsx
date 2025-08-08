@@ -4,8 +4,10 @@ import { api } from "~/trpc/react";
 import { useTranslation } from "react-i18next";
 import { Tooltip, TooltipTrigger, TooltipContent } from "~/components/ui/tooltip";
 import { Button } from "~/components/ui/button";
+import { useMemo } from "react";
+import { hasIncompleteBreakEntry } from "~/lib/workday";
 
-export default function ClockInButton({
+export default function BreakInButton({
   timesheetId,
   day,
   className
@@ -21,14 +23,32 @@ export default function ClockInButton({
     day,
   });
 
-  const clockInMutation = api.timesheet.clockIn.useMutation({
+  const breakInMutation = api.timesheet.breakIn.useMutation({
     onSuccess: async () => {
       await apiUtils.timesheet.getTimesheetDayById.invalidate({id: timesheetId, day})
     }
   });
 
-  const disabled = !!timesheet.clockIn
-  const disabledReason: string | null = !!timesheet.clockIn ? t('timesheet.today.actions.clock_in.disabled') : null
+
+
+  const disabledReason: string | null = useMemo(() => {
+    const hasIncompleteBreak = timesheet?.breaks ? hasIncompleteBreakEntry(timesheet.breaks) : false;
+
+    if (!timesheet.clockIn){
+      return t('timesheet.today.actions.break_in.disabled_no_clock_in');
+    }
+
+    if (!!timesheet.clockOut){
+      return t('timesheet.today.actions.break_in.disabled_existing_clock_out');
+    }
+
+    if (hasIncompleteBreak){
+      return t('timesheet.today.actions.break_in.disabled_on_break')
+    }
+
+    return null;
+  }, [timesheet, t])
+  const disabled = !!disabledReason;
 
   const BaseButton = (
     { baseClassName }: { baseClassName: string | undefined }
@@ -37,13 +57,15 @@ export default function ClockInButton({
       className={baseClassName}
       disabled={disabled}
       onClick={() => {
-        clockInMutation.mutate({
-          id: timesheetId,
-          day: day
+        if (!timesheet.timesheet_entry_id){
+          throw new Error(`Tried to break in but was not aware of which entry`)
+        }
+        breakInMutation.mutate({
+          timesheetEntryId: timesheet.timesheet_entry_id
         });
       }}
     >
-      { t('timesheet.today.actions.clock_in.cta')}
+      { t('timesheet.today.actions.break_in.cta')}
     </Button>
   )
 

@@ -4,7 +4,6 @@ import { redirect } from "next/navigation";
 import { createTranslation } from "~/i18n/server";
 import type { Timesheet, User } from "~/pocketbase/data.types";
 import { serverSideAuth } from "~/pocketbase/server";
-import ClockInActions from "./ClockInActions";
 import React from "react";
 import { Card, CardContent, CardFooter, CardHeader } from "~/components/ui/card";
 import WorkdayLog from "./WorkdayLog";
@@ -13,6 +12,10 @@ import TargetHours from "./TargetHours";
 import { Button } from "~/components/ui/button";
 import Link from "next/link";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "~/components/ui/hover-card";
+import BreakInButton from "~/features/recordDaily/BreakIn";
+import BreakOutButton from "~/features/recordDaily/BreakOut";
+import ClockInButton from "~/features/recordDaily/ClockIn";
+import ClockOutButton from "~/features/recordDaily/ClockOut";
 
 
 export default async function Dashboard() {
@@ -28,8 +31,6 @@ export default async function Dashboard() {
     redirect('/timesheet/new')
   }
 
-
-
   return (
     <div className="grid gap-4 px-4 pt-4 pb-8">
       <h1 className="text-2xl font-semibold">{t('dashboard.greeting', { name: user.name })}</h1>
@@ -44,7 +45,32 @@ export default async function Dashboard() {
                 </CardHeader>
 
                 <CardContent className="gap-4 grid">
-                  <ClockInActions id={timesheet.id} day={today} />
+                  <div className="grid md:flex gap-4 w-full md:justify-between">
+                    <ClockInButton
+                      className="md:w-1/5"
+                      timesheetId={timesheet.id}
+                      day={today}
+                    />
+
+
+                    <BreakInButton
+                      className="md:w-1/5"
+                      timesheetId={timesheet.id}
+                      day={today}
+                    />
+
+                    <BreakOutButton
+                      className="md:w-1/5"
+                      timesheetId={timesheet.id}
+                      day={today}
+                    />
+
+                    <ClockOutButton
+                      className="md:w-1/5"
+                      timesheetId={timesheet.id}
+                      day={today}
+                    />
+                  </div>
 
                   <WorkdayLog id={timesheet.id} day={today} />
                 </CardContent>

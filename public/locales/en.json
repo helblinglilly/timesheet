@@ -76,16 +76,25 @@
       "actions": {
         "clock_in": {
           "cta": "Clock in",
-          "disabled": "You already clocked in"
+          "disabled_existing_clock_in": "You already clocked in",
+          "disabled_existing_clock_out": "You already clocked out"
         },
         "break_in": {
-          "cta": "Start break"
+          "cta": "Start break",
+          "disabled_no_clock_in": "You have not clocked in yet",
+          "disabled_existing_clock_out": "You already clocked out",
+          "disabled_on_break": "You are currently on break"
         },
         "break_out": {
-          "cta": "End break"
+          "cta": "End break",
+          "disabled_no_clock_in": "You have not clocked in yet",
+          "disabled_existing_clock_out": "You already clocked out",
+          "disabled_not_on_break": "You are not on break"
         },
         "clock_out": {
-          "cta": "Clock out"
+          "cta": "Clock out",
+          "disabled_no_clock_in": "You have not clocked in yet",
+          "disabled_existing_clock_out": "You already clocked out"
         }
       },
       "log": {
