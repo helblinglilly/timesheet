@@ -16,6 +16,7 @@ import BreakInButton from "~/features/recordDaily/BreakIn";
 import BreakOutButton from "~/features/recordDaily/BreakOut";
 import ClockInButton from "~/features/recordDaily/ClockIn";
 import ClockOutButton from "~/features/recordDaily/ClockOut";
+import { TimesheetDayProvider } from "./TimesheetDayProvider";
 
 
 export default async function Dashboard() {
@@ -39,62 +40,42 @@ export default async function Dashboard() {
         {
           timesheets.map((timesheet) => {
             return (
-              <Card className="grid gap-2 md:max-w-2/3" key={timesheet.id}>
+              <Card className="grid gap-2 md:max-w-2/3" key={timesheet.id + today}>
                 <CardHeader>
                   <h2 className="text-xl font-semibold">{timesheet.name}</h2>
                 </CardHeader>
 
-                <CardContent className="gap-4 grid">
-                  <div className="grid md:flex gap-4 w-full md:justify-between">
-                    <ClockInButton
-                      className="md:w-1/5"
-                      timesheetId={timesheet.id}
-                      day={today}
-                    />
+                <TimesheetDayProvider timesheetId={timesheet.id} day={today}>
+                  <CardContent className="gap-4 grid">
+                    <div className="grid md:flex gap-4 w-full md:justify-between">
+                      <ClockInButton className="md:w-1/5" />
+                      <BreakInButton className="md:w-1/5" />
+                      <BreakOutButton className="md:w-1/5" />
+                      <ClockOutButton className="md:w-1/5" />
+                    </div>
+                    <WorkdayLog />
+                  </CardContent>
 
+                  <CardFooter>
+                    <HoverCard>
+                      <HoverCardTrigger asChild>
+                        <button className="flex gap-2 w-full">
+                          <HoursWorked/>
+                        </button>
+                      </HoverCardTrigger>
+                      <HoverCardContent className="w-70">
+                        <TargetHours />
+                      </HoverCardContent>
+                    </HoverCard>
 
-                    <BreakInButton
-                      className="md:w-1/5"
-                      timesheetId={timesheet.id}
-                      day={today}
-                    />
+                    <Link href={`/timesheet/${timesheet.id}`} className="w-full md:max-w-1/5">
+                      <Button variant='outline' className="w-full">
+                        {t('dashboard.show_more')}
+                      </Button>
+                    </Link>
+                  </CardFooter>
 
-                    <BreakOutButton
-                      className="md:w-1/5"
-                      timesheetId={timesheet.id}
-                      day={today}
-                    />
-
-                    <ClockOutButton
-                      className="md:w-1/5"
-                      timesheetId={timesheet.id}
-                      day={today}
-                    />
-                  </div>
-
-                  <WorkdayLog id={timesheet.id} day={today} />
-                </CardContent>
-
-                <CardFooter>
-                  <HoverCard>
-                    <HoverCardTrigger asChild>
-                      <button className="flex gap-2 w-full">
-                        <HoursWorked id={timesheet.id} day={today} />
-                      </button>
-                    </HoverCardTrigger>
-                    <HoverCardContent className="w-70">
-                      <TargetHours id={timesheet.id} day={today} />
-                    </HoverCardContent>
-                  </HoverCard>
-
-
-                  <Link href={`/timesheet/${timesheet.id}`} className="w-full md:max-w-1/5">
-                    <Button variant='outline' className="w-full">
-                      {t('dashboard.show_more')}
-                    </Button>
-                  </Link>
-                </CardFooter>
-
+                </TimesheetDayProvider>
               </Card>
             )
           })

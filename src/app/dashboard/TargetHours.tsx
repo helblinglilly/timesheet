@@ -4,16 +4,13 @@ import { api } from "~/trpc/react";
 import React, { useEffect, useState } from "react";
 import { addMilliseconds, addMinutes, formatDuration, intervalToDuration, isBefore } from "date-fns";
 import { useTranslation } from "react-i18next";
-import { workDurationInDay, workMillisecondsInDay } from "~/lib/workday";
+import { workMillisecondsInDay } from "~/lib/workday";
+import { useTimesheetDay } from "./TimesheetDayProvider";
 
-export default function TargetHours({
-  id,
-  day
-}: {
-  id: string;
-  day: string;
-}) {
+export default function TargetHours() {
   const { t } = useTranslation();
+  const { timesheetId: id, day } = useTimesheetDay();
+
   const [minutesPerDay] = api.timesheet.getMinutesPerDay.useSuspenseQuery({
     id,
   });

@@ -5,17 +5,14 @@ import { useTranslation } from "react-i18next";
 import { Tooltip, TooltipTrigger, TooltipContent } from "~/components/ui/tooltip";
 import { Button } from "~/components/ui/button";
 import { useMemo } from "react";
+import { useTimesheetDay } from "~/app/dashboard/TimesheetDayProvider";
 
 export default function ClockOutButton({
-  timesheetId,
-  day,
   className
-}: {
-  timesheetId: string;
-  day: string;
-} & Pick<React.ComponentProps<"button">, 'className'>){
+}: Pick<React.ComponentProps<"button">, 'className'>){
   const { t } = useTranslation();
   const apiUtils = api.useUtils();
+  const { timesheetId, day } = useTimesheetDay();
 
   const [timesheet] = api.timesheet.getTimesheetDayById.useSuspenseQuery({
     id: timesheetId,

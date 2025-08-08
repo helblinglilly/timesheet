@@ -6,17 +6,15 @@ import { Tooltip, TooltipTrigger, TooltipContent } from "~/components/ui/tooltip
 import { Button } from "~/components/ui/button";
 import { useMemo } from "react";
 import { hasIncompleteBreakEntry } from "~/lib/workday";
+import { useTimesheetDay } from "~/app/dashboard/TimesheetDayProvider";
 
 export default function BreakInButton({
-  timesheetId,
-  day,
   className
 }: {
-  timesheetId: string;
-  day: string;
 } & Pick<React.ComponentProps<"button">, 'className'>){
   const { t } = useTranslation();
   const apiUtils = api.useUtils();
+  const { timesheetId, day } = useTimesheetDay();
 
   const [timesheet] = api.timesheet.getTimesheetDayById.useSuspenseQuery({
     id: timesheetId,
@@ -28,8 +26,6 @@ export default function BreakInButton({
       await apiUtils.timesheet.getTimesheetDayById.invalidate({id: timesheetId, day})
     }
   });
-
-
 
   const disabledReason: string | null = useMemo(() => {
     const hasIncompleteBreak = timesheet?.breaks ? hasIncompleteBreakEntry(timesheet.breaks) : false;

@@ -3,16 +3,11 @@ import { format } from "date-fns";
 import { api } from "~/trpc/react";
 import { useTranslation } from "react-i18next";
 import React from "react";
+import { useTimesheetDay } from "./TimesheetDayProvider";
 
-export default function WorkdayLog({
-  id,
-  day
-}: {
-  id: string;
-  day: string;
-}){
-
+export default function WorkdayLog(){
   const { t } = useTranslation();
+  const { timesheetId: id, day } = useTimesheetDay();
 
   const [timesheet] = api.timesheet.getTimesheetDayById.useSuspenseQuery({
     id,

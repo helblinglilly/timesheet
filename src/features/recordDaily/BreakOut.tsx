@@ -6,17 +6,14 @@ import { Tooltip, TooltipTrigger, TooltipContent } from "~/components/ui/tooltip
 import { Button } from "~/components/ui/button";
 import { useMemo } from "react";
 import { hasIncompleteBreakEntry } from "~/lib/workday";
+import { useTimesheetDay } from "~/app/dashboard/TimesheetDayProvider";
 
 export default function BreakOutButton({
-  timesheetId,
-  day,
   className
-}: {
-  timesheetId: string;
-  day: string;
-} & Pick<React.ComponentProps<"button">, 'className'>){
+}: Pick<React.ComponentProps<"button">, 'className'>){
   const { t } = useTranslation();
   const apiUtils = api.useUtils();
+  const { timesheetId, day } = useTimesheetDay();
 
   const [timesheet] = api.timesheet.getTimesheetDayById.useSuspenseQuery({
     id: timesheetId,

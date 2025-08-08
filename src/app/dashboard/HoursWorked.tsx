@@ -5,15 +5,12 @@ import React, { useEffect, useState } from "react";
 import { workDurationInDay } from "~/lib/workday";
 import { formatDuration } from "date-fns";
 import { useTranslation } from "react-i18next";
+import { useTimesheetDay } from "./TimesheetDayProvider";
 
-export default function HoursWorked({
-  id,
-  day
-}: {
-  id: string;
-  day: string;
-}) {
+export default function HoursWorked() {
   const { t } = useTranslation();
+  const { timesheetId: id, day } = useTimesheetDay();
+
   const [timesheet] = api.timesheet.getTimesheetDayById.useSuspenseQuery({
     id,
     day,
