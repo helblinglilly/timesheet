@@ -4,9 +4,10 @@ import newrelic from 'newrelic';
 import { type Metadata } from "next";
 import { Geist } from "next/font/google";
 
-import Script from "next/script";
-import { TranslationProvider } from "~/app/_components/i18n/TranslationProvider";
+import { TranslationProvider } from "~/i18n/TranslationProvider";
 import { TRPCReactProvider } from "~/trpc/react";
+import { env } from "~/env";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -31,10 +32,15 @@ export default async function RootLayout({
 
   return (
     <html lang={"en"} className={`${geist.variable}`} suppressHydrationWarning={true}>
-      {/*<Script
-        id="nr-browser-agent"
-        dangerouslySetInnerHTML={{ __html: browserTimingHeader }}
-      />*/}
+      {
+        env.NODE_ENV === 'production' && (
+          <Script
+            id="nr-browser-agent"
+            dangerouslySetInnerHTML={{ __html: browserTimingHeader }}
+          />
+        )
+      }
+
       <body>
         <TRPCReactProvider>
           <TranslationProvider locale={"en"}>
