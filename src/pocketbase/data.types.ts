@@ -1,6 +1,6 @@
 import { type RecordModel } from "pocketbase";
 
-export interface Timesheet extends RecordModel {
+export interface TimesheetConfig extends RecordModel {
   name: string;
   minutesPerDay: number;
   daysPerWeek: number;

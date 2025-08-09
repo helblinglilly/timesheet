@@ -6,6 +6,7 @@ import { createTranslation } from "~/i18n/server";
 import { withNewRelicWebTransaction } from "~/utils/observability/withNewRelicWebTransaction";
 import { redirect } from "next/navigation";
 import newrelic from 'newrelic'
+import { TableNames } from "~/pocketbase/tables.types";
 
 export type TimesheetFormState = {
   errors?: {
@@ -43,7 +44,7 @@ async function createTimesheet(formData: FormData): Promise<TimesheetFormState> 
   }
 
   try {
-    await pb.collection('timesheet').create({
+    await pb.collection(TableNames.TimesheetConfig).create({
       user: pb.authStore.record?.id,
       name: parsed.data.name,
       minutesPerDay: (parsed.data.minutesPerDay.hours * 60) + parsed.data.minutesPerDay.minutes,

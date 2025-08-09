@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { createTranslation } from "~/i18n/server";
-import type { Timesheet, User } from "~/pocketbase/data.types";
+import type { TimesheetConfig, User } from "~/pocketbase/data.types";
 import { serverSideAuth } from "~/pocketbase/server";
 import React from "react";
 import { Card, CardContent, CardFooter, CardHeader } from "~/components/ui/card";
@@ -17,6 +17,7 @@ import BreakOutButton from "~/features/recordDaily/BreakOut";
 import ClockInButton from "~/features/recordDaily/ClockIn";
 import ClockOutButton from "~/features/recordDaily/ClockOut";
 import { TimesheetDayProvider } from "./TimesheetDayProvider";
+import { TableNames } from "~/pocketbase/tables.types";
 
 
 export default async function Dashboard() {
@@ -24,9 +25,9 @@ export default async function Dashboard() {
   const pb = await serverSideAuth();
   const today = new Date().toISOString().split('T')[0] ?? ''
 
-  const user: User = await pb.collection('users').getOne(pb.authStore.record?.id ?? '');
+  const user: User = await pb.collection(TableNames.User).getOne(pb.authStore.record?.id ?? '');
 
-  const timesheets: Timesheet[]  = await pb.collection('timesheet').getFullList();
+  const timesheets: TimesheetConfig[]  = await pb.collection(TableNames.TimesheetConfig).getFullList();
 
   if (timesheets.length === 0){
     redirect('/timesheet/new')

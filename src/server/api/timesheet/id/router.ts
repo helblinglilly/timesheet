@@ -1,15 +1,16 @@
 import z from "zod";
 import { createTRPCRouter, signedInProcedure } from "../../trpc";
 import { getTimesheetByDate, clockIn, clockOut, breakIn, breakOut } from "./today";
-import type { Timesheet } from "~/pocketbase/data.types";
+import type { TimesheetConfig } from "~/pocketbase/data.types";
+import { TableNames } from "~/pocketbase/tables.types";
 
 export const timesheetRouter = createTRPCRouter({
   getMinutesPerDay: signedInProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ input, ctx }) => {
-      const timesheet = await ctx.pb.collection<Timesheet>('timesheet').getOne(input.id);
+      const timesheetConfig = await ctx.pb.collection<TimesheetConfig>(TableNames.TimesheetConfig).getOne(input.id);
 
-      return timesheet.minutesPerDay;
+      return timesheetConfig.minutesPerDay;
     }),
 
   getTimesheetDayById: signedInProcedure

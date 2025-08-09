@@ -5,6 +5,7 @@ import Pocketbase from "pocketbase";
 import { env } from "~/env";
 import { authDataToCookie } from "~/pocketbase/auth";
 import type { PBAuthResponse } from "~/pocketbase/builtin.types";
+import { TableNames } from "~/pocketbase/tables.types";
 import log from "~/utils/log";
 
 export async function handleOAuthRedirect(formData: FormData) {
@@ -39,7 +40,7 @@ export async function handleOAuthRedirect(formData: FormData) {
 
     if (authData.meta?.isNew) {
       try {
-        await pb.collection("users").update(authData.record.id, {
+        await pb.collection(TableNames.User).update(authData.record.id, {
           name: authData.meta.name,
         });
       } catch (err) {
