@@ -81,6 +81,12 @@ export default async function Dashboard() {
             )
           })
         }
+
+        <Link href={`/timesheet/new`} className="w-full md:max-w-1/5">
+          <Button variant='outline' className="w-full">
+            {t('dashboard.add_new_timesheet')}
+          </Button>
+        </Link>
       </div>
     </div>
   )
