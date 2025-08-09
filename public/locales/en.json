@@ -17,7 +17,8 @@
   },
   "dashboard": {
     "greeting": "Hi {{name}}",
-    "show_more": "See more"
+    "show_more": "See more",
+    "add_new_timesheet": "Track something new"
   },
   "timesheet": {
     "new": {
@@ -103,6 +104,25 @@
         "target": "Target:",
         "overtime": "Overtime:",
         "to_go": "Left:"
+      }
+    },
+    "[id]": {
+      "danger_zone": {
+        "delete_all_entries": {
+          "open": "Delete all entries",
+          "dialog": {
+            "title": "Delete all entries",
+            "description": "Doing this will delete ALL recorded entries for \"{{ name }}\". This action cannot be undone.",
+            "guard_description": "To confirm this action, please type the timesheet's name",
+            "buttons": {
+              "cancel": "Cancel",
+              "delete": "Delete"
+            }
+          }
+        },
+        "delete_timesheet": {
+          "open": "Delete all entries & timesheet"
+        }
       }
     }
   }
