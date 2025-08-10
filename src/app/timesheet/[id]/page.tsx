@@ -2,6 +2,7 @@ import type { TimesheetConfig } from "~/pocketbase/data.types";
 import { serverSideAuth } from "~/pocketbase/server";
 import { TableNames } from "~/pocketbase/tables.types";
 import DeleteAllEntries from "./DeleteAllEntries";
+import DeleteTimesheet from "./DeleteTimesheet";
 
 export default async function TimesheetPage({
   params,
@@ -21,6 +22,7 @@ export default async function TimesheetPage({
       <div className="grid gap-8">
 
         <DeleteAllEntries config={config}  />
+        <DeleteTimesheet config={config} />
 
       </div>
     </div>

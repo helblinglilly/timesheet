@@ -121,7 +121,16 @@
           }
         },
         "delete_timesheet": {
-          "open": "Delete all entries & timesheet"
+          "open": "Delete timesheet",
+          "dialog": {
+            "title": "Delete timesheet",
+            "description": "Doing this will delete \"{{ name }}\" and all recorded entries.",
+            "guard_description": "To confirm this action, please type the timesheet's name",
+            "buttons": {
+              "cancel": "Cancel",
+              "delete": "Delete"
+            }
+          }
         }
       }
     }

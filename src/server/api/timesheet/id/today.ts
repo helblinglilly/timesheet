@@ -113,3 +113,57 @@ export async function breakOut(pb: Client, breakEntryId: string){
     breakOut: new Date()
   })
 }
+
+export async function deleteAllEntries(pb: Client, timesheetConfigId: string){
+  let breakPage = 1;
+  let totalBreakPages = 1;
+  const breakBatch = pb.createBatch();
+  let hasBreaksToDelete = false;
+
+  do {
+    const breaks = await pb.collection(TableNames.TimesheetBreaks).getList(1, 50, {
+      page: breakPage,
+      filter: `timesheet_entry.config.id="${timesheetConfigId}"`
+    });
+
+    hasBreaksToDelete = breaks.totalItems > 0;
+
+    breaks.items.forEach((item) => {
+      breakBatch.collection(TableNames.TimesheetBreaks).delete(item.id)
+    })
+
+    breakPage++;
+    totalBreakPages = breaks.totalPages;
+  } while (breakPage < totalBreakPages);
+
+  if (hasBreaksToDelete){
+    await breakBatch.send();
+  }
+
+
+
+  let entriesPage = 1;
+  let totalEntriesPage = 1;
+  const entriesBatch = pb.createBatch();
+  let hasEntriesToDelete = false;
+
+  do {
+    const entries = await pb.collection(TableNames.TimesheetEntry).getList(1, 50, {
+      page: entriesPage,
+      filter: `config.id="${timesheetConfigId}"`
+    });
+
+    hasEntriesToDelete = entries.totalItems > 0;
+
+    entries.items.forEach((item) => {
+      entriesBatch.collection(TableNames.TimesheetEntry).delete(item.id)
+    })
+
+    entriesPage++;
+    totalEntriesPage = entries.totalPages;
+  } while (entriesPage < totalEntriesPage);
+
+  if (hasEntriesToDelete){
+    await entriesBatch.send();
+  }
+}

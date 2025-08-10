@@ -1,6 +1,7 @@
 "use client"
 
 import { DialogDescription } from "@radix-ui/react-dialog";
+import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next"
 import { Button } from "~/components/ui/button";
@@ -10,7 +11,7 @@ import type { TimesheetConfig } from "~/pocketbase/data.types";
 import { api } from "~/trpc/react";
 
 
-export default function DeleteAllEntries(
+export default function DeleteTimesheet(
   {
     config
   }:
@@ -21,12 +22,11 @@ export default function DeleteAllEntries(
   const { t } = useTranslation();
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const router = useRouter();
 
-  const deleteAllEntriesMutation = api.timesheet.deleteAllEntries.useMutation({
+  const deleteTimesheetMutation = api.timesheet.deleteTimesheet.useMutation({
     onSuccess: async () => {
-      if (closeButtonRef.current){
-        closeButtonRef.current.click()
-      }
+      router.push('/dashboard')
     }
   });
 
@@ -37,18 +37,18 @@ export default function DeleteAllEntries(
           <Button
             variant="destructive"
           >
-            {t('timesheet.[id].danger_zone.delete_all_entries.open')}
+            {t('timesheet.[id].danger_zone.delete_timesheet.open')}
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>{t('timesheet.[id].danger_zone.delete_all_entries.dialog.title')}</DialogTitle>
+            <DialogTitle>{t('timesheet.[id].danger_zone.delete_timesheet.dialog.title')}</DialogTitle>
             <DialogDescription>
-              {t('timesheet.[id].danger_zone.delete_all_entries.dialog.description', { name: config.name})}
+              {t('timesheet.[id].danger_zone.delete_timesheet.dialog.description', { name: config.name})}
 
               <br />
 
-              {t('timesheet.[id].danger_zone.delete_all_entries.dialog.guard_description')}
+              {t('timesheet.[id].danger_zone.delete_timesheet.dialog.guard_description')}
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4">
@@ -67,17 +67,17 @@ export default function DeleteAllEntries(
           </div>
           <DialogFooter className="md:justify-between">
             <DialogClose asChild className="flex-start">
-              <Button variant="outline" ref={closeButtonRef}>{t('timesheet.[id].danger_zone.delete_all_entries.dialog.buttons.cancel')}</Button>
+              <Button variant="outline" ref={closeButtonRef}>{t('timesheet.[id].danger_zone.delete_timesheet.dialog.buttons.cancel')}</Button>
             </DialogClose>
             <Button
               variant="destructive"
               disabled={isButtonDisabled}
               onClick={() => {
-                deleteAllEntriesMutation.mutate({
+                deleteTimesheetMutation.mutate({
                   timesheetConfigId: config.id
                 })
               }}
-            >{t('timesheet.[id].danger_zone.delete_all_entries.dialog.buttons.delete')}</Button>
+            >{t('timesheet.[id].danger_zone.delete_timesheet.dialog.buttons.delete')}</Button>
           </DialogFooter>
         </DialogContent>
       </form>

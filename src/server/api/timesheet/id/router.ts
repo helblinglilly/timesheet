@@ -1,6 +1,6 @@
 import z from "zod";
 import { createTRPCRouter, signedInProcedure } from "../../trpc";
-import { getTimesheetByDate, clockIn, clockOut, breakIn, breakOut } from "./today";
+import { getTimesheetByDate, clockIn, clockOut, breakIn, breakOut, deleteAllEntries } from "./today";
 import type { TimesheetConfig } from "~/pocketbase/data.types";
 import { TableNames } from "~/pocketbase/tables.types";
 
@@ -65,6 +65,11 @@ export const timesheetRouter = createTRPCRouter({
    */
   deleteAllEntries: signedInProcedure.input(z.object({ timesheetConfigId: z.string() }))
     .mutation(async ({ input, ctx}) => {
-      // tbd
-    })
+      await deleteAllEntries(ctx.pb, input.timesheetConfigId)
+    }),
+
+  deleteTimesheet: signedInProcedure.input(z.object({ timesheetConfigId: z.string() }))
+    .mutation(async ({ input, ctx}) => {
+      await ctx.pb.collection(TableNames.TimesheetConfig).delete(input.timesheetConfigId);
+    }),
 });
