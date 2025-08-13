@@ -5,7 +5,11 @@ import { useTranslation } from "react-i18next";
 import React from "react";
 import { useTimesheetDay } from "./TimesheetDayProvider";
 
-export default function WorkdayLog(){
+export default function WorkdayLog({
+  noDataText
+}: {
+  noDataText?: string | null
+}){
   const { t } = useTranslation();
   const { timesheetId: id, day } = useTimesheetDay();
 
@@ -15,32 +19,47 @@ export default function WorkdayLog(){
   });
 
   if (!timesheet.clockIn){
+    if (noDataText){
+      return <p>{noDataText}</p>
+    }
     return null;
   }
 
   return (
-    <div>
-      <h3 className="text-lg font-semibold">{ t('timesheet.today.log.title') }</h3>
-      <p>{format(new Date(timesheet.clockIn), 'HH:mm')} { t('timesheet.today.actions.clock_in.cta') }</p>
+    <div className="grid">
+      <div className="inline-flex gap-2">
+        <p className="w-12 font-mono text-center">{format(new Date(timesheet.clockIn), 'HH:mm')}</p>
+        <p>{ t('timesheet.today.actions.clock_in.cta') }</p>
+      </div>
 
       {
         timesheet.breaks?.map((breakEntry) => {
           return (
-            <React.Fragment key={breakEntry.breakEntryId}>
-              <p>{format(new Date(breakEntry.breakIn), 'HH:mm')} { t('timesheet.today.actions.break_in.cta') }</p>
+            <div key={breakEntry.breakEntryId} className="grid py-2">
+              <div className="inline-flex gap-2">
+
+                <p className="w-12 font-mono text-center">{format(new Date(breakEntry.breakIn), 'HH:mm')}</p>
+                <p>{ t('timesheet.today.actions.break_in.cta') }</p>
+              </div>
 
               {
                 breakEntry.breakOut && (
-                  <p>{format(new Date(breakEntry.breakOut), 'HH:mm')} { t('timesheet.today.actions.break_out.cta') }</p>
+                  <div className="inline-flex gap-2">
+                    <p className="w-12 font-mono text-center">{format(new Date(breakEntry.breakOut), 'HH:mm')}</p>
+                    <p>{ t('timesheet.today.actions.break_out.cta') }</p>
+                  </div>
                 )
               }
-            </React.Fragment>
+            </div>
           )
         })
       }
       {
         timesheet.clockOut && (
-          <p>{format(new Date(timesheet.clockOut), 'HH:mm')} { t('timesheet.today.actions.clock_out.cta') }</p>
+          <div className="inline-flex gap-2">
+            <p className="w-12 font-mono text-center">{format(new Date(timesheet.clockOut), 'HH:mm')}</p>
+            <p>{ t('timesheet.today.actions.clock_out.cta') }</p>
+          </div>
         )
       }
 

@@ -34,16 +34,16 @@ export default async function Dashboard() {
   }
 
   return (
-    <div className="grid gap-4 px-4 pt-4 pb-8">
-      <h1 className="text-2xl font-semibold">{t('dashboard.greeting', { name: user.name })}</h1>
+    <div className="grid gap-4 px-4 pt-4 pb-8 md:justify-center">
+      <h1 className="text-3xl font-semibold">{t('dashboard.greeting', { name: user.name })}</h1>
 
       <div className="grid gap-8">
         {
           timesheets.map((timesheet) => {
             return (
-              <Card className="grid gap-2 md:max-w-2/3" key={timesheet.id + today}>
+              <Card className="grid gap-2" key={timesheet.id + today}>
                 <CardHeader>
-                  <h2 className="text-xl font-semibold">{timesheet.name}</h2>
+                  <h2 className="text-2xl font-semibold">{timesheet.name}</h2>
                 </CardHeader>
 
                 <TimesheetDayProvider timesheetId={timesheet.id} day={today}>
@@ -54,6 +54,7 @@ export default async function Dashboard() {
                       <BreakOutButton className="md:w-1/5" />
                       <ClockOutButton className="md:w-1/5" />
                     </div>
+                    <h3 className="text-lg font-semibold">{ t('timesheet.today.log.title') }</h3>
                     <WorkdayLog />
                   </CardContent>
 
@@ -82,7 +83,7 @@ export default async function Dashboard() {
           })
         }
 
-        <Link href={`/timesheet/new`} className="w-full md:max-w-1/5">
+        <Link href={`/timesheet/new`} className="w-full">
           <Button variant='outline' className="w-full">
             {t('dashboard.add_new_timesheet')}
           </Button>

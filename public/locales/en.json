@@ -100,14 +100,20 @@
       },
       "log": {
         "title": "Logged",
-        "total": "Total:",
         "target": "Target:",
         "overtime": "Overtime:",
         "to_go": "Left:"
       }
     },
     "[id]": {
+      "weekly": {
+        "title": "w/c {{ name }}",
+        "log": {
+          "no_data": "No data"
+        }
+      },
       "danger_zone": {
+        "title": "Danger zone",
         "delete_all_entries": {
           "open": "Delete all entries",
           "dialog": {

@@ -7,22 +7,16 @@ import { useTranslation } from "react-i18next"
 import { Button } from "~/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
-import type { TimesheetConfig } from "~/pocketbase/data.types";
 import { api } from "~/trpc/react";
+import { useTimesheetConfig } from "./TimesheetConfigProvider";
 
 
-export default function DeleteTimesheet(
-  {
-    config
-  }:
-  {
-    config: TimesheetConfig
-  }
-){
+export default function DeleteTimesheet(){
   const { t } = useTranslation();
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const router = useRouter();
+  const { config } = useTimesheetConfig();
 
   const deleteTimesheetMutation = api.timesheet.deleteTimesheet.useMutation({
     onSuccess: async () => {

@@ -4,11 +4,9 @@ import { api } from "~/trpc/react";
 import React, { useEffect, useState } from "react";
 import { workDurationInDay } from "~/lib/workday";
 import { formatDuration } from "date-fns";
-import { useTranslation } from "react-i18next";
 import { useTimesheetDay } from "./TimesheetDayProvider";
 
 export default function HoursWorked() {
-  const { t } = useTranslation();
   const { timesheetId: id, day } = useTimesheetDay();
 
   const [timesheet] = api.timesheet.getTimesheetDayById.useSuspenseQuery({
@@ -36,7 +34,6 @@ export default function HoursWorked() {
 
   return (
     <>
-      <b>{t('timesheet.today.log.total')}</b>
       <p>{formatDuration(duration, { format: ['hours', 'minutes'] })}</p>
     </>
   );
