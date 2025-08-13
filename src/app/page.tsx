@@ -1,9 +1,17 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 import { LatestPost } from "~/app/post";
+import { serverSideAuth } from "~/pocketbase/server";
 import { api, HydrateClient } from "~/trpc/server";
 
 export default async function Home() {
+  const pb = await serverSideAuth();
+
+  if (pb.authStore.isValid){
+    redirect('/dashboard')
+  }
+
   const hello = await api.post.hello({ text: "from tRPC" });
 
   void api.post.getLatest.prefetch();
