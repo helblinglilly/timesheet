@@ -1,9 +1,9 @@
 "use client"
-import { format } from "date-fns";
 import { api } from "~/trpc/react";
 import { useTranslation } from "react-i18next";
 import React from "react";
 import { useTimesheetDay } from "./TimesheetDayProvider";
+import { TimeRecord } from "~/features/WorkdayLog/TimeRecord";
 
 export default function WorkdayLog({
   noDataText
@@ -18,36 +18,30 @@ export default function WorkdayLog({
     day,
   });
 
-  if (!timesheet.clockIn){
+  if (!timesheet.clockIn && noDataText){
     if (noDataText){
-      return <p>{noDataText}</p>
+      return (
+        <div className="grid min-h-16">
+          <p><i>{noDataText}</i></p>
+        </div>
+      )
     }
-    return null;
+
   }
 
   return (
-    <div className="grid">
-      <div className="inline-flex gap-2">
-        <p className="w-12 font-mono text-center">{format(new Date(timesheet.clockIn), 'HH:mm')}</p>
-        <p>{ t('timesheet.today.actions.clock_in.cta') }</p>
-      </div>
+    <div className="grid min-h-16">
+      <TimeRecord dateString={timesheet.clockIn} copy={t('timesheet.today.actions.clock_in.cta')} />
 
       {
         timesheet.breaks?.map((breakEntry) => {
           return (
             <div key={breakEntry.breakEntryId} className="grid py-2">
-              <div className="inline-flex gap-2">
-
-                <p className="w-12 font-mono text-center">{format(new Date(breakEntry.breakIn), 'HH:mm')}</p>
-                <p>{ t('timesheet.today.actions.break_in.cta') }</p>
-              </div>
+              <TimeRecord dateString={breakEntry.breakIn} copy={t('timesheet.today.actions.break_in.cta')} />
 
               {
                 breakEntry.breakOut && (
-                  <div className="inline-flex gap-2">
-                    <p className="w-12 font-mono text-center">{format(new Date(breakEntry.breakOut), 'HH:mm')}</p>
-                    <p>{ t('timesheet.today.actions.break_out.cta') }</p>
-                  </div>
+                  <TimeRecord dateString={breakEntry.breakOut} copy={t('timesheet.today.actions.break_out.cta')} />
                 )
               }
             </div>
@@ -56,10 +50,7 @@ export default function WorkdayLog({
       }
       {
         timesheet.clockOut && (
-          <div className="inline-flex gap-2">
-            <p className="w-12 font-mono text-center">{format(new Date(timesheet.clockOut), 'HH:mm')}</p>
-            <p>{ t('timesheet.today.actions.clock_out.cta') }</p>
-          </div>
+          <TimeRecord dateString={timesheet.clockOut} copy={t('timesheet.today.actions.clock_out.cta')} />
         )
       }
 

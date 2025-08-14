@@ -20,9 +20,9 @@ export default async function TimesheetPage({
   const config = await pb.collection<TimesheetConfig>(TableNames.TimesheetConfig).getOne(id);
 
   return (
-    <div className="grid gap-4 px-4 pt-4 pb-8 justify-center w-full">
-      <h1 className="text-2xl font-semibold">{config.name}</h1>
+    <div className="md:grid px-4 pt-4 pb-8 justify-center w-full">
       <div className="grid gap-8">
+        <h1 className="text-2xl font-semibold">{config.name}</h1>
 
         <TimesheetConfigProvider config={config}>
           <WeekLogWrapper />

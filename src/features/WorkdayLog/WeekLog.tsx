@@ -2,7 +2,7 @@
 
 import { eachDayOfInterval, startOfWeek, endOfWeek, format, addDays } from 'date-fns'
 import React, { Suspense, useMemo } from 'react'
-import { useTimesheetConfig } from './TimesheetConfigProvider'
+import { useTimesheetConfig } from '../../app/timesheet/[id]/TimesheetConfigProvider'
 import { useTranslation } from 'react-i18next'
 import WorkdayLog from '~/app/dashboard/WorkdayLog'
 import { TimesheetDayProvider } from '~/app/dashboard/TimesheetDayProvider'
@@ -12,6 +12,7 @@ import Link from 'next/link'
 import { Button } from '~/components/ui/button'
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { Skeleton } from '~/components/ui/skeleton'
 
 export const WeekLog = ({
   date
@@ -98,14 +99,9 @@ export const WeekLog = ({
                     <CardContent className="grid gap-4">
                       <Suspense
                         fallback={
-                          <div className="animate-pulse p-4 border rounded bg-muted">
-                            <div className="h-6 w-1/2 bg-gray-300 mb-4 rounded" />
-                            <div className="h-4 w-3/4 bg-gray-200 mb-2 rounded" />
-                            <div className="h-4 w-1/2 bg-gray-200 mb-2 rounded" />
-                            <div className="h-4 w-1/3 bg-gray-200 rounded" />
-                          </div>
+                          <Skeleton className="h-16 w-full" />
                         }>
-                        <WorkdayLog />
+                        <WorkdayLog noDataText={t('timesheet.[id].weekly.log.no_data')} />
                         <HoursWorked />
                       </Suspense>
                     </CardContent>

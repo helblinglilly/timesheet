@@ -1,7 +1,7 @@
 "use client"
 
 import { useSearchParams } from "next/navigation";
-import { WeekLog } from "./WeekLog";
+import { WeekLog } from "../../../features/WorkdayLog/WeekLog";
 
 export default function WeekLogWrapper() {
   const searchParams = useSearchParams();
