@@ -7,6 +7,8 @@ import type { PBAuthResponse } from "./builtin.types";
 
 export async function serverSideAuth() {
   const pb = new Pocketbase(env.POCKETBASE_URL);
+  // Handled by react query
+  pb.autoCancellation(false)
 
   const allCookies = await cookies();
   const pbCookie = allCookies.get("pb_auth");

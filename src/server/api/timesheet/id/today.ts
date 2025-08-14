@@ -6,7 +6,7 @@ import { TableNames } from "~/pocketbase/tables.types";
 
 export async function getTimesheetByDate(pb: Client, id: string, date: Date){
   const inOutRecord: ListResult<TimesheetEntry> = await pb.collection(TableNames.TimesheetEntry).getList(1, 1, {
-    filter: `config.id = "${id}"`,
+    filter: `config.id = "${id}" && clockIn<"${date.toISOString()}"`,
     sort: "-clockIn",
   });
 

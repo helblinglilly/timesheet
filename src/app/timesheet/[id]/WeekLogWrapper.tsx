@@ -9,8 +9,8 @@ export default function WeekLogWrapper() {
 
   let date: Date;
   if (dateParam) {
-    // Expecting format 'dd-LL-yyyy'
-    const [day, month, year] = dateParam.split("-");
+    // Expecting format 'yyy-LL-dd'
+    const [year, month, day] = dateParam.split("-");
     date = new Date(Number(year), Number(month) - 1, Number(day));
     if (isNaN(date.getTime())) {
       date = new Date();

@@ -55,7 +55,7 @@ export const WeekLog = ({
         <Button
           className="pr-4"
           onClick={() => {
-            router.push(`?date=${format(startOfLastWeek, 'dd-LL-yyy')}`)
+            router.push(`?date=${format(startOfLastWeek, 'yyy-LL-dd')}`)
           }}
         >
           <ChevronLeftIcon />
@@ -69,7 +69,7 @@ export const WeekLog = ({
         <Button
           className="pl-4"
           onClick={() => {
-            router.push(`?date=${format(startOfNextWeek, 'dd-LL-yyy')}`)
+            router.push(`?date=${format(startOfNextWeek, 'yyy-LL-dd')}`)
           }}
         >
           <span className="hidden sm:block">{ format(startOfNextWeek, 'dd LLL') }</span>
@@ -84,12 +84,12 @@ export const WeekLog = ({
             return (
               <TimesheetDayProvider
                 timesheetId={ config.id }
-                day={day.toISOString()}
+                day={format(day, 'yyy-LL-dd')}
                 key={day.toISOString()}
               >
                 <Link
                   className="w-full md:min-w-sm"
-                  href={`/timesheet/${config.id}/edit/day?date=${format(day, 'dd-LL-yyy')}`}
+                  href={`/timesheet/${config.id}/edit/day?date=${format(day, 'yyy-LL-dd')}`}
                 >
                   <Card className="p-4">
                     <CardHeader>
