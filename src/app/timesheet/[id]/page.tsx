@@ -1,12 +1,12 @@
 import type { TimesheetConfig } from "~/pocketbase/data.types";
 import { serverSideAuth } from "~/pocketbase/server";
 import { TableNames } from "~/pocketbase/tables.types";
-import DeleteAllEntries from "./DeleteAllEntries";
-import DeleteTimesheet from "./DeleteTimesheet";
+import DeleteAllEntries from "../../../features/weeklyView/delete/DeleteAllEntries";
+import DeleteTimesheet from "../../../features/weeklyView/delete/DeleteTimesheet";
 import { Card, CardContent, CardHeader} from "~/components/ui/card";
 import { createTranslation } from "~/i18n/server";
-import { TimesheetConfigProvider } from "./TimesheetConfigProvider";
-import WeekLogWrapper from "./WeekLogWrapper";
+import { WeekLog } from "~/features/weeklyView/WeekLog";
+import { TimesheetConfigProvider } from "~/hooks/useTimesheetConfig";
 
 export default async function TimesheetPage({
   params,
@@ -25,7 +25,7 @@ export default async function TimesheetPage({
         <h1 className="text-2xl font-semibold">{config.name}</h1>
 
         <TimesheetConfigProvider config={config}>
-          <WeekLogWrapper />
+          <WeekLog />
 
           <Card>
             <CardHeader>

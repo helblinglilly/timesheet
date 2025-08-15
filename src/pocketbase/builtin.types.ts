@@ -14,7 +14,7 @@ export type PocketbaseError = {
 };
 
 export type PocketbaseAuthMethods = {
-  name: "google" | "github";
+  name: "google";
   displayName: "Google" | "Github";
   state: string;
   authUrl: string;

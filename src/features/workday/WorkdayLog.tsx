@@ -2,8 +2,8 @@
 import { api } from "~/trpc/react";
 import { useTranslation } from "react-i18next";
 import React from "react";
-import { useTimesheetDay } from "./TimesheetDayProvider";
-import { TimeRecord } from "~/features/WorkdayLog/TimeRecord";
+import { useTimesheetDay } from "./useTimesheetDay";
+import { TimeRecord } from "~/features/weeklyView/TimeRecord";
 
 export default function WorkdayLog({
   noDataText
@@ -21,16 +21,15 @@ export default function WorkdayLog({
   if (!timesheet.clockIn && noDataText){
     if (noDataText){
       return (
-        <div className="grid min-h-16">
+        <div className="grid min-h-8">
           <p><i>{noDataText}</i></p>
         </div>
       )
     }
-
   }
 
   return (
-    <div className="grid min-h-16">
+    <div className="grid min-h-8">
       <TimeRecord dateString={timesheet.clockIn} copy={t('timesheet.today.actions.clock_in.cta')} />
 
       {

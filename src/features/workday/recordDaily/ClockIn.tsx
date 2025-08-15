@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Tooltip, TooltipTrigger, TooltipContent } from "~/components/ui/tooltip";
 import { Button } from "~/components/ui/button";
 import { useMemo } from "react";
-import { useTimesheetDay } from "~/app/dashboard/TimesheetDayProvider";
+import { useTimesheetDay } from "../useTimesheetDay";
 
 export default function ClockInButton({
   className

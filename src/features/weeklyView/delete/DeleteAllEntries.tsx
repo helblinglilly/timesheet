@@ -7,7 +7,7 @@ import { Button } from "~/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
 import { api } from "~/trpc/react";
-import { useTimesheetConfig } from "./TimesheetConfigProvider";
+import { useTimesheetConfig } from "~/hooks/useTimesheetConfig";
 
 
 export default function DeleteAllEntries(){

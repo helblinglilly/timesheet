@@ -1,7 +1,12 @@
 {
   "authentication": {
     "signing_in": "Signing in...",
-    "redirecting": "Redirecting..."
+    "redirecting": "Redirecting...",
+    "login": {
+      "title": "Hello stranger",
+      "tagline": "Are you ready to get started?",
+      "social": "Use one of these social accounts to continue"
+    }
   },
   "common": {
     "loading": "Loading",
@@ -109,7 +114,8 @@
       "weekly": {
         "title": "w/c {{ name }}",
         "log": {
-          "no_data": "No data"
+          "no_data": "No data",
+          "summary": "Summary"
         }
       },
       "danger_zone": {

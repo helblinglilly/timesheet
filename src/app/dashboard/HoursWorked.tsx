@@ -4,7 +4,7 @@ import { api } from "~/trpc/react";
 import React, { useEffect, useState } from "react";
 import { workDurationInDay } from "~/lib/workday";
 import { formatDuration } from "date-fns";
-import { useTimesheetDay } from "./TimesheetDayProvider";
+import { useTimesheetDay } from "~/features/workday/useTimesheetDay";
 
 export default function HoursWorked() {
   const { timesheetId: id, day } = useTimesheetDay();

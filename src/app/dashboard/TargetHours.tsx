@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { addMilliseconds, addMinutes, formatDuration, intervalToDuration, isBefore } from "date-fns";
 import { useTranslation } from "react-i18next";
 import { workMillisecondsInDay } from "~/lib/workday";
-import { useTimesheetDay } from "./TimesheetDayProvider";
+import { useTimesheetDay } from "~/features/workday/useTimesheetDay";
 
 export default function TargetHours() {
   const { t } = useTranslation();

@@ -6,18 +6,18 @@ import type { TimesheetConfig, User } from "~/pocketbase/data.types";
 import { serverSideAuth } from "~/pocketbase/server";
 import React from "react";
 import { Card, CardContent, CardFooter, CardHeader } from "~/components/ui/card";
-import WorkdayLog from "./WorkdayLog";
 import HoursWorked from "./HoursWorked";
 import TargetHours from "./TargetHours";
 import { Button } from "~/components/ui/button";
 import Link from "next/link";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "~/components/ui/hover-card";
-import BreakInButton from "~/features/recordDaily/BreakIn";
-import BreakOutButton from "~/features/recordDaily/BreakOut";
-import ClockInButton from "~/features/recordDaily/ClockIn";
-import ClockOutButton from "~/features/recordDaily/ClockOut";
-import { TimesheetDayProvider } from "./TimesheetDayProvider";
+import BreakInButton from "~/features/workday/recordDaily/BreakIn";
+import BreakOutButton from "~/features/workday/recordDaily/BreakOut";
+import ClockInButton from "~/features/workday/recordDaily/ClockIn";
+import ClockOutButton from "~/features/workday/recordDaily/ClockOut";
 import { TableNames } from "~/pocketbase/tables.types";
+import { TimesheetDayProvider } from "~/features/workday/useTimesheetDay";
+import WorkdayLog from "~/features/workday/WorkdayLog";
 
 
 export default async function Dashboard() {

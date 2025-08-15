@@ -6,12 +6,11 @@ import { Tooltip, TooltipTrigger, TooltipContent } from "~/components/ui/tooltip
 import { Button } from "~/components/ui/button";
 import { useMemo } from "react";
 import { hasIncompleteBreakEntry } from "~/lib/workday";
-import { useTimesheetDay } from "~/app/dashboard/TimesheetDayProvider";
+import { useTimesheetDay } from "../useTimesheetDay";
 
-export default function BreakInButton({
+export default function BreakOutButton({
   className
-}: {
-} & Pick<React.ComponentProps<"button">, 'className'>){
+}: Pick<React.ComponentProps<"button">, 'className'>){
   const { t } = useTranslation();
   const apiUtils = api.useUtils();
   const { timesheetId, day } = useTimesheetDay();
@@ -21,25 +20,26 @@ export default function BreakInButton({
     day,
   });
 
-  const breakInMutation = api.timesheet.breakIn.useMutation({
+  const breakOutMutation = api.timesheet.breakOut.useMutation({
     onSuccess: async () => {
       await apiUtils.timesheet.getTimesheetDayById.invalidate({id: timesheetId, day})
     }
   });
 
+
   const disabledReason: string | null = useMemo(() => {
     const hasIncompleteBreak = timesheet?.breaks ? hasIncompleteBreakEntry(timesheet.breaks) : false;
 
     if (!timesheet.clockIn){
-      return t('timesheet.today.actions.break_in.disabled_no_clock_in');
+      return t('timesheet.today.actions.break_out.disabled_no_clock_in');
     }
 
     if (!!timesheet.clockOut){
-      return t('timesheet.today.actions.break_in.disabled_existing_clock_out');
+      return t('timesheet.today.actions.break_out.disabled_existing_clock_out');
     }
 
-    if (hasIncompleteBreak){
-      return t('timesheet.today.actions.break_in.disabled_on_break')
+    if (!hasIncompleteBreak){
+      return t('timesheet.today.actions.break_out.disabled_not_on_break')
     }
 
     return null;
@@ -53,15 +53,18 @@ export default function BreakInButton({
       className={baseClassName}
       disabled={disabled}
       onClick={() => {
-        if (!timesheet.timesheet_entry_id){
-          throw new Error(`Tried to break in but was not aware of which entry`)
+        const incompleteBreak = timesheet.breaks?.find((a) => !a.breakOut)?.breakEntryId;
+
+        if (!incompleteBreak){
+          throw new Error('Tried to break out but could not find an incomplete break entry')
         }
-        breakInMutation.mutate({
-          timesheetEntryId: timesheet.timesheet_entry_id
+
+        breakOutMutation.mutate({
+          breakEntryId: incompleteBreak
         });
       }}
     >
-      { t('timesheet.today.actions.break_in.cta')}
+      { t('timesheet.today.actions.break_out.cta')}
     </Button>
   )
 
