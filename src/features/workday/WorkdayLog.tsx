@@ -30,17 +30,17 @@ export default function WorkdayLog({
 
   return (
     <div className="grid min-h-8">
-      <TimeRecord dateString={timesheet.clockIn} copy={t('timesheet.today.actions.clock_in.cta')} />
+      <TimeRecord dateString={timesheet.clockIn} copy={t('timesheet.today.actions.clock_in.display')} />
 
       {
         timesheet.breaks?.map((breakEntry) => {
           return (
             <div key={breakEntry.breakEntryId} className="grid py-2">
-              <TimeRecord dateString={breakEntry.breakIn} copy={t('timesheet.today.actions.break_in.cta')} />
+              <TimeRecord dateString={breakEntry.breakIn} copy={t('timesheet.today.actions.break_in.display')} />
 
               {
                 breakEntry.breakOut && (
-                  <TimeRecord dateString={breakEntry.breakOut} copy={t('timesheet.today.actions.break_out.cta')} />
+                  <TimeRecord dateString={breakEntry.breakOut} copy={t('timesheet.today.actions.break_out.display')} />
                 )
               }
             </div>
@@ -49,7 +49,7 @@ export default function WorkdayLog({
       }
       {
         timesheet.clockOut && (
-          <TimeRecord dateString={timesheet.clockOut} copy={t('timesheet.today.actions.clock_out.cta')} />
+          <TimeRecord dateString={timesheet.clockOut} copy={t('timesheet.today.actions.clock_out.display')} />
         )
       }
 

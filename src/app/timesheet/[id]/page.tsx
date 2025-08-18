@@ -29,11 +29,14 @@ export default async function TimesheetPage({
 
           <Card>
             <CardHeader>
-              <h2 className="text-xl font-semibold">{t('timesheet.[id].danger_zone.title')}</h2>
+              <h2 className="text-xl font-semibold">{t('timesheet.[id].settings.title')}</h2>
             </CardHeader>
             <CardContent className="grid gap-4">
-              <DeleteAllEntries />
-              <DeleteTimesheet />
+              <div className="grid gap-4">
+                <h2 className="text-xl font-semibold">{t('timesheet.[id].danger_zone.title')}</h2>
+                <DeleteAllEntries />
+                <DeleteTimesheet />
+              </div>
             </CardContent>
           </Card>
         </TimesheetConfigProvider>

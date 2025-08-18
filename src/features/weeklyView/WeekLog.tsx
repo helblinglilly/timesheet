@@ -13,6 +13,7 @@ import WorkdayLog from '~/features/workday/WorkdayLog'
 import { useTimesheetConfig } from '~/hooks/useTimesheetConfig'
 import { format } from 'date-fns'
 import { WeekNavigator } from './WeekNavigator'
+import { WeekHoursWorked } from './WeekHoursWorked'
 
 export const WeekLog = () => {
   const { config } = useTimesheetConfig();
@@ -28,6 +29,7 @@ export const WeekLog = () => {
             <p><b>{ t('timesheet.[id].weekly.log.summary')}</b></p>
           </CardHeader>
           <CardContent className="grid gap-4">
+            <WeekHoursWorked />
           </CardContent>
         </Card>
 

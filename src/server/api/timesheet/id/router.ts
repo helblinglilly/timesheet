@@ -3,6 +3,7 @@ import { createTRPCRouter, signedInProcedure } from "../../trpc";
 import { getTimesheetByDate, clockIn, clockOut, breakIn, breakOut, deleteAllEntries } from "./today";
 import type { TimesheetConfig } from "~/pocketbase/data.types";
 import { TableNames } from "~/pocketbase/tables.types";
+import { getHoursWorked } from "../week";
 
 export const timesheetRouter = createTRPCRouter({
   /**
@@ -71,5 +72,14 @@ export const timesheetRouter = createTRPCRouter({
   deleteTimesheet: signedInProcedure.input(z.object({ timesheetConfigId: z.string() }))
     .mutation(async ({ input, ctx}) => {
       await ctx.pb.collection(TableNames.TimesheetConfig).delete(input.timesheetConfigId);
+    }),
+
+  getAllRecordsBetweenDates: signedInProcedure.input(z.object({
+    timesheetConfigId: z.string(),
+    startDate: z.string(),
+    endDate: z.string()
+  }))
+    .query(async ({ input, ctx}) => {
+      return getHoursWorked(ctx.pb, input.timesheetConfigId, new Date(input.startDate), new Date(input.endDate))
     }),
 });

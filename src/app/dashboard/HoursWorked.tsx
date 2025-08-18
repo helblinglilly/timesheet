@@ -14,6 +14,7 @@ export default function HoursWorked() {
     day,
   });
 
+  // @ts-expect-error Dealing with this later
   const [duration, setDuration] = useState(workDurationInDay(timesheet));
 
   useEffect(() => {

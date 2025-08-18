@@ -37,7 +37,7 @@ export default async function Dashboard() {
     <div className="grid gap-4 px-4 pt-4 pb-8 md:justify-center">
       <h1 className="text-3xl font-semibold">{t('dashboard.greeting', { name: user.name })}</h1>
 
-      <div className="grid gap-8">
+      <div className="grid gap-8 md:min-w-176">
         {
           timesheets.map((timesheet) => {
             return (

@@ -6,9 +6,17 @@ export function hasIncompleteBreakEntry(breaks: Pick<TimesheetBreaks, 'breakIn' 
   return breaks.findIndex((a) => a.breakIn && !a.breakOut) === -1 ? false : true
 }
 
+type Timesheet = Awaited<ReturnType<typeof getTimesheetByDate>>;
+
+type TimesheetEntry = Pick<Timesheet, 'clockIn' | 'clockOut'>;
+type TimesheetBreak = Pick<NonNullable<Timesheet['breaks']>[number], 'breakIn' | 'breakOut'>;
+
+type MinimalTimesheet = TimesheetEntry & {
+  breaks: TimesheetBreak[]
+};
 
 export const workMillisecondsInDay = (
-  timesheetEntry: Awaited<ReturnType<typeof getTimesheetByDate>>
+  timesheetEntry: MinimalTimesheet
 ) => {
   const { clockIn, clockOut, breaks } = timesheetEntry;
 
@@ -49,7 +57,7 @@ export const workMillisecondsInDay = (
 };
 
 export const workDurationInDay = (
-  timesheetEntry: Awaited<ReturnType<typeof getTimesheetByDate>>
+  timesheetEntry: MinimalTimesheet
 ) => {
   const milliseconds = workMillisecondsInDay(timesheetEntry);
 
