@@ -26,7 +26,6 @@ export default async function TimesheetPage({
 
         <TimesheetConfigProvider config={config}>
           <WeekLog />
-
           <Card>
             <CardHeader>
               <h2 className="text-xl font-semibold">{t('timesheet.[id].settings.title')}</h2>

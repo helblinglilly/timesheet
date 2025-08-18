@@ -14,6 +14,7 @@ import { useTimesheetConfig } from '~/hooks/useTimesheetConfig'
 import { format } from 'date-fns'
 import { WeekNavigator } from './WeekNavigator'
 import { WeekHoursWorked } from './WeekHoursWorked'
+import { ErrorBoundary } from '../ErrorBoundary'
 
 export const WeekLog = () => {
   const { config } = useTimesheetConfig();
@@ -29,7 +30,11 @@ export const WeekLog = () => {
             <p><b>{ t('timesheet.[id].weekly.log.summary')}</b></p>
           </CardHeader>
           <CardContent className="grid gap-4">
-            <WeekHoursWorked />
+            <ErrorBoundary fallback={<div>Error</div>}>
+              <Suspense fallback={<div>Loading...</div>}>
+                <WeekHoursWorked />
+              </Suspense>
+            </ErrorBoundary>
           </CardContent>
         </Card>
 

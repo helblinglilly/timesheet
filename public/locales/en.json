@@ -115,6 +115,9 @@
       }
     },
     "[id]": {
+      "edit": {
+        "title": "Edit {{ date }}"
+      },
       "weekly": {
         "title": "w/c {{ name }}",
         "log": {
