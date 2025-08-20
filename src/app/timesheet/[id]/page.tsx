@@ -1,44 +1,30 @@
-import type { TimesheetConfig } from "~/pocketbase/data.types";
-import { serverSideAuth } from "~/pocketbase/server";
-import { TableNames } from "~/pocketbase/tables.types";
 import DeleteAllEntries from "../../../features/weeklyView/delete/DeleteAllEntries";
 import DeleteTimesheet from "../../../features/weeklyView/delete/DeleteTimesheet";
 import { Card, CardContent, CardHeader} from "~/components/ui/card";
 import { createTranslation } from "~/i18n/server";
 import { WeekLog } from "~/features/weeklyView/WeekLog";
-import { TimesheetConfigProvider } from "~/hooks/useTimesheetConfig";
+import { Title } from "./Title";
 
-export default async function TimesheetPage({
-  params,
-}: {
-  params: Promise<{ id: string }>
-}) {
-  const { id } = await params
-  const pb = await serverSideAuth();
+export default async function TimesheetPage() {
   const { t } = await createTranslation();
-
-  const config = await pb.collection<TimesheetConfig>(TableNames.TimesheetConfig).getOne(id);
 
   return (
     <div className="md:grid px-4 pt-4 pb-8 justify-center w-full">
       <div className="grid gap-8">
-        <h1 className="text-2xl font-semibold">{config.name}</h1>
-
-        <TimesheetConfigProvider config={config}>
-          <WeekLog />
-          <Card>
-            <CardHeader>
-              <h2 className="text-xl font-semibold">{t('timesheet.[id].settings.title')}</h2>
-            </CardHeader>
-            <CardContent className="grid gap-4">
-              <div className="grid gap-4">
-                <h2 className="text-xl font-semibold">{t('timesheet.[id].danger_zone.title')}</h2>
-                <DeleteAllEntries />
-                <DeleteTimesheet />
-              </div>
-            </CardContent>
-          </Card>
-        </TimesheetConfigProvider>
+        <Title />
+        <WeekLog />
+        <Card>
+          <CardHeader>
+            <h2 className="text-xl font-semibold">{t('timesheet.[id].settings.title')}</h2>
+          </CardHeader>
+          <CardContent className="grid gap-4">
+            <div className="grid gap-4">
+              <h2 className="text-xl font-semibold">{t('timesheet.[id].danger_zone.title')}</h2>
+              <DeleteAllEntries />
+              <DeleteTimesheet />
+            </div>
+          </CardContent>
+        </Card>
 
       </div>
     </div>
