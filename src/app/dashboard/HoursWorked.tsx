@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { workDurationInDay } from "~/lib/workday";
 import { formatDuration } from "date-fns";
 import { useTimesheetDay } from "~/features/workday/useTimesheetDay";
+import { TargetHours } from "~/features/targetHours/TargetHours";
 
 export default function HoursWorked() {
   const { timesheetId: id, day } = useTimesheetDay();
@@ -36,6 +37,7 @@ export default function HoursWorked() {
   return (
     <>
       <p>{formatDuration(duration, { format: ['hours', 'minutes'] })}</p>
+      <TargetHours numberOfDays={1} durationWorked={duration} />
     </>
   );
 

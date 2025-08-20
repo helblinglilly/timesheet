@@ -18,6 +18,7 @@ import ClockOutButton from "~/features/workday/recordDaily/ClockOut";
 import { TableNames } from "~/pocketbase/tables.types";
 import { TimesheetDayProvider } from "~/features/workday/useTimesheetDay";
 import WorkdayLog from "~/features/workday/WorkdayLog";
+import { TimesheetConfigProvider } from "~/hooks/useTimesheetConfig";
 
 
 export default async function Dashboard() {
@@ -38,47 +39,50 @@ export default async function Dashboard() {
       <h1 className="text-3xl font-semibold">{t('dashboard.greeting', { name: user.name })}</h1>
 
       <div className="grid gap-8 md:min-w-176">
+
         {
-          timesheets.map((timesheet) => {
+          timesheets.map(async (timesheet) => {
             return (
-              <Card className="grid gap-2" key={timesheet.id + today}>
-                <CardHeader>
-                  <h2 className="text-2xl font-semibold">{timesheet.name}</h2>
-                </CardHeader>
+              <TimesheetConfigProvider config={timesheet} key={timesheet.id + today}>
+                <Card className="grid gap-2" key={timesheet.id + today}>
+                  <CardHeader>
+                    <h2 className="text-2xl font-semibold">{timesheet.name}</h2>
+                  </CardHeader>
 
-                <TimesheetDayProvider timesheetId={timesheet.id} day={today}>
-                  <CardContent className="gap-4 grid">
-                    <div className="grid md:flex gap-4 w-full md:justify-between">
-                      <ClockInButton className="md:w-1/5" />
-                      <BreakInButton className="md:w-1/5" />
-                      <BreakOutButton className="md:w-1/5" />
-                      <ClockOutButton className="md:w-1/5" />
-                    </div>
-                    <h3 className="text-lg font-semibold">{ t('timesheet.today.log.title') }</h3>
-                    <WorkdayLog />
-                  </CardContent>
+                  <TimesheetDayProvider timesheetId={timesheet.id} day={today}>
+                    <CardContent className="gap-4 grid">
+                      <div className="grid md:flex gap-4 w-full md:justify-between">
+                        <ClockInButton className="md:w-1/5" />
+                        <BreakInButton className="md:w-1/5" />
+                        <BreakOutButton className="md:w-1/5" />
+                        <ClockOutButton className="md:w-1/5" />
+                      </div>
+                      <h3 className="text-lg font-semibold">{ t('timesheet.today.log.title') }</h3>
+                      <WorkdayLog />
+                    </CardContent>
 
-                  <CardFooter>
-                    <HoverCard>
-                      <HoverCardTrigger asChild>
-                        <button className="flex gap-2 w-full">
-                          <HoursWorked/>
-                        </button>
-                      </HoverCardTrigger>
-                      <HoverCardContent className="w-70">
-                        <TargetHours />
-                      </HoverCardContent>
-                    </HoverCard>
+                    <CardFooter>
+                      <HoverCard>
+                        <HoverCardTrigger asChild>
+                          <button className="flex gap-2 w-full">
+                            <HoursWorked/>
+                          </button>
+                        </HoverCardTrigger>
+                        <HoverCardContent className="w-70">
+                          <TargetHours />
+                        </HoverCardContent>
+                      </HoverCard>
 
-                    <Link href={`/timesheet/${timesheet.id}`} className="w-full md:max-w-1/5">
-                      <Button variant='outline' className="w-full">
-                        {t('dashboard.show_more')}
-                      </Button>
-                    </Link>
-                  </CardFooter>
+                      <Link href={`/timesheet/${timesheet.id}`} className="w-full md:max-w-1/5">
+                        <Button variant='outline' className="w-full">
+                          {t('dashboard.show_more')}
+                        </Button>
+                      </Link>
+                    </CardFooter>
 
-                </TimesheetDayProvider>
-              </Card>
+                  </TimesheetDayProvider>
+                </Card>
+              </TimesheetConfigProvider>
             )
           })
         }

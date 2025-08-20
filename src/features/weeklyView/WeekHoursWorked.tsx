@@ -1,15 +1,19 @@
 "use client"
 
-import { endOfWeek, format, formatDuration, startOfWeek } from 'date-fns';
+import { endOfWeek, format, formatDuration, startOfWeek, sub, type Duration } from 'date-fns';
 import React, { useMemo } from 'react'
+import { useTranslation } from 'react-i18next';
 import { useQueryParamDate } from '~/hooks/useQueryParamDate';
 import { useTimesheetConfig } from '~/hooks/useTimesheetConfig';
 import { workDurationInDay } from '~/lib/workday';
 import { api } from '~/trpc/react';
+import { subtractDurations } from '~/utils/date';
+import { TargetHours } from '../targetHours/TargetHours';
 
 export const WeekHoursWorked = () => {
   const { config } = useTimesheetConfig();
   const { date } = useQueryParamDate();
+  const { t } = useTranslation();
 
   const [timesheets] = api.timesheet.getAllRecordsBetweenDates.useSuspenseQuery({
     timesheetConfigId: config.id,
@@ -33,14 +37,21 @@ export const WeekHoursWorked = () => {
           seconds: (acc.seconds ?? 0) + (current.seconds ?? 0)
         };
       },
-      {}
+      {
+        hours: 0,
+        minutes: 0,
+      }
     );
 
   }, [timesheets])
 
+
+
+  if (timesheets.length === 0){
+    return <p>{t('timesheet.[id].weekly.log.no_data')}</p>
+  }
+
   return (
-    <div>
-      <p>{formatDuration(duration, { format: ['hours', 'minutes'] })}</p>
-    </div>
+    <TargetHours numberOfDays={timesheets.length} durationWorked={duration} />
   );
 }

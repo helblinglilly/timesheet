@@ -122,7 +122,11 @@
         "title": "w/c {{ name }}",
         "log": {
           "no_data": "No data",
-          "summary": "Summary"
+          "summary": {
+            "title": "Summary",
+            "over": "Overtime:",
+            "under": "Owe:"
+          }
         }
       },
       "settings": {

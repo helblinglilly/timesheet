@@ -25,13 +25,14 @@ export const WeekLog = () => {
     <>
       <WeekNavigator />
       <div className='grid md:grid-cols-2 gap-8'>
-        <Card className="p-4">
+
+        <Card className="p-4 w-full md:min-w-sm gap-0">
           <CardHeader>
-            <p><b>{ t('timesheet.[id].weekly.log.summary')}</b></p>
+            <b>{ t('timesheet.[id].weekly.log.summary.title')}</b>
           </CardHeader>
           <CardContent className="grid gap-4">
             <ErrorBoundary fallback={<div>Error</div>}>
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense fallback={<Skeleton className="h-8 w-full" />}>
                 <WeekHoursWorked />
               </Suspense>
             </ErrorBoundary>
@@ -55,13 +56,15 @@ export const WeekLog = () => {
                       <p><b>{ format(day, 'EEEE do')}</b></p>
                     </CardHeader>
                     <CardContent className="grid gap-4">
-                      <Suspense
-                        fallback={
-                          <Skeleton className="h-8 w-full" />
-                        }>
-                        <WorkdayLog noDataText={t('timesheet.[id].weekly.log.no_data')} />
-                        <HoursWorked />
-                      </Suspense>
+                      <ErrorBoundary fallback={<div>Error</div>}>
+                        <Suspense
+                          fallback={
+                            <Skeleton className="h-8 w-full" />
+                          }>
+                          <WorkdayLog noDataText={t('timesheet.[id].weekly.log.no_data')} />
+                          <HoursWorked />
+                        </Suspense>
+                      </ErrorBoundary>
                     </CardContent>
                   </Link>
                 </Card>

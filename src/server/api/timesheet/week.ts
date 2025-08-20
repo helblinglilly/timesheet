@@ -9,6 +9,10 @@ export async function getHoursWorked(pb: Client, timesheetConfigId: string, from
 
   const inOutIds = timesheetEntries.map((record) => record.id);
 
+  if (inOutIds.length === 0){
+    return [];
+  }
+
   const timesheetBreaks = await pb.collection<TimesheetBreaks & { timesheet_entry: string }>(TableNames.TimesheetBreaks).getFullList({
     filter: `timesheet_entry.config.id = "${timesheetConfigId}" && (${inOutIds.map((id) => {
       return `timesheet_entry.id = "${id}"`;
