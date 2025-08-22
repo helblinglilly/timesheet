@@ -12,7 +12,6 @@ import { TimesheetDayProvider } from '~/features/workday/useTimesheetDay'
 import WorkdayLog from '~/features/workday/WorkdayLog'
 import { useTimesheetConfig } from '~/hooks/useTimesheetConfig'
 import { format } from 'date-fns'
-import { WeekNavigator } from './WeekNavigator'
 import { WeekHoursWorked } from './WeekHoursWorked'
 import { ErrorBoundary } from '../ErrorBoundary'
 
@@ -23,7 +22,6 @@ export const WeekLog = () => {
 
   return (
     <>
-      <WeekNavigator />
       <div className='grid md:grid-cols-2 gap-8'>
 
         <Card className="p-4 w-full md:min-w-sm gap-0">

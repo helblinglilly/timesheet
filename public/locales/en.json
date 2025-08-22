@@ -118,6 +118,9 @@
       "edit": {
         "title": "Edit {{ date }}"
       },
+      "today": {
+        "title": "Today {{ date }}"
+      },
       "weekly": {
         "title": "w/c {{ name }}",
         "log": {

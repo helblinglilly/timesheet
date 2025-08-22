@@ -1,19 +1,20 @@
 "use client"
 
-import { endOfWeek, format, formatDuration, startOfWeek, sub, type Duration } from 'date-fns';
+import { endOfWeek, format, startOfWeek} from 'date-fns';
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useQueryParamDate } from '~/hooks/useQueryParamDate';
 import { useTimesheetConfig } from '~/hooks/useTimesheetConfig';
 import { workDurationInDay } from '~/lib/workday';
 import { api } from '~/trpc/react';
-import { subtractDurations } from '~/utils/date';
 import { TargetHours } from '../targetHours/TargetHours';
+import { useTick } from '~/hooks/useTick';
 
 export const WeekHoursWorked = () => {
   const { config } = useTimesheetConfig();
   const { date } = useQueryParamDate();
   const { t } = useTranslation();
+  const { tick } = useTick();
 
   const [timesheets] = api.timesheet.getAllRecordsBetweenDates.useSuspenseQuery({
     timesheetConfigId: config.id,
@@ -43,7 +44,8 @@ export const WeekHoursWorked = () => {
       }
     );
 
-  }, [timesheets])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timesheets, tick]) // Tick will retrigger
 
 
 

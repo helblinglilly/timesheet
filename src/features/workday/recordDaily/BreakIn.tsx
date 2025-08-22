@@ -7,6 +7,7 @@ import { Button } from "~/components/ui/button";
 import { useMemo } from "react";
 import { hasIncompleteBreakEntry } from "~/lib/workday";
 import { useTimesheetDay } from "~/features/workday/useTimesheetDay";
+import { endOfWeek, format, startOfWeek } from "date-fns";
 
 export default function BreakInButton({
   className
@@ -18,12 +19,21 @@ export default function BreakInButton({
 
   const [timesheet] = api.timesheet.getTimesheetDayById.useSuspenseQuery({
     id: timesheetId,
-    day,
+    day: format(new Date(day), 'yyy-LL-dd')
   });
 
   const breakInMutation = api.timesheet.breakIn.useMutation({
     onSuccess: async () => {
-      await apiUtils.timesheet.getTimesheetDayById.invalidate({id: timesheetId, day})
+      await apiUtils.timesheet.getTimesheetDayById.invalidate({
+        id: timesheetId,
+        day: format(new Date(day), 'yyy-LL-dd')
+      })
+
+      await apiUtils.timesheet.getAllRecordsBetweenDates.invalidate({
+        timesheetConfigId: timesheetId,
+        startDate: format(startOfWeek(new Date(day), { weekStartsOn: 1}), 'yyy-LL-dd'),
+        endDate: format(endOfWeek(new Date(day), { weekStartsOn: 1}), 'yyy-LL-dd')
+      })
     }
   });
 

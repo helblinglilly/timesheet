@@ -13,6 +13,7 @@ export default function WorkdayLog({
   const { t } = useTranslation();
   const { timesheetId: id, day } = useTimesheetDay();
 
+  console.log('id', id, 'day', day)
   const [timesheet] = api.timesheet.getTimesheetDayById.useSuspenseQuery({
     id,
     day,

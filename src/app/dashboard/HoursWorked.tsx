@@ -1,34 +1,27 @@
 "use client"
 
 import { api } from "~/trpc/react";
-import React, { useEffect, useState } from "react";
+import React, { useMemo } from "react";
 import { workDurationInDay } from "~/lib/workday";
 import { formatDuration } from "date-fns";
 import { useTimesheetDay } from "~/features/workday/useTimesheetDay";
 import { TargetHours } from "~/features/targetHours/TargetHours";
+import { useTick } from "~/hooks/useTick";
 
 export default function HoursWorked() {
   const { timesheetId: id, day } = useTimesheetDay();
+  const { tick } = useTick();
 
   const [timesheet] = api.timesheet.getTimesheetDayById.useSuspenseQuery({
     id,
     day,
   });
 
-  // @ts-expect-error Dealing with this later
-  const [duration, setDuration] = useState(workDurationInDay(timesheet));
-
-  useEffect(() => {
-    if (timesheet.clockIn && !timesheet.clockOut){
-      const interval = setInterval(() => {
-        setDuration(workDurationInDay(timesheet));
-      }, 60000);
-
-      setDuration(workDurationInDay(timesheet));
-
-      return () => clearInterval(interval);
-    }
-  }, [timesheet])
+  const duration = useMemo(() => {
+    // @ts-expect-error Dealing with this later
+    return workDurationInDay(timesheet);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timesheet, tick]);
 
   if (!timesheet.clockIn){
     return null;
@@ -40,5 +33,4 @@ export default function HoursWorked() {
       <TargetHours numberOfDays={1} durationWorked={duration} />
     </>
   );
-
 };

@@ -8,6 +8,7 @@ import { TranslationProvider } from "~/i18n/TranslationProvider";
 import { TRPCReactProvider } from "~/trpc/react";
 import { env } from "~/env";
 import Script from "next/script";
+import { TickProvider } from "~/hooks/useTick";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -44,7 +45,9 @@ export default async function RootLayout({
       <body>
         <TRPCReactProvider>
           <TranslationProvider locale={"en"}>
-            {children}
+            <TickProvider>
+              {children}
+            </TickProvider>
           </TranslationProvider>
         </TRPCReactProvider>
       </body>
