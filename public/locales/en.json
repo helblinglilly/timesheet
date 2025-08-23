@@ -116,7 +116,20 @@
     },
     "[id]": {
       "edit": {
-        "title": "Edit {{ date }}"
+        "title": "Edit {{ date }}",
+        "fields": {
+          "clock_in": {
+            "label": "Clock In",
+            "description": "Amend the time you clocked in at"
+          },
+          "clock_out": {
+            "label": "Clock Out",
+            "description": "Amend the time you finished for the day"
+          },
+          "errors": {
+            "not_a_date": "Is not a date"
+          }
+        }
       },
       "today": {
         "title": "Today {{ date }}"
