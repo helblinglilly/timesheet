@@ -13,6 +13,7 @@ import BreakOutButton from "~/features/workday/recordDaily/BreakOut";
 import { Suspense } from "react";
 import { Skeleton } from "~/components/ui/skeleton";
 import { format } from "date-fns";
+import { TimesheetBreadcrumbs } from "./Breadcrumbs";
 
 export default async function TimesheetPage(
   {
@@ -25,8 +26,9 @@ export default async function TimesheetPage(
   const { id } = await params
 
   return (
-    <div className="md:grid px-4 pt-4 pb-8 justify-center w-full">
-      <div className="grid gap-8">
+    <div className="md:grid px-4 pt-4 pb-8 justify-center w-full grid gap-8">
+      <div className="grid gap-4">
+        <TimesheetBreadcrumbs />
         <Title />
 
         <h2 className="text-xl font-semibold">{t('timesheet.[id].today.title', { date: format(new Date(), 'EEEE do')})}</h2>
@@ -41,29 +43,28 @@ export default async function TimesheetPage(
             </Suspense>
           </div>
         </TimesheetDayProvider >
-
-        <hr></hr>
-
-        <WeekNavigator />
-
-        <WeekLog />
-
-        <hr ></hr>
-
-        <Card>
-          <CardHeader>
-            <h2 className="text-xl font-semibold">{t('timesheet.[id].settings.title')}</h2>
-          </CardHeader>
-          <CardContent className="grid gap-4">
-            <div className="grid gap-4">
-              <h2 className="text-xl font-semibold">{t('timesheet.[id].danger_zone.title')}</h2>
-              <DeleteAllEntries />
-              <DeleteTimesheet />
-            </div>
-          </CardContent>
-        </Card>
-
       </div>
+
+      <hr></hr>
+
+      <WeekNavigator />
+
+      <WeekLog />
+
+      <hr ></hr>
+
+      <Card>
+        <CardHeader>
+          <h2 className="text-xl font-semibold">{t('timesheet.[id].settings.title')}</h2>
+        </CardHeader>
+        <CardContent className="grid gap-4">
+          <div className="grid gap-4">
+            <h2 className="text-xl font-semibold">{t('timesheet.[id].danger_zone.title')}</h2>
+            <DeleteAllEntries />
+            <DeleteTimesheet />
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }

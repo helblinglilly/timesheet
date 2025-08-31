@@ -18,6 +18,11 @@
       "minute_short": "{{count}} min",
       "minute_long_one": "{{count}} minute",
       "minute_long_other": "{{count}} minutes"
+    },
+    "navigation": {
+      "dashboard": "Dashboard",
+      "timesheet_name": "{{ name }}",
+      "edit_day": "Edit {{ date }}"
     }
   },
   "dashboard": {
@@ -116,7 +121,29 @@
     },
     "[id]": {
       "edit": {
-        "title": "Edit {{ date }}"
+        "title": "Edit {{ date }}",
+        "fields": {
+          "clock_in": {
+            "label": "Clock In"
+          },
+          "clock_out": {
+            "label": "Clock Out"
+          },
+          "breaks": {
+            "add_break": "Add break",
+            "break_in": {
+              "label": "Break In"
+            },
+            "break_out": {
+              "label": "Break Out"
+            },
+            "remove_break": "Remove"
+          }
+        },
+        "save": {
+          "cta": "Save",
+          "loading": "Saving..."
+        }
       },
       "today": {
         "title": "Today {{ date }}"

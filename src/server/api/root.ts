@@ -9,7 +9,7 @@ import { timesheetRouter } from "./timesheet/id/router";
  */
 export const appRouter = createTRPCRouter({
   post: postRouter,
-  timesheet: timesheetRouter
+  timesheet: timesheetRouter,
 });
 
 // export type definition of API
