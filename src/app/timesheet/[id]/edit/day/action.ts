@@ -6,7 +6,8 @@ import { withNewRelicWebTransaction } from "~/utils/observability/withNewRelicWe
 import { redirect } from "next/navigation";
 import newrelic from 'newrelic'
 import { formSchema } from "./form.schema";
-import { format } from "date-fns";
+import { clockIn} from "~/server/api/timesheet/id/today";
+import { format, parseISO, set } from "date-fns";
 
 export type TimesheetEditFormState = {
   errors?: {
@@ -20,7 +21,7 @@ export type TimesheetEditFormState = {
 };
 
 function parseBreaksFromFormData(formData: FormData) {
-  const breaks: { breakIn: string; breakOut: string }[] = [];
+  const breaks: { breakIn: string; breakOut: string | null }[] = [];
 
   for (const [key, value] of formData.entries()) {
     const match = /^breaks\[(\d+)\]\[(breakIn|breakOut)\]$/.exec(key);
@@ -30,14 +31,13 @@ function parseBreaksFromFormData(formData: FormData) {
 
       breaks[idx] = {
         breakIn: breaks[idx]?.breakIn ?? '',
-        breakOut: breaks[idx]?.breakOut ?? ''
+        breakOut: breaks[idx]?.breakOut ?? null
       }
 
       breaks[idx][field] = value as string;
     }
   }
 
-  // Remove any undefined holes (if any)
   return breaks.filter(Boolean);
 }
 
@@ -49,12 +49,11 @@ async function editTimesheetDay(formData: FormData): Promise<TimesheetEditFormSt
   const values = {
     id: formData.get('id'),
     day: formData.get('day'),
-    clockIn: formData.get('clockIn'),
-    clockOut: formData.get('clockOut'),
+    clockIn: formData.get('clockIn') ?? null,
+    clockOut: formData.get('clockOut') ?? null,
     breaks: parseBreaksFromFormData(formData),
   };
 
-  console.log(values);
   const parsed = schema.safeParse(values);
   if (!parsed.success) {
     const { error } = parsed;
@@ -63,15 +62,71 @@ async function editTimesheetDay(formData: FormData): Promise<TimesheetEditFormSt
     }
   }
 
+  const additionalErrors: Record<string, string[]> = {};
+
+  for (let i = 0; i < parsed.data.breaks.length; i++) {
+    const breakObj = parsed.data.breaks[i];
+    if (!breakObj?.breakOut) continue;
+
+    const [breakInHours, breakInMins] = breakObj.breakIn.split(':').map(Number)  as [number, number];
+    const [breakOutHours, breakOutMins] = breakObj.breakOut.split(':').map(Number)  as [number, number];
+    const [clockInHours, clockInMins] = parsed.data.clockIn.split(':').map(Number)  as [number, number];
+    const [clockOutHours, clockOutMins] = parsed.data.clockOut?.split(':').map(Number)  as [number, number];
+
+    const breakInMinutes = breakInHours * 60 + breakInMins;
+    const breakOutMinutes = breakOutHours * 60 + breakOutMins;
+    const clockInMinutes = clockInHours * 60 + clockInMins;
+    const clockOutMinutes = clockOutHours * 60 + clockOutMins;
+
+    // Before clock in
+    if (breakInMinutes < clockInMinutes) {
+      additionalErrors[`breaks.${i}.breakIn`] = [t('timesheet.[id].edit.fields.breaks.break_in.error_before_clock_in')];
+    }
+    if (breakOutMinutes < clockInMinutes) {
+      additionalErrors[`breaks.${i}.breakOut`] = [t('timesheet.[id].edit.fields.breaks.break_out.error_before_clock_in')];
+    }
+
+    // Break finish before break started
+    if (breakOutMinutes < breakInMinutes) {
+      additionalErrors[`breaks.${i}.breakOut`] = [t('timesheet.[id].edit.fields.breaks.break_out.error_before')];
+    }
+
+    // After clock out
+    if (clockOutMinutes < breakInMinutes){
+      additionalErrors[`breaks.${i}.breakIn`] = [t('timesheet.[id].edit.fields.breaks.break_in.error_after_clock_out')];
+    }
+    if (clockOutMinutes < breakOutMinutes){
+      additionalErrors[`breaks.${i}.breakOut`] = [t('timesheet.[id].edit.fields.breaks.break_out.error_after_clock_out')];
+    }
+  }
+
+  if (Object.keys(additionalErrors).length > 0) {
+    return { errors: additionalErrors };
+  }
+
   try {
-    // something
+    const clockInDate: Date = set(
+      parseISO(parsed.data.day), {
+        hours: Number(parsed.data.clockIn.split(':')[0]),
+        minutes: Number(parsed.data.clockIn.split(':')[1])
+      }
+    );
+
+    // Will create the entry if it doesn't exist yet
+    await clockIn(pb, parsed.data.id, new Date(parsed.data.day), clockInDate);
+
+    // const timesheetEntryId = (await getTimesheetByDate(pb, parsed.data.id, new Date(parsed.data.day))).timesheet_entry_id
+    // if (!timesheetEntryId){
+    //   throw new Error(`Tried to edit timesheet for collection ${parsed.data.id} which has already been clocked in, but timesheetEntryId came back nullish`)
+    // }
+
   } catch(err){
     const pbError = err instanceof Error ? err.message : 'Unknown';
     newrelic.noticeError(new Error(`Failed to edit timesheet with error ${pbError}`));
     return { message: t('timesheet.[id].edit.error_generic') }
   }
 
-  redirect(`/timesheet/${parsed.data.id}?date=${parsed.data.day.split('T')[0]}`);
+  redirect(`/timesheet/${parsed.data.id}?date=${format(new Date(parsed.data.day), 'yyy-LL-dd')}&refetch_date=${format(new Date(parsed.data.day), 'yyy-LL-dd')}`);
 }
 
 

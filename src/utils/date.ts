@@ -1,4 +1,4 @@
-import { eachDayOfInterval, startOfWeek, endOfWeek, intervalToDuration, add, type Duration } from "date-fns";
+import { eachDayOfInterval, startOfWeek, endOfWeek, intervalToDuration, type Duration } from "date-fns";
 
 export function weekDatesForDate(weekOf: Date){
   const weekOptions = { weekStartsOn: 1 as const };

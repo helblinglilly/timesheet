@@ -63,6 +63,8 @@ export async function clockIn(pb: Client, id: string, date: Date, time?: Date){
     sort: '-clockIn'
   })
 
+  console.log(time, time ?? new Date());
+
   if (existing?.items[0]?.id){
     await pb.collection<TimesheetEntry>(TableNames.TimesheetEntry).update(existing.items[0].id, {
       user: pb.authStore?.record?.id,
@@ -79,9 +81,10 @@ export async function clockIn(pb: Client, id: string, date: Date, time?: Date){
   })
 }
 
-export async function clockOut(pb: Client, timesheetEntryId: string){
+export async function clockOut(pb: Client, timesheetEntryId: string, time?: Date){
+  const value = time ?? new Date();
   await pb.collection(TableNames.TimesheetEntry).update(timesheetEntryId, {
-    clockOut: new Date(),
+    clockOut: value
   })
 }
 

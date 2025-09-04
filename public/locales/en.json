@@ -123,19 +123,28 @@
       "edit": {
         "title": "Edit {{ date }}",
         "fields": {
+          "errors": {
+            "invalid_time": "Time must be in HH:MM"
+          },
           "clock_in": {
             "label": "Clock In"
           },
           "clock_out": {
-            "label": "Clock Out"
+            "label": "Clock Out",
+            "error_before": "Must be after clock in"
           },
           "breaks": {
             "add_break": "Add break",
             "break_in": {
-              "label": "Break In"
+              "label": "Break In",
+              "error_before_clock_in": "Cannot start break before day started",
+              "error_after_clock_out": "Cannot start break after day ended"
             },
             "break_out": {
-              "label": "Break Out"
+              "label": "Break Out",
+              "error_before": "Must be after break in",
+              "error_before_clock_in": "Cannot finish break before day started",
+              "error_after_clock_out": "Cannot finish break after day ended"
             },
             "remove_break": "Remove"
           }

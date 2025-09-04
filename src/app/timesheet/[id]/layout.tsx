@@ -2,6 +2,7 @@ import { TimesheetConfigProvider } from "~/hooks/useTimesheetConfig";
 import type { TimesheetConfig } from "~/pocketbase/data.types";
 import { serverSideAuth } from "~/pocketbase/server";
 import { TableNames } from "~/pocketbase/tables.types";
+import { QueryParamInvalidator } from "./edit/day/QueryParamInvalidator";
 
 export default async function TimesheetIdLayout({
   children,
@@ -18,7 +19,9 @@ export default async function TimesheetIdLayout({
   return (
     <>
       <TimesheetConfigProvider config={config}>
-        {children}
+        <QueryParamInvalidator timesheetId={id}>
+          {children}
+        </QueryParamInvalidator>
       </TimesheetConfigProvider>
     </>
   )

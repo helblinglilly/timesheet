@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react'
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '~/components/ui/breadcrumb';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '~/components/ui/breadcrumb';
 import { useTranslation } from 'react-i18next';
 import { useTimesheetConfig } from '~/hooks/useTimesheetConfig';
 

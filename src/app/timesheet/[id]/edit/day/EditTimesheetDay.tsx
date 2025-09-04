@@ -1,6 +1,6 @@
 "use client"
 
-import React, { startTransition, useActionState, useState } from 'react'
+import React, { startTransition, useActionState, useEffect, useState } from 'react'
 
 import { useQueryParamDate } from '~/hooks/useQueryParamDate';
 import { useTranslation } from 'react-i18next';
@@ -50,10 +50,8 @@ export const EditTimesheetDay = ({
     name: 'breaks'
   });
 
-
   const [state, formAction, isPending] = useActionState<TimesheetEditFormState, FormData>(editTimesheetDayWithState, {});
 
-  // This will handle client-side validation and then call the server action
   const onSubmit = async (data: FormValues) => {
     const formData = new FormData();
     formData.append("id", timesheetId);
@@ -66,11 +64,23 @@ export const EditTimesheetDay = ({
       formData.append(`breaks[${i}][breakOut]`, breakData.breakOut ?? '')
     })
 
-
     startTransition(() => {
       formAction(formData);
     });
   };
+
+  useEffect(() => {
+    if (state?.errors) {
+      Object.entries(state.errors).forEach(([key , messages]) => {
+        // @ts-expect-error Does not realise it's a key of
+        form.setError(key, {
+          type: "server",
+          message: messages?.[0] ?? "Error",
+        });
+      });
+    }
+  }, [state?.errors, form]);
+
 
   return (
     <Form {...form} >
