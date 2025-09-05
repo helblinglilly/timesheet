@@ -63,8 +63,6 @@ export async function clockIn(pb: Client, id: string, date: Date, time?: Date){
     sort: '-clockIn'
   })
 
-  console.log(time, time ?? new Date());
-
   if (existing?.items[0]?.id){
     await pb.collection<TimesheetEntry>(TableNames.TimesheetEntry).update(existing.items[0].id, {
       user: pb.authStore?.record?.id,

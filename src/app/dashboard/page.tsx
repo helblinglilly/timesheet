@@ -7,10 +7,8 @@ import { serverSideAuth } from "~/pocketbase/server";
 import React from "react";
 import { Card, CardContent, CardFooter, CardHeader } from "~/components/ui/card";
 import HoursWorked from "./HoursWorked";
-import TargetHours from "./TargetHours";
 import { Button } from "~/components/ui/button";
 import Link from "next/link";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "~/components/ui/hover-card";
 import BreakInButton from "~/features/workday/recordDaily/BreakIn";
 import BreakOutButton from "~/features/workday/recordDaily/BreakOut";
 import ClockInButton from "~/features/workday/recordDaily/ClockIn";
@@ -62,16 +60,9 @@ export default async function Dashboard() {
                     </CardContent>
 
                     <CardFooter>
-                      <HoverCard>
-                        <HoverCardTrigger asChild>
-                          <button className="flex gap-2 w-full">
-                            <HoursWorked/>
-                          </button>
-                        </HoverCardTrigger>
-                        <HoverCardContent className="w-70">
-                          <TargetHours />
-                        </HoverCardContent>
-                      </HoverCard>
+                      <div className="grid w-full">
+                        <HoursWorked/>
+                      </div>
 
                       <Link href={`/timesheet/${timesheet.id}`} className="w-full md:max-w-1/5">
                         <Button variant='outline' className="w-full">
