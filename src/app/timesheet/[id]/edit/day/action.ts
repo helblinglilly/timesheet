@@ -4,10 +4,10 @@ import { serverSideAuth } from '~/pocketbase/server';
 import { createTranslation } from '~/i18n/server';
 import { withNewRelicWebTransaction } from '~/utils/observability/withNewRelicWebTransaction';
 import { redirect } from 'next/navigation';
-import newrelic from 'newrelic';
 import { formSchema } from './form.schema';
-import { clockIn } from '~/server/api/timesheet/id/today';
 import { format, parseISO, set } from 'date-fns';
+import { TableNames } from '~/pocketbase/tables.types';
+import log from '~/utils/log';
 
 export interface TimesheetEditFormState {
   errors?: {
@@ -49,6 +49,7 @@ async function editTimesheetDay(formData: FormData): Promise<TimesheetEditFormSt
   const values = {
     id: formData.get('id'),
     day: formData.get('day'),
+    timesheet_entry_id: formData.get('timesheet_entry_id'),
     clockIn: formData.get('clockIn') ?? null,
     clockOut: formData.get('clockOut') ?? null,
     breaks: parseBreaksFromFormData(formData),
@@ -109,20 +110,38 @@ async function editTimesheetDay(formData: FormData): Promise<TimesheetEditFormSt
       parseISO(parsed.data.day), {
         hours: Number(parsed.data.clockIn.split(':')[0]),
         minutes: Number(parsed.data.clockIn.split(':')[1]),
+        seconds: 0,
       },
     );
 
-    // Will create the entry if it doesn't exist yet
-    await clockIn(pb, parsed.data.id, new Date(parsed.data.day), clockInDate);
+    const clockOutDate: Date | null = parsed.data.clockOut ? set(
+      parseISO(parsed.data.day), {
+        hours: Number(parsed.data.clockOut.split(':')[0]),
+        minutes: Number(parsed.data.clockOut.split(':')[1]),
+        seconds: 0,
+      },
+    ) : null;
 
-    // const timesheetEntryId = (await getTimesheetByDate(pb, parsed.data.id, new Date(parsed.data.day))).timesheet_entry_id
-    // if (!timesheetEntryId){
-    //   throw new Error(`Tried to edit timesheet for collection ${parsed.data.id} which has already been clocked in, but timesheetEntryId came back nullish`)
-    // }
+    let timesheetEntryId = parsed.data.timesheet_entry_id;
+    if (!timesheetEntryId){
+      timesheetEntryId = (await pb.collection(TableNames.TimesheetEntry).create({
+        user: pb.authStore?.record?.id,
+        config: parsed.data.id,
+        clockIn: clockInDate,
+        clockOut: clockOutDate
+      })).id
+    } else {
+      await pb.collection(TableNames.TimesheetEntry).update(timesheetEntryId, {
+        clockIn: clockInDate,
+        clockOut: clockOutDate
+      })
+    }
+
+    console.log(timesheetEntryId);
   }
   catch (err) {
     const pbError = err instanceof Error ? err.message : 'Unknown';
-    newrelic.noticeError(new Error(`Failed to edit timesheet with error ${pbError}`));
+    log.error('Failed to edit timesheet', pbError);
     return { message: t('timesheet.[id].edit.error_generic') };
   }
 

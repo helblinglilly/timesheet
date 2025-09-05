@@ -35,15 +35,16 @@ export const EditTimesheetDay = ({
     resolver: zodResolver(formSchema(t)),
     defaultValues: {
       id: timesheetId,
+      timesheet_entry_id: timesheet.timesheet_entry_id,
       day: format(date, 'yyy-LL-dd'),
-      clockIn: timesheet.clockIn ? format(timesheet.clockIn, 'HH:MM') : '09:00',
+      clockIn: timesheet.clockIn ? format(timesheet.clockIn, 'HH:mm') : '09:00',
       breaks: timesheet.breaks
         ? timesheet.breaks.map(a => ({
-          breakIn: format(new Date(a.breakIn), 'HH:MM'),
-          breakOut: a.breakOut ? format(new Date(a.breakOut), 'HH:MM') : '',
+          breakIn: format(new Date(a.breakIn), 'HH:mm'),
+          breakOut: a.breakOut ? format(new Date(a.breakOut), 'HH:mm') : '',
         }))
         : [],
-      clockOut: timesheet.clockOut ? format(timesheet.clockOut, 'HH:MM') : '17:00',
+      clockOut: timesheet.clockOut ? format(timesheet.clockOut, 'HH:mm') : '17:00',
     },
   });
 
@@ -58,6 +59,11 @@ export const EditTimesheetDay = ({
     const formData = new FormData();
     formData.append('id', timesheetId);
     formData.append('day', date.toISOString());
+    if (timesheet.timesheet_entry_id){
+      formData.append('timesheet_entry_id', timesheet.timesheet_entry_id);
+    } else {
+      formData.delete('timesheet_entry_id');
+    }
     formData.append('clockIn', data.clockIn);
     formData.append('clockOut', data.clockOut ?? '');
 
@@ -85,9 +91,7 @@ export const EditTimesheetDay = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={() => {
-        form.handleSubmit(onSubmit);
-      }} className="space-y-8 w-full md:min-w-xl h-full">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full md:min-w-xl h-full">
         <div className="grid md:flex gap-4 md:justify-between">
           <Card className="min-w-full md:min-w-1/2">
             <CardContent>

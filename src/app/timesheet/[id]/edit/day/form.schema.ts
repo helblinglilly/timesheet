@@ -6,6 +6,7 @@ const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
 export const formSchema = (t: TFunction<Namespace, undefined>) => z.object({
   id: z.string(),
   day: z.string(),
+  timesheet_entry_id: z.string().optional(),
   clockIn: z.string()
     .refine(
       val => !val || timeRegex.test(val),

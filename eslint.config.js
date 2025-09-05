@@ -36,6 +36,7 @@ export default tseslint.config(
           varsIgnorePattern: '^_'
         }
       ],
+      "@typescript-eslint/no-misused-promises": "off",
       "@typescript-eslint/require-await": "off",
       "no-console": "warn",
       "no-restricted-syntax": [

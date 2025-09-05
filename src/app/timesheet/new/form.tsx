@@ -58,9 +58,7 @@ export default function NewTimesheetPage() {
 
   return (
     <Form {...form}>
-      <form onSubmit={() => {
-        form.handleSubmit(onSubmit)
-      }} className="space-y-8 md:max-w-1/2 md:justify-self-center">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 md:max-w-1/2 md:justify-self-center">
         <Card>
           <CardContent>
             <FormField
