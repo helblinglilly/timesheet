@@ -16,9 +16,7 @@ export const TimesheetBreadcrumbs = () => {
           <BreadcrumbLink href="/dashboard">{t('common.navigation.dashboard')}</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <BreadcrumbItem>{t('common.navigation.timesheet_name', { name: config.name })}</BreadcrumbItem>
-        </BreadcrumbItem>
+        <BreadcrumbItem>{t('common.navigation.timesheet_name', { name: config.name })}</BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>
   );

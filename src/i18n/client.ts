@@ -7,7 +7,7 @@ import { initReactI18next } from 'react-i18next';
 import { getOptions } from './settings';
 
 // Initialize i18next for client-side
-await i18next
+i18next
   .use(initReactI18next)
   .use(LanguageDetector)
   .use(
@@ -21,6 +21,8 @@ await i18next
       order: ['path', 'cookie', 'navigator'],
       caches: ['cookie'],
     },
+  }).catch((err) => {
+    console.error(err);
   });
 
 export default i18next;
