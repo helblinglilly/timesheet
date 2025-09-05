@@ -44,7 +44,7 @@ export const EditTimesheetDay = ({
           breakOut: a.breakOut ? format(new Date(a.breakOut), 'HH:mm') : '',
         }))
         : [],
-      clockOut: timesheet.clockOut ? format(timesheet.clockOut, 'HH:mm') : '17:00',
+      clockOut: timesheet.clockOut ? format(timesheet.clockOut, 'HH:mm') : '',
     },
   });
 

@@ -5,7 +5,7 @@ import { useQueryParamDate } from '~/hooks/useQueryParamDate';
 import { Button } from '~/components/ui/button';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { format } from 'date-fns';
+import { format, isAfter } from 'date-fns';
 import Link from 'next/link';
 import { useTimesheetConfig } from '~/hooks/useTimesheetConfig';
 import { useTranslation } from 'react-i18next';
@@ -19,7 +19,7 @@ export const WeekNavigator = () => {
   return (
     <div className="inline-flex justify-between">
       <Button
-        className="pr-4"
+        className="pr-4 w-24"
         onClick={() => {
           router.push(`?date=${format(startOfLastWeek, 'yyy-LL-dd')}`);
         }}
@@ -40,16 +40,21 @@ export const WeekNavigator = () => {
         </h2>
       </Link>
 
-      <Button
-        className="pl-4"
-        onClick={() => {
-          router.push(`?date=${format(startOfNextWeek, 'yyy-LL-dd')}`);
-        }}
-      >
-        <span className="hidden sm:block">{ format(startOfNextWeek, 'dd LLL') }</span>
+      {
+        isAfter(startOfNextWeek, new Date()) ? <div className="pl-4 w-24" /> : (
+          <Button
+            className="pl-4 w-24"
+            onClick={() => {
+              router.push(`?date=${format(startOfNextWeek, 'yyy-LL-dd')}`);
+            }}
+          >
+            <span className="hidden sm:block">{ format(startOfNextWeek, 'dd LLL') }</span>
 
-        <ChevronRightIcon />
-      </Button>
+            <ChevronRightIcon />
+          </Button>
+        )
+      }
+
     </div>
   );
 };
