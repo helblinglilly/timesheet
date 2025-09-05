@@ -1,9 +1,9 @@
-"use server";
+'use server';
 
-import { createTranslation } from "~/i18n/server";
-import NewTimesheetForm from "./form";
+import { createTranslation } from '~/i18n/server';
+import NewTimesheetForm from './form';
 
-export default async function NewTimesheetPage(){
+export default async function NewTimesheetPage() {
   const { t } = await createTranslation();
 
   return (
@@ -11,5 +11,5 @@ export default async function NewTimesheetPage(){
       <h1 className="text-2xl font-semibold">{t('timesheet.new.title')}</h1>
       <NewTimesheetForm />
     </div>
-  )
+  );
 }

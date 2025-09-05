@@ -1,6 +1,6 @@
-"use client"
+'use client';
 
-import React from 'react'
+import React from 'react';
 import { useTimesheetConfig } from '~/hooks/useTimesheetConfig';
 
 export const Title = () => {
@@ -9,4 +9,4 @@ export const Title = () => {
   return (
     <h1 className="text-2xl font-semibold">{config.name}</h1>
   );
-}
+};

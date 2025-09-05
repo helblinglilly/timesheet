@@ -1,12 +1,12 @@
-import { eachDayOfInterval, startOfWeek, endOfWeek, intervalToDuration, type Duration } from "date-fns";
+import { eachDayOfInterval, startOfWeek, endOfWeek, intervalToDuration, type Duration } from 'date-fns';
 
-export function weekDatesForDate(weekOf: Date){
+export function weekDatesForDate(weekOf: Date) {
   const weekOptions = { weekStartsOn: 1 as const };
 
   const start = startOfWeek(weekOf, weekOptions);
   const end = endOfWeek(weekOf, weekOptions);
 
-  return eachDayOfInterval({ start, end})
+  return eachDayOfInterval({ start, end });
 }
 
 /**
@@ -24,11 +24,11 @@ function durationToMilliseconds(d: Duration) {
   } = d;
 
   return (
-    weeks * 7 * 24 * 60 * 60 * 1000 +
-    days * 24 * 60 * 60 * 1000 +
-    hours * 60 * 60 * 1000 +
-    minutes * 60 * 1000 +
-    seconds * 1000
+    weeks * 7 * 24 * 60 * 60 * 1000
+    + days * 24 * 60 * 60 * 1000
+    + hours * 60 * 60 * 1000
+    + minutes * 60 * 1000
+    + seconds * 1000
   );
 }
 
@@ -38,15 +38,15 @@ export function subtractDurations(base: Duration, ...subs: Duration[]) {
     ms -= durationToMilliseconds(s);
   }
 
-  if (ms < 0){
+  if (ms < 0) {
     return {
       isPositive: false,
-      duration: intervalToDuration({ start: ms, end: 0})
-    }
+      duration: intervalToDuration({ start: ms, end: 0 }),
+    };
   }
 
   return {
     isPositive: true,
-    duration: intervalToDuration({ start: 0, end: ms })
-  }
+    duration: intervalToDuration({ start: 0, end: ms }),
+  };
 }

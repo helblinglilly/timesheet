@@ -12,8 +12,8 @@ await i18next
   .use(LanguageDetector)
   .use(
     resourcesToBackend(
-      (language: string) => import(`../../public/locales/${language}.json`)
-    )
+      (language: string) => import(`../../public/locales/${language}.json`),
+    ),
   )
   .init({
     ...getOptions(),

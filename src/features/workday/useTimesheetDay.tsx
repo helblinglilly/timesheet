@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext } from 'react';
 
-type TimesheetDayContextType = {
+interface TimesheetDayContextType {
   timesheetId: string;
   day: string;
-};
+}
 
 const Context = createContext<TimesheetDayContextType | undefined>(undefined);
 
@@ -23,6 +23,6 @@ export function TimesheetDayProvider({
 
 export function useTimesheetDay() {
   const ctx = useContext(Context);
-  if (!ctx) throw new Error("useTimesheetDay must be used within TimesheetDayProvider");
+  if (!ctx) throw new Error('useTimesheetDay must be used within TimesheetDayProvider');
   return ctx;
 }

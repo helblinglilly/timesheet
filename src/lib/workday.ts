@@ -1,9 +1,9 @@
-import { intervalToDuration } from "date-fns";
-import type { TimesheetBreaks} from "~/pocketbase/data.types";
-import type { getTimesheetByDate } from "~/server/api/timesheet/id/today";
+import { intervalToDuration } from 'date-fns';
+import type { TimesheetBreaks } from '~/pocketbase/data.types';
+import type { getTimesheetByDate } from '~/server/api/timesheet/id/today';
 
-export function hasIncompleteBreakEntry(breaks: Pick<TimesheetBreaks, 'breakIn' | 'breakOut'>[]){
-  return breaks.findIndex((a) => a.breakIn && !a.breakOut) === -1 ? false : true
+export function hasIncompleteBreakEntry(breaks: Pick<TimesheetBreaks, 'breakIn' | 'breakOut'>[]) {
+  return breaks.findIndex(a => a.breakIn && !a.breakOut) === -1 ? false : true;
 }
 
 type Timesheet = Awaited<ReturnType<typeof getTimesheetByDate>>;
@@ -12,11 +12,11 @@ type TimesheetEntry = Pick<Timesheet, 'clockIn' | 'clockOut'>;
 type TimesheetBreak = Pick<NonNullable<Timesheet['breaks']>[number], 'breakIn' | 'breakOut'>;
 
 type MinimalTimesheet = TimesheetEntry & {
-  breaks: TimesheetBreak[]
+  breaks: TimesheetBreak[];
 };
 
 export const workMillisecondsInDay = (
-  timesheetEntry: MinimalTimesheet
+  timesheetEntry: MinimalTimesheet,
 ) => {
   const { clockIn, clockOut, breaks } = timesheetEntry;
 
@@ -43,7 +43,8 @@ export const workMillisecondsInDay = (
 
   if (!clockOut && !isCurrentlyOnBreak) {
     intervals.push({ start: previousClockIn, end: new Date() });
-  } else if (clockOut) {
+  }
+  else if (clockOut) {
     intervals.push({ start: previousClockIn, end: new Date(clockOut) });
   }
 
@@ -57,7 +58,7 @@ export const workMillisecondsInDay = (
 };
 
 export const workDurationInDay = (
-  timesheetEntry: MinimalTimesheet
+  timesheetEntry: MinimalTimesheet,
 ) => {
   const milliseconds = workMillisecondsInDay(timesheetEntry);
 
@@ -65,4 +66,4 @@ export const workDurationInDay = (
     start: new Date(0),
     end: new Date(milliseconds),
   });
-}
+};

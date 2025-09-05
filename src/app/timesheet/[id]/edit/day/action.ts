@@ -1,24 +1,24 @@
-"use server"
+'use server';
 
-import { serverSideAuth } from "~/pocketbase/server"
-import { createTranslation } from "~/i18n/server";
-import { withNewRelicWebTransaction } from "~/utils/observability/withNewRelicWebTransaction";
-import { redirect } from "next/navigation";
-import newrelic from 'newrelic'
-import { formSchema } from "./form.schema";
-import { clockIn} from "~/server/api/timesheet/id/today";
-import { format, parseISO, set } from "date-fns";
+import { serverSideAuth } from '~/pocketbase/server';
+import { createTranslation } from '~/i18n/server';
+import { withNewRelicWebTransaction } from '~/utils/observability/withNewRelicWebTransaction';
+import { redirect } from 'next/navigation';
+import newrelic from 'newrelic';
+import { formSchema } from './form.schema';
+import { clockIn } from '~/server/api/timesheet/id/today';
+import { format, parseISO, set } from 'date-fns';
 
-export type TimesheetEditFormState = {
+export interface TimesheetEditFormState {
   errors?: {
     id?: string[] | undefined;
     day?: string[] | undefined;
     clockIn?: string[] | undefined;
     clockOut?: string[] | undefined;
     breaks?: string[] | undefined;
-  },
+  };
   message?: string | undefined;
-};
+}
 
 function parseBreaksFromFormData(formData: FormData) {
   const breaks: { breakIn: string; breakOut: string | null }[] = [];
@@ -27,12 +27,12 @@ function parseBreaksFromFormData(formData: FormData) {
     const match = /^breaks\[(\d+)\]\[(breakIn|breakOut)\]$/.exec(key);
     if (match) {
       const idx = Number(match[1]);
-      const field = match[2] as "breakIn" | "breakOut";
+      const field = match[2] as 'breakIn' | 'breakOut';
 
       breaks[idx] = {
         breakIn: breaks[idx]?.breakIn ?? '',
-        breakOut: breaks[idx]?.breakOut ?? null
-      }
+        breakOut: breaks[idx]?.breakOut ?? null,
+      };
 
       breaks[idx][field] = value as string;
     }
@@ -59,7 +59,7 @@ async function editTimesheetDay(formData: FormData): Promise<TimesheetEditFormSt
     const { error } = parsed;
     return {
       errors: error.flatten().fieldErrors,
-    }
+    };
   }
 
   const additionalErrors: Record<string, string[]> = {};
@@ -68,10 +68,10 @@ async function editTimesheetDay(formData: FormData): Promise<TimesheetEditFormSt
     const breakObj = parsed.data.breaks[i];
     if (!breakObj?.breakOut) continue;
 
-    const [breakInHours, breakInMins] = breakObj.breakIn.split(':').map(Number)  as [number, number];
-    const [breakOutHours, breakOutMins] = breakObj.breakOut.split(':').map(Number)  as [number, number];
-    const [clockInHours, clockInMins] = parsed.data.clockIn.split(':').map(Number)  as [number, number];
-    const [clockOutHours, clockOutMins] = parsed.data.clockOut?.split(':').map(Number)  as [number, number];
+    const [breakInHours, breakInMins] = breakObj.breakIn.split(':').map(Number) as [number, number];
+    const [breakOutHours, breakOutMins] = breakObj.breakOut.split(':').map(Number) as [number, number];
+    const [clockInHours, clockInMins] = parsed.data.clockIn.split(':').map(Number) as [number, number];
+    const [clockOutHours, clockOutMins] = parsed.data.clockOut?.split(':').map(Number) as [number, number];
 
     const breakInMinutes = breakInHours * 60 + breakInMins;
     const breakOutMinutes = breakOutHours * 60 + breakOutMins;
@@ -92,10 +92,10 @@ async function editTimesheetDay(formData: FormData): Promise<TimesheetEditFormSt
     }
 
     // After clock out
-    if (clockOutMinutes < breakInMinutes){
+    if (clockOutMinutes < breakInMinutes) {
       additionalErrors[`breaks.${i}.breakIn`] = [t('timesheet.[id].edit.fields.breaks.break_in.error_after_clock_out')];
     }
-    if (clockOutMinutes < breakOutMinutes){
+    if (clockOutMinutes < breakOutMinutes) {
       additionalErrors[`breaks.${i}.breakOut`] = [t('timesheet.[id].edit.fields.breaks.break_out.error_after_clock_out')];
     }
   }
@@ -108,8 +108,8 @@ async function editTimesheetDay(formData: FormData): Promise<TimesheetEditFormSt
     const clockInDate: Date = set(
       parseISO(parsed.data.day), {
         hours: Number(parsed.data.clockIn.split(':')[0]),
-        minutes: Number(parsed.data.clockIn.split(':')[1])
-      }
+        minutes: Number(parsed.data.clockIn.split(':')[1]),
+      },
     );
 
     // Will create the entry if it doesn't exist yet
@@ -119,21 +119,19 @@ async function editTimesheetDay(formData: FormData): Promise<TimesheetEditFormSt
     // if (!timesheetEntryId){
     //   throw new Error(`Tried to edit timesheet for collection ${parsed.data.id} which has already been clocked in, but timesheetEntryId came back nullish`)
     // }
-
-  } catch(err){
+  }
+  catch (err) {
     const pbError = err instanceof Error ? err.message : 'Unknown';
     newrelic.noticeError(new Error(`Failed to edit timesheet with error ${pbError}`));
-    return { message: t('timesheet.[id].edit.error_generic') }
+    return { message: t('timesheet.[id].edit.error_generic') };
   }
 
   redirect(`/timesheet/${parsed.data.id}?date=${format(new Date(parsed.data.day), 'yyy-LL-dd')}&refetch_date=${format(new Date(parsed.data.day), 'yyy-LL-dd')}`);
 }
 
-
 export async function editTimesheetDayWithState(
   _prevState: TimesheetEditFormState,
-  formData: FormData
+  formData: FormData,
 ): Promise<TimesheetEditFormState> {
-
   return await withNewRelicWebTransaction('timesheet/[id]/edit', () => editTimesheetDay(formData));
 }

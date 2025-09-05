@@ -1,17 +1,17 @@
-"use server";
+'use server';
 
-import { cookies } from "next/headers";
-import Pocketbase from "pocketbase";
-import { env } from "~/env";
-import type { PBAuthResponse } from "./builtin.types";
+import { cookies } from 'next/headers';
+import Pocketbase from 'pocketbase';
+import { env } from '~/env';
+import type { PBAuthResponse } from './builtin.types';
 
 export async function serverSideAuth() {
   const pb = new Pocketbase(env.POCKETBASE_URL);
   // Handled by react query
-  pb.autoCancellation(false)
+  pb.autoCancellation(false);
 
   const allCookies = await cookies();
-  const pbCookie = allCookies.get("pb_auth");
+  const pbCookie = allCookies.get('pb_auth');
 
   if (pbCookie) {
     const data = JSON.parse(pbCookie.value) as PBAuthResponse;

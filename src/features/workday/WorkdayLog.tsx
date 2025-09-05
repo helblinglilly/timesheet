@@ -1,15 +1,15 @@
-"use client"
-import { api } from "~/trpc/react";
-import { useTranslation } from "react-i18next";
-import React from "react";
-import { useTimesheetDay } from "./useTimesheetDay";
-import { TimeRecord } from "~/features/weeklyView/TimeRecord";
+'use client';
+import { api } from '~/trpc/react';
+import { useTranslation } from 'react-i18next';
+import React from 'react';
+import { useTimesheetDay } from './useTimesheetDay';
+import { TimeRecord } from '~/features/weeklyView/TimeRecord';
 
 export default function WorkdayLog({
-  noDataText
+  noDataText,
 }: {
-  noDataText?: string | null
-}){
+  noDataText?: string | null;
+}) {
   const { t } = useTranslation();
   const { timesheetId: id, day } = useTimesheetDay();
 
@@ -18,13 +18,13 @@ export default function WorkdayLog({
     day,
   });
 
-  if (!timesheet.clockIn && noDataText){
-    if (noDataText){
+  if (!timesheet.clockIn && noDataText) {
+    if (noDataText) {
       return (
         <div className="grid min-h-8">
           <p><i>{noDataText}</i></p>
         </div>
-      )
+      );
     }
   }
 
@@ -44,7 +44,7 @@ export default function WorkdayLog({
                 )
               }
             </div>
-          )
+          );
         })
       }
       {
@@ -53,7 +53,6 @@ export default function WorkdayLog({
         )
       }
 
-
     </div>
-  )
+  );
 }

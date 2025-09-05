@@ -1,19 +1,19 @@
-"use client"
+'use client';
 
-import React, { Suspense} from 'react'
-import { useTranslation } from 'react-i18next'
-import { Card, CardContent, CardHeader } from '~/components/ui/card'
-import HoursWorked from '~/app/dashboard/HoursWorked'
-import Link from 'next/link'
+import React, { Suspense } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Card, CardContent, CardHeader } from '~/components/ui/card';
+import HoursWorked from '~/app/dashboard/HoursWorked';
+import Link from 'next/link';
 
-import { Skeleton } from '~/components/ui/skeleton'
-import { useQueryParamDate } from '~/hooks/useQueryParamDate'
-import { TimesheetDayProvider } from '~/features/workday/useTimesheetDay'
-import WorkdayLog from '~/features/workday/WorkdayLog'
-import { useTimesheetConfig } from '~/hooks/useTimesheetConfig'
-import { format } from 'date-fns'
-import { WeekHoursWorked } from './WeekHoursWorked'
-import { ErrorBoundary } from '../ErrorBoundary'
+import { Skeleton } from '~/components/ui/skeleton';
+import { useQueryParamDate } from '~/hooks/useQueryParamDate';
+import { TimesheetDayProvider } from '~/features/workday/useTimesheetDay';
+import WorkdayLog from '~/features/workday/WorkdayLog';
+import { useTimesheetConfig } from '~/hooks/useTimesheetConfig';
+import { format } from 'date-fns';
+import { WeekHoursWorked } from './WeekHoursWorked';
+import { ErrorBoundary } from '../ErrorBoundary';
 
 export const WeekLog = () => {
   const { config } = useTimesheetConfig();
@@ -22,7 +22,7 @@ export const WeekLog = () => {
 
   return (
     <>
-      <div className='grid md:grid-cols-2 gap-8'>
+      <div className="grid md:grid-cols-2 gap-8">
 
         <Card className="p-4 w-full md:min-w-sm gap-0">
           <CardHeader>
@@ -41,7 +41,7 @@ export const WeekLog = () => {
           daysInWeek.map((day) => {
             return (
               <TimesheetDayProvider
-                timesheetId={ config.id }
+                timesheetId={config.id}
                 day={format(day, 'yyy-LL-dd')}
                 key={day.toISOString()}
               >
@@ -58,7 +58,8 @@ export const WeekLog = () => {
                         <Suspense
                           fallback={
                             <Skeleton className="h-8 w-full" />
-                          }>
+                          }
+                        >
                           <WorkdayLog noDataText={t('timesheet.[id].weekly.log.no_data')} />
                           <HoursWorked />
                         </Suspense>
@@ -67,10 +68,10 @@ export const WeekLog = () => {
                   </Link>
                 </Card>
               </TimesheetDayProvider>
-            )
+            );
           })
         }
       </div>
     </>
   );
-}
+};

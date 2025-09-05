@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { Button } from "~/components/ui/button";
-import type { PocketbaseAuthMethods } from "~/pocketbase/builtin.types";
-import { setCookieClient } from "~/utils/cookies";
+import Image from 'next/image';
+import { Button } from '~/components/ui/button';
+import type { PocketbaseAuthMethods } from '~/pocketbase/builtin.types';
+import { setCookieClient } from '~/utils/cookies';
 import GoogleIcon from './google.svg';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const iconMap: Record<PocketbaseAuthMethods['name'], any> = {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  google: GoogleIcon
-}
+  google: GoogleIcon,
+};
 
 export default function OAuthMethod({
   authMethod,
@@ -18,10 +18,10 @@ export default function OAuthMethod({
   return (
     <Button
       key={authMethod.name}
-      variant={'outline'}
+      variant="outline"
       type="button"
       onClick={() => {
-        setCookieClient("auth_provider", JSON.stringify(authMethod));
+        setCookieClient('auth_provider', JSON.stringify(authMethod));
         window.location.assign(authMethod.authUrl);
       }}
     >

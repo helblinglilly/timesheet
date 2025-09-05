@@ -1,4 +1,4 @@
-import { type RecordModel } from "pocketbase";
+import { type RecordModel } from 'pocketbase';
 
 export interface TimesheetConfig extends RecordModel {
   name: string;
@@ -6,7 +6,7 @@ export interface TimesheetConfig extends RecordModel {
   daysPerWeek: number;
   paidLunchMinutes: number;
   unpaidLunchMinutes: number;
-  kind: "office" | "freelance";
+  kind: 'office' | 'freelance';
 }
 
 export interface TimesheetEntry extends RecordModel {

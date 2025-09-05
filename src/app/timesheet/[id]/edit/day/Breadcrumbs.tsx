@@ -1,15 +1,14 @@
-"use client";
+'use client';
 
-import React from 'react'
+import React from 'react';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '~/components/ui/breadcrumb';
 import { useTranslation } from 'react-i18next';
 import { useTimesheetConfig } from '~/hooks/useTimesheetConfig';
 import { useQueryParamDate } from '~/hooks/useQueryParamDate';
 import { format } from 'date-fns';
 
-
-export const EditBreadcrumbs = ({ id} : {
-  id: string
+export const EditBreadcrumbs = ({ id }: {
+  id: string;
 }) => {
   const { t } = useTranslation();
   const { config } = useTimesheetConfig();
@@ -27,9 +26,9 @@ export const EditBreadcrumbs = ({ id} : {
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbPage>{ t('common.navigation.edit_day', { date: format(date, 'EEE dd LLL yy')}) }</BreadcrumbPage>
+          <BreadcrumbPage>{ t('common.navigation.edit_day', { date: format(date, 'EEE dd LLL yy') }) }</BreadcrumbPage>
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>
   );
-}
+};

@@ -1,18 +1,18 @@
-import Link from "next/link";
-import { redirect } from "next/navigation";
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
-import { LatestPost } from "~/app/post";
-import { serverSideAuth } from "~/pocketbase/server";
-import { api, HydrateClient } from "~/trpc/server";
+import { LatestPost } from '~/app/post';
+import { serverSideAuth } from '~/pocketbase/server';
+import { api, HydrateClient } from '~/trpc/server';
 
 export default async function Home() {
   const pb = await serverSideAuth();
 
-  if (pb.authStore.isValid){
-    redirect('/dashboard')
+  if (pb.authStore.isValid) {
+    redirect('/dashboard');
   }
 
-  const hello = await api.post.hello({ text: "from tRPC" });
+  const hello = await api.post.hello({ text: 'from tRPC' });
 
   void api.post.getLatest.prefetch();
 
@@ -21,7 +21,11 @@ export default async function Home() {
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
           <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-            Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
+            Create
+            {' '}
+            <span className="text-[hsl(280,100%,70%)]">T3</span>
+            {' '}
+            App
           </h1>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
             <Link
@@ -49,7 +53,7 @@ export default async function Home() {
           </div>
           <div className="flex flex-col items-center gap-2">
             <p className="text-2xl text-white">
-              {hello ? hello.greeting : "Loading tRPC query..."}
+              {hello ? hello.greeting : 'Loading tRPC query...'}
             </p>
           </div>
 

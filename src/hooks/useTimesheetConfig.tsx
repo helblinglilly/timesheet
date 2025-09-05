@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import React, { createContext, useContext } from "react";
-import type { TimesheetConfig } from "~/pocketbase/data.types";
+import React, { createContext, useContext } from 'react';
+import type { TimesheetConfig } from '~/pocketbase/data.types';
 
-type TimesheetDayContextType = {
-  config: TimesheetConfig
-};
+interface TimesheetDayContextType {
+  config: TimesheetConfig;
+}
 
 const Context = createContext<TimesheetDayContextType | undefined>(undefined);
 
@@ -22,6 +22,6 @@ export function TimesheetConfigProvider({
 
 export function useTimesheetConfig() {
   const ctx = useContext(Context);
-  if (!ctx) throw new Error("useTimesheetConfig must be used within TimesheetDayProvider");
+  if (!ctx) throw new Error('useTimesheetConfig must be used within TimesheetDayProvider');
   return ctx;
 }

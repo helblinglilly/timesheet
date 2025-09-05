@@ -1,9 +1,9 @@
-import z from "zod";
-import { createTRPCRouter, signedInProcedure } from "../../trpc";
-import { getTimesheetByDate, clockIn, clockOut, breakIn, breakOut, deleteAllEntries } from "./today";
-import type { TimesheetConfig } from "~/pocketbase/data.types";
-import { TableNames } from "~/pocketbase/tables.types";
-import { getHoursWorked } from "../week";
+import z from 'zod';
+import { createTRPCRouter, signedInProcedure } from '../../trpc';
+import { getTimesheetByDate, clockIn, clockOut, breakIn, breakOut, deleteAllEntries } from './today';
+import type { TimesheetConfig } from '~/pocketbase/data.types';
+import { TableNames } from '~/pocketbase/tables.types';
+import { getHoursWorked } from '../week';
 
 export const timesheetRouter = createTRPCRouter({
   /**
@@ -23,7 +23,7 @@ export const timesheetRouter = createTRPCRouter({
   getTimesheetDayById: signedInProcedure
     .input(z.object({ id: z.string(), day: z.string() }))
     .query(async ({ input, ctx }) => {
-      return await getTimesheetByDate(ctx.pb, input.id, new Date(input.day))
+      return await getTimesheetByDate(ctx.pb, input.id, new Date(input.day));
     }),
 
   /**
@@ -32,7 +32,7 @@ export const timesheetRouter = createTRPCRouter({
    */
   clockIn: signedInProcedure.input(z.object({ id: z.string(), day: z.string() }))
     .mutation(async ({ input, ctx }) => {
-      await clockIn(ctx.pb, input.id, new Date(input.day))
+      await clockIn(ctx.pb, input.id, new Date(input.day));
     }),
 
   /**
@@ -40,8 +40,8 @@ export const timesheetRouter = createTRPCRouter({
    * If a clock out already exists, it will update it
    */
   clockOut: signedInProcedure.input(z.object({ timesheetEntryId: z.string() }))
-    .mutation(async({ input, ctx }) => {
-      await clockOut(ctx.pb, input.timesheetEntryId)
+    .mutation(async ({ input, ctx }) => {
+      await clockOut(ctx.pb, input.timesheetEntryId);
     }),
 
   /**
@@ -49,37 +49,37 @@ export const timesheetRouter = createTRPCRouter({
    * If the entry already exists, it will error
    */
   breakIn: signedInProcedure.input(z.object({ timesheetEntryId: z.string() }))
-    .mutation(async({ input, ctx }) => {
-      await breakIn(ctx.pb, input.timesheetEntryId)
+    .mutation(async ({ input, ctx }) => {
+      await breakIn(ctx.pb, input.timesheetEntryId);
     }),
   /**
    * Updates a timesheet_breaks entry with a break_out field
    * If the entry already has a break_out entry, it will error
    */
   breakOut: signedInProcedure.input(z.object({ breakEntryId: z.string() }))
-    .mutation(async({ input, ctx }) => {
-      await breakOut(ctx.pb, input.breakEntryId)
+    .mutation(async ({ input, ctx }) => {
+      await breakOut(ctx.pb, input.breakEntryId);
     }),
 
   /**
    * Deletes all timesheet_entries and timesheet_break entries tied to a given timesheet_config
    */
   deleteAllEntries: signedInProcedure.input(z.object({ timesheetConfigId: z.string() }))
-    .mutation(async ({ input, ctx}) => {
-      await deleteAllEntries(ctx.pb, input.timesheetConfigId)
+    .mutation(async ({ input, ctx }) => {
+      await deleteAllEntries(ctx.pb, input.timesheetConfigId);
     }),
 
   deleteTimesheet: signedInProcedure.input(z.object({ timesheetConfigId: z.string() }))
-    .mutation(async ({ input, ctx}) => {
+    .mutation(async ({ input, ctx }) => {
       await ctx.pb.collection(TableNames.TimesheetConfig).delete(input.timesheetConfigId);
     }),
 
   getAllRecordsBetweenDates: signedInProcedure.input(z.object({
     timesheetConfigId: z.string(),
     startDate: z.string(),
-    endDate: z.string()
+    endDate: z.string(),
   }))
-    .query(async ({ input, ctx}) => {
-      return getHoursWorked(ctx.pb, input.timesheetConfigId, new Date(input.startDate), new Date(input.endDate))
+    .query(async ({ input, ctx }) => {
+      return getHoursWorked(ctx.pb, input.timesheetConfigId, new Date(input.startDate), new Date(input.endDate));
     }),
 });

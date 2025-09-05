@@ -1,35 +1,34 @@
-"use server"
+'use server';
 
-import { redirect } from "next/navigation";
-import { createTranslation } from "~/i18n/server";
-import type { TimesheetConfig, User } from "~/pocketbase/data.types";
-import { serverSideAuth } from "~/pocketbase/server";
-import React from "react";
-import { Card, CardContent, CardFooter, CardHeader } from "~/components/ui/card";
-import HoursWorked from "./HoursWorked";
-import { Button } from "~/components/ui/button";
-import Link from "next/link";
-import BreakInButton from "~/features/workday/recordDaily/BreakIn";
-import BreakOutButton from "~/features/workday/recordDaily/BreakOut";
-import ClockInButton from "~/features/workday/recordDaily/ClockIn";
-import ClockOutButton from "~/features/workday/recordDaily/ClockOut";
-import { TableNames } from "~/pocketbase/tables.types";
-import { TimesheetDayProvider } from "~/features/workday/useTimesheetDay";
-import WorkdayLog from "~/features/workday/WorkdayLog";
-import { TimesheetConfigProvider } from "~/hooks/useTimesheetConfig";
-
+import { redirect } from 'next/navigation';
+import { createTranslation } from '~/i18n/server';
+import type { TimesheetConfig, User } from '~/pocketbase/data.types';
+import { serverSideAuth } from '~/pocketbase/server';
+import React from 'react';
+import { Card, CardContent, CardFooter, CardHeader } from '~/components/ui/card';
+import HoursWorked from './HoursWorked';
+import { Button } from '~/components/ui/button';
+import Link from 'next/link';
+import BreakInButton from '~/features/workday/recordDaily/BreakIn';
+import BreakOutButton from '~/features/workday/recordDaily/BreakOut';
+import ClockInButton from '~/features/workday/recordDaily/ClockIn';
+import ClockOutButton from '~/features/workday/recordDaily/ClockOut';
+import { TableNames } from '~/pocketbase/tables.types';
+import { TimesheetDayProvider } from '~/features/workday/useTimesheetDay';
+import WorkdayLog from '~/features/workday/WorkdayLog';
+import { TimesheetConfigProvider } from '~/hooks/useTimesheetConfig';
 
 export default async function Dashboard() {
   const { t } = await createTranslation();
   const pb = await serverSideAuth();
-  const today = new Date().toISOString().split('T')[0] ?? ''
+  const today = new Date().toISOString().split('T')[0] ?? '';
 
   const user: User = await pb.collection(TableNames.User).getOne(pb.authStore.record?.id ?? '');
 
-  const timesheets: TimesheetConfig[]  = await pb.collection(TableNames.TimesheetConfig).getFullList();
+  const timesheets: TimesheetConfig[] = await pb.collection(TableNames.TimesheetConfig).getFullList();
 
-  if (timesheets.length === 0){
-    redirect('/timesheet/new')
+  if (timesheets.length === 0) {
+    redirect('/timesheet/new');
   }
 
   return (
@@ -61,11 +60,11 @@ export default async function Dashboard() {
 
                     <CardFooter>
                       <div className="grid w-full">
-                        <HoursWorked/>
+                        <HoursWorked />
                       </div>
 
                       <Link href={`/timesheet/${timesheet.id}`} className="w-full md:max-w-1/5">
-                        <Button variant='outline' className="w-full">
+                        <Button variant="outline" className="w-full">
                           {t('dashboard.show_more')}
                         </Button>
                       </Link>
@@ -74,16 +73,16 @@ export default async function Dashboard() {
                   </TimesheetDayProvider>
                 </Card>
               </TimesheetConfigProvider>
-            )
+            );
           })
         }
 
-        <Link href={`/timesheet/new`} className="w-full">
-          <Button variant='outline' className="w-full">
+        <Link href="/timesheet/new" className="w-full">
+          <Button variant="outline" className="w-full">
             {t('dashboard.add_new_timesheet')}
           </Button>
         </Link>
       </div>
     </div>
-  )
+  );
 }

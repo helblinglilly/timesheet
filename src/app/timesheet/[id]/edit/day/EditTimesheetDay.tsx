@@ -1,6 +1,6 @@
-"use client"
+'use client';
 
-import React, { startTransition, useActionState, useEffect, useState } from 'react'
+import React, { startTransition, useActionState, useEffect } from 'react';
 
 import { useQueryParamDate } from '~/hooks/useQueryParamDate';
 import { useTranslation } from 'react-i18next';
@@ -11,22 +11,22 @@ import { useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { editTimesheetDayWithState, type TimesheetEditFormState } from './action';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
-import type  z from 'zod';
-import  { Button } from '~/components/ui/button';
-import  { Card, CardContent } from '~/components/ui/card';
+import type z from 'zod';
+import { Button } from '~/components/ui/button';
+import { Card, CardContent } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
 
 export const EditTimesheetDay = ({
-  timesheetId
-} : {
-  timesheetId: string
+  timesheetId,
+}: {
+  timesheetId: string;
 }) => {
   const { date } = useQueryParamDate();
   const { t } = useTranslation();
 
   const [timesheet] = api.timesheet.getTimesheetDayById.useSuspenseQuery({
     id: timesheetId,
-    day: format(new Date(date), 'yyy-LL-dd')
+    day: format(new Date(date), 'yyy-LL-dd'),
   });
 
   type FormValues = z.infer<ReturnType<typeof formSchema>>;
@@ -35,34 +35,36 @@ export const EditTimesheetDay = ({
     resolver: zodResolver(formSchema(t)),
     defaultValues: {
       id: timesheetId,
-      day: format(date, "yyy-LL-dd"),
-      clockIn: timesheet.clockIn ? format(timesheet.clockIn, "HH:MM") : '09:00',
-      breaks: timesheet.breaks ? timesheet.breaks.map((a) => ({
-        breakIn: format(new Date(a.breakIn), 'HH:MM'),
-        breakOut: a.breakOut ? format(new Date(a.breakOut), 'HH:MM') : ''
-      })) : [],
-      clockOut: timesheet.clockOut ? format(timesheet.clockOut, "HH:MM") : '17:00',
+      day: format(date, 'yyy-LL-dd'),
+      clockIn: timesheet.clockIn ? format(timesheet.clockIn, 'HH:MM') : '09:00',
+      breaks: timesheet.breaks
+        ? timesheet.breaks.map(a => ({
+          breakIn: format(new Date(a.breakIn), 'HH:MM'),
+          breakOut: a.breakOut ? format(new Date(a.breakOut), 'HH:MM') : '',
+        }))
+        : [],
+      clockOut: timesheet.clockOut ? format(timesheet.clockOut, 'HH:MM') : '17:00',
     },
   });
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove: _remove } = useFieldArray({
     control: form.control,
-    name: 'breaks'
+    name: 'breaks',
   });
 
   const [state, formAction, isPending] = useActionState<TimesheetEditFormState, FormData>(editTimesheetDayWithState, {});
 
   const onSubmit = async (data: FormValues) => {
     const formData = new FormData();
-    formData.append("id", timesheetId);
-    formData.append("day", date.toISOString());
+    formData.append('id', timesheetId);
+    formData.append('day', date.toISOString());
     formData.append('clockIn', data.clockIn);
     formData.append('clockOut', data.clockOut ?? '');
 
     data.breaks.forEach((breakData, i) => {
-      formData.append(`breaks[${i}][breakIn]`, breakData.breakIn)
-      formData.append(`breaks[${i}][breakOut]`, breakData.breakOut ?? '')
-    })
+      formData.append(`breaks[${i}][breakIn]`, breakData.breakIn);
+      formData.append(`breaks[${i}][breakOut]`, breakData.breakOut ?? '');
+    });
 
     startTransition(() => {
       formAction(formData);
@@ -71,20 +73,21 @@ export const EditTimesheetDay = ({
 
   useEffect(() => {
     if (state?.errors) {
-      Object.entries(state.errors).forEach(([key , messages]) => {
+      Object.entries(state.errors).forEach(([key, messages]) => {
         // @ts-expect-error Does not realise it's a key of
         form.setError(key, {
-          type: "server",
-          message: messages?.[0] ?? "Error",
+          type: 'server',
+          message: messages?.[0] ?? 'Error',
         });
       });
     }
   }, [state?.errors, form]);
 
-
   return (
-    <Form {...form} >
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full md:min-w-xl h-full">
+    <Form {...form}>
+      <form onSubmit={() => {
+        form.handleSubmit(onSubmit);
+      }} className="space-y-8 w-full md:min-w-xl h-full">
         <div className="grid md:flex gap-4 md:justify-between">
           <Card className="min-w-full md:min-w-1/2">
             <CardContent>
@@ -165,7 +168,6 @@ export const EditTimesheetDay = ({
           </div>
         ))}
 
-
         <div>
           <Button
             type="button"
@@ -188,5 +190,5 @@ export const EditTimesheetDay = ({
         </div>
       </form>
     </Form>
-  )
-}
+  );
+};

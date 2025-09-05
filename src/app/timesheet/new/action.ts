@@ -1,23 +1,23 @@
-"use server"
+'use server';
 
-import { formSchema } from "./form.schema"
-import { serverSideAuth } from "~/pocketbase/server"
-import { createTranslation } from "~/i18n/server";
-import { withNewRelicWebTransaction } from "~/utils/observability/withNewRelicWebTransaction";
-import { redirect } from "next/navigation";
-import newrelic from 'newrelic'
-import { TableNames } from "~/pocketbase/tables.types";
+import { formSchema } from './form.schema';
+import { serverSideAuth } from '~/pocketbase/server';
+import { createTranslation } from '~/i18n/server';
+import { withNewRelicWebTransaction } from '~/utils/observability/withNewRelicWebTransaction';
+import { redirect } from 'next/navigation';
+import newrelic from 'newrelic';
+import { TableNames } from '~/pocketbase/tables.types';
 
-export type TimesheetFormState = {
+export interface TimesheetFormState {
   errors?: {
     name?: string[] | undefined;
     minutesPerDay?: string[] | undefined;
     daysPerWeek?: string[] | undefined;
     unpaidLunchMinutes?: string[] | undefined;
     paidLunchMinutes?: string[] | undefined;
-  },
+  };
   message?: string | undefined;
-};
+}
 
 async function createTimesheet(formData: FormData): Promise<TimesheetFormState> {
   const pb = await serverSideAuth();
@@ -25,14 +25,14 @@ async function createTimesheet(formData: FormData): Promise<TimesheetFormState> 
   const schema = formSchema(t);
 
   const values = {
-    name: formData.get("name"),
+    name: formData.get('name'),
     minutesPerDay: {
-      hours: formData.get("minutesPerDay.hours"),
-      minutes: formData.get("minutesPerDay.minutes"),
+      hours: formData.get('minutesPerDay.hours'),
+      minutes: formData.get('minutesPerDay.minutes'),
     },
-    daysPerWeek: formData.get("daysPerWeek"),
-    unpaidLunchMinutes: formData.get("unpaidLunchMinutes"),
-    paidLunchMinutes: formData.get("paidLunchMinutes"),
+    daysPerWeek: formData.get('daysPerWeek'),
+    unpaidLunchMinutes: formData.get('unpaidLunchMinutes'),
+    paidLunchMinutes: formData.get('paidLunchMinutes'),
   };
 
   const parsed = schema.safeParse(values);
@@ -40,7 +40,7 @@ async function createTimesheet(formData: FormData): Promise<TimesheetFormState> 
     const { error } = parsed;
     return {
       errors: error.flatten().fieldErrors,
-    }
+    };
   }
 
   try {
@@ -50,22 +50,21 @@ async function createTimesheet(formData: FormData): Promise<TimesheetFormState> 
       minutesPerDay: (parsed.data.minutesPerDay.hours * 60) + parsed.data.minutesPerDay.minutes,
       daysPerWeek: parsed.data.daysPerWeek,
       paidLunchMinutes: parsed.data.paidLunchMinutes,
-      unpaidLunchMinutes: parsed.data.unpaidLunchMinutes
+      unpaidLunchMinutes: parsed.data.unpaidLunchMinutes,
     });
-  } catch(err){
+  }
+  catch (err) {
     const pbError = err instanceof Error ? err.message : 'Unknown';
     newrelic.noticeError(new Error(`Failed to create new timesheet with error ${pbError}`));
-    return { message: t('timesheet.new.error_generic') }
+    return { message: t('timesheet.new.error_generic') };
   }
 
   redirect('/dashboard');
 }
 
-
 export async function createTimesheetWithState(
   _prevState: TimesheetFormState,
-  formData: FormData
+  formData: FormData,
 ): Promise<TimesheetFormState> {
-
   return await withNewRelicWebTransaction('timesheet/new', () => createTimesheet(formData));
 }

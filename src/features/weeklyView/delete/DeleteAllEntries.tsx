@@ -1,16 +1,15 @@
-"use client"
+'use client';
 
-import { DialogDescription } from "@radix-ui/react-dialog";
-import { useRef, useState } from "react";
-import { useTranslation } from "react-i18next"
-import { Button } from "~/components/ui/button";
-import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "~/components/ui/dialog";
-import { Input } from "~/components/ui/input";
-import { api } from "~/trpc/react";
-import { useTimesheetConfig } from "~/hooks/useTimesheetConfig";
+import { DialogDescription } from '@radix-ui/react-dialog';
+import { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Button } from '~/components/ui/button';
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '~/components/ui/dialog';
+import { Input } from '~/components/ui/input';
+import { api } from '~/trpc/react';
+import { useTimesheetConfig } from '~/hooks/useTimesheetConfig';
 
-
-export default function DeleteAllEntries(){
+export default function DeleteAllEntries() {
   const { t } = useTranslation();
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -18,10 +17,10 @@ export default function DeleteAllEntries(){
 
   const deleteAllEntriesMutation = api.timesheet.deleteAllEntries.useMutation({
     onSuccess: async () => {
-      if (closeButtonRef.current){
-        closeButtonRef.current.click()
+      if (closeButtonRef.current) {
+        closeButtonRef.current.click();
       }
-    }
+    },
   });
 
   return (
@@ -38,7 +37,7 @@ export default function DeleteAllEntries(){
           <DialogHeader>
             <DialogTitle>{t('timesheet.[id].danger_zone.delete_all_entries.dialog.title')}</DialogTitle>
             <DialogDescription>
-              {t('timesheet.[id].danger_zone.delete_all_entries.dialog.description', { name: config.name})}
+              {t('timesheet.[id].danger_zone.delete_all_entries.dialog.description', { name: config.name })}
 
               <br />
 
@@ -52,7 +51,7 @@ export default function DeleteAllEntries(){
                 name="name"
                 placeholder={config.name}
                 onChange={(e) => {
-                  if (e.target.value){
+                  if (e.target.value) {
                     setIsButtonDisabled(e.target.value !== config.name);
                   }
                 }}
@@ -68,13 +67,15 @@ export default function DeleteAllEntries(){
               disabled={isButtonDisabled}
               onClick={() => {
                 deleteAllEntriesMutation.mutate({
-                  timesheetConfigId: config.id
-                })
+                  timesheetConfigId: config.id,
+                });
               }}
-            >{t('timesheet.[id].danger_zone.delete_all_entries.dialog.buttons.delete')}</Button>
+            >
+              {t('timesheet.[id].danger_zone.delete_all_entries.dialog.buttons.delete')}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </form>
     </Dialog>
-  )
+  );
 }

@@ -1,8 +1,8 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { env } from "~/env";
-import { authDataToCookie } from "~/pocketbase/auth";
-import { serverSideAuth } from "~/pocketbase/server";
-import { TableNames } from "~/pocketbase/tables.types";
+import { type NextRequest, NextResponse } from 'next/server';
+import { env } from '~/env';
+import { authDataToCookie } from '~/pocketbase/auth';
+import { serverSideAuth } from '~/pocketbase/server';
+import { TableNames } from '~/pocketbase/tables.types';
 
 export async function GET(_request: NextRequest) {
   const pb = await serverSideAuth();
@@ -15,18 +15,19 @@ export async function GET(_request: NextRequest) {
     expires.setDate(expires.getDate() + 30);
 
     successfulResponse.cookies.set(
-      "pb_auth",
+      'pb_auth',
       JSON.stringify(authDataToCookie(authData)),
       {
-        secure: env.NODE_ENV === "production",
-        sameSite: "lax",
-        path: "/",
+        secure: env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/',
         expires,
       },
     );
 
     return successfulResponse;
-  } catch {
+  }
+  catch {
     return new NextResponse(null, { status: 401 });
   }
 }

@@ -1,12 +1,12 @@
-"use client"
+'use client';
 
-import { api } from "~/trpc/react";
-import React, { useMemo } from "react";
-import { workDurationInDay } from "~/lib/workday";
-import { formatDuration } from "date-fns";
-import { useTimesheetDay } from "~/features/workday/useTimesheetDay";
-import { TargetHours } from "~/features/targetHours/TargetHours";
-import { useTick } from "~/hooks/useTick";
+import { api } from '~/trpc/react';
+import React, { useMemo } from 'react';
+import { workDurationInDay } from '~/lib/workday';
+import { formatDuration } from 'date-fns';
+import { useTimesheetDay } from '~/features/workday/useTimesheetDay';
+import { TargetHours } from '~/features/targetHours/TargetHours';
+import { useTick } from '~/hooks/useTick';
 
 export default function HoursWorked() {
   const { timesheetId: id, day } = useTimesheetDay();
@@ -23,7 +23,7 @@ export default function HoursWorked() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timesheet, tick]);
 
-  if (!timesheet.clockIn){
+  if (!timesheet.clockIn) {
     return null;
   }
 

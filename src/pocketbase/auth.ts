@@ -1,11 +1,11 @@
-import type { RecordAuthResponse, RecordModel } from "pocketbase";
-import type { PBAuthResponse } from "./builtin.types";
+import type { RecordAuthResponse, RecordModel } from 'pocketbase';
+import type { PBAuthResponse } from './builtin.types';
 
 export function authDataToCookie(
   authData: PBAuthResponse | RecordAuthResponse<RecordModel>,
 ) {
   const avatar = `${authData.meta?.avatarUrl ?? authData.record.avatar}`;
-  const name = `${authData.record.username ?? authData.meta?.name}`
+  const name = `${authData.record.username ?? authData.meta?.name}`;
 
   return {
     token: authData.token,

@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
 export const setCookieClient = (
   name: string,
   value: string,
   overrideOptions?: {
-    expires?: Date;
-    path?: string;
-    SameSite?: "Lax";
-    "max-age"?: number;
+    'expires'?: Date;
+    'path'?: string;
+    'SameSite'?: 'Lax';
+    'max-age'?: number;
   },
 ) => {
   let expires = new Date();
@@ -18,9 +18,9 @@ export const setCookieClient = (
   }
 
   const options = {
-    path: "/",
+    path: '/',
     expires: overrideOptions?.expires ?? expires,
-    SameSite: "Lax",
+    SameSite: 'Lax',
     ...overrideOptions,
   };
 
@@ -33,13 +33,13 @@ export const setCookieClient = (
 };
 
 export const getCookieClient = (name: string) => {
-  if (typeof document === "undefined") {
+  if (typeof document === 'undefined') {
     return undefined;
   }
   const matches = new RegExp(
-    "(?:^|; )" +
-				name.replace(/([.$?*|{}()[\]/+^])/g, "\\$1") +
-				"=([^;]*)",
+    '(?:^|; )'
+    + name.replace(/([.$?*|{}()[\]/+^])/g, '\\$1')
+    + '=([^;]*)',
   ).exec(document.cookie);
   return matches ? decodeURIComponent(matches[1] ?? '') : undefined;
 };

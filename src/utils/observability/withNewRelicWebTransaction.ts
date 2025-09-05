@@ -9,7 +9,7 @@ import newrelic from 'newrelic';
  */
 export async function withNewRelicWebTransaction<T>(
   name: string,
-  fn: () => Promise<T>
+  fn: () => Promise<T>,
 ): Promise<T> {
   return await new Promise<T>((resolve, reject) => {
     newrelic.startWebTransaction(name, () => {
@@ -18,10 +18,12 @@ export async function withNewRelicWebTransaction<T>(
         try {
           const result = await fn();
           resolve(result);
-        } catch (err) {
+        }
+        catch (err) {
           // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
           reject(err);
-        } finally {
+        }
+        finally {
           transaction.end();
         }
       })().catch((err) => {

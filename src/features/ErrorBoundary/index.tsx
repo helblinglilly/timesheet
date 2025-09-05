@@ -1,14 +1,15 @@
-import React from "react";
+import React from 'react';
+import log from '~/utils/log';
 
-type ErrorBoundaryProps = {
+interface ErrorBoundaryProps {
   fallback: React.ReactNode;
   children: React.ReactNode;
-};
+}
 
-type ErrorBoundaryState = {
+interface ErrorBoundaryState {
   hasError: boolean;
   error: Error | null;
-};
+}
 
 export class ErrorBoundary extends React.Component<
   ErrorBoundaryProps,
@@ -23,10 +24,10 @@ export class ErrorBoundary extends React.Component<
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+  componentDidCatch(error: Error, _errorInfo: React.ErrorInfo) {
     error.name = 'ErrorBoundary';
-    // eslint-disable-next-line no-console
-    console.error(error, errorInfo);
+
+    log.error('Caught in error boundary', error);
   }
 
   render() {

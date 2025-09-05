@@ -1,17 +1,16 @@
-"use client"
+'use client';
 
-import { DialogDescription } from "@radix-ui/react-dialog";
-import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
-import { useTranslation } from "react-i18next"
-import { Button } from "~/components/ui/button";
-import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "~/components/ui/dialog";
-import { Input } from "~/components/ui/input";
-import { api } from "~/trpc/react";
-import { useTimesheetConfig } from "~/hooks/useTimesheetConfig";
+import { DialogDescription } from '@radix-ui/react-dialog';
+import { useRouter } from 'next/navigation';
+import { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Button } from '~/components/ui/button';
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '~/components/ui/dialog';
+import { Input } from '~/components/ui/input';
+import { api } from '~/trpc/react';
+import { useTimesheetConfig } from '~/hooks/useTimesheetConfig';
 
-
-export default function DeleteTimesheet(){
+export default function DeleteTimesheet() {
   const { t } = useTranslation();
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -20,8 +19,8 @@ export default function DeleteTimesheet(){
 
   const deleteTimesheetMutation = api.timesheet.deleteTimesheet.useMutation({
     onSuccess: async () => {
-      router.push('/dashboard')
-    }
+      router.push('/dashboard');
+    },
   });
 
   return (
@@ -38,7 +37,7 @@ export default function DeleteTimesheet(){
           <DialogHeader>
             <DialogTitle>{t('timesheet.[id].danger_zone.delete_timesheet.dialog.title')}</DialogTitle>
             <DialogDescription>
-              {t('timesheet.[id].danger_zone.delete_timesheet.dialog.description', { name: config.name})}
+              {t('timesheet.[id].danger_zone.delete_timesheet.dialog.description', { name: config.name })}
 
               <br />
 
@@ -52,7 +51,7 @@ export default function DeleteTimesheet(){
                 name="name"
                 placeholder={config.name}
                 onChange={(e) => {
-                  if (e.target.value){
+                  if (e.target.value) {
                     setIsButtonDisabled(e.target.value !== config.name);
                   }
                 }}
@@ -68,13 +67,15 @@ export default function DeleteTimesheet(){
               disabled={isButtonDisabled}
               onClick={() => {
                 deleteTimesheetMutation.mutate({
-                  timesheetConfigId: config.id
-                })
+                  timesheetConfigId: config.id,
+                });
               }}
-            >{t('timesheet.[id].danger_zone.delete_timesheet.dialog.buttons.delete')}</Button>
+            >
+              {t('timesheet.[id].danger_zone.delete_timesheet.dialog.buttons.delete')}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </form>
     </Dialog>
-  )
+  );
 }

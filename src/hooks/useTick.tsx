@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 
-type TickContextType = {
+interface TickContextType {
   tick: number;
   retick: () => void;
-};
+}
 
 const TickContext = createContext<TickContextType | undefined>(undefined);
 

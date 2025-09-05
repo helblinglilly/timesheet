@@ -1,10 +1,9 @@
-"use client";
+'use client';
 
-import React from 'react'
+import React from 'react';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '~/components/ui/breadcrumb';
 import { useTranslation } from 'react-i18next';
 import { useTimesheetConfig } from '~/hooks/useTimesheetConfig';
-
 
 export const TimesheetBreadcrumbs = () => {
   const { t } = useTranslation();
@@ -23,4 +22,4 @@ export const TimesheetBreadcrumbs = () => {
       </BreadcrumbList>
     </Breadcrumb>
   );
-}
+};

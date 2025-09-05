@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
 export default function AutoSubmit() {
   const formRef = useRef<HTMLFormElement>(null);

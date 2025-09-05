@@ -1,10 +1,10 @@
-import { redirect } from "next/navigation";
-import { serverSideAuth } from "~/pocketbase/server";
+import { redirect } from 'next/navigation';
+import { serverSideAuth } from '~/pocketbase/server';
 
-export default async function AuthenticatedLayout({ children } : { children: React.ReactNode }){
+export default async function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
   const pb = await serverSideAuth();
 
-  if (!pb.authStore.isValid){
+  if (!pb.authStore.isValid) {
     redirect('/auth/login');
   }
 
@@ -12,5 +12,5 @@ export default async function AuthenticatedLayout({ children } : { children: Rea
     <>
       {children}
     </>
-  )
+  );
 }

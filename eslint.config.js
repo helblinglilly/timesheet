@@ -19,29 +19,41 @@ export default tseslint.config(
 			...tseslint.configs.recommendedTypeChecked,
 			...tseslint.configs.stylisticTypeChecked
 		],
-      rules: {
-    "@typescript-eslint/array-type": "off",
-    "@typescript-eslint/consistent-type-definitions": "off",
-    "@stylistic/indent": ["error", 2],
-    "@typescript-eslint/consistent-type-imports": [
-      "warn",
-      { prefer: "type-imports", fixStyle: "inline-type-imports" },
-    ],
-    "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
-    "@typescript-eslint/require-await": "off",
-    "@typescript-eslint/no-misused-promises": [
-      "error",
-      { checksVoidReturn: { attributes: false } },
-    ],
-    "no-console": "warn",
-    "no-restricted-syntax": [
-      "warn",
-      {
-        selector: "MemberExpression[object.name='process'][property.name='env']",
-        message: "Do not use process.env directly. Use ~/env instead"
-      }
-    ]
-  },
+		...stylistic.configs.customize({
+      indent: 2,
+      quotes: 'single',
+      semi: true,
+    }),
+    rules: {
+      "@stylistic/indent": ["error", 2],
+      "@typescript-eslint/consistent-type-imports": [
+        "warn",
+        { prefer: "type-imports", fixStyle: "inline-type-imports" },
+      ],
+      "@typescript-eslint/no-unused-vars": [
+        "error", {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: '^_'
+        }
+      ],
+      "@typescript-eslint/require-await": "off",
+      "no-console": "warn",
+      "no-restricted-syntax": [
+        "warn",
+        {
+          selector: "MemberExpression[object.name='process'][property.name='env']",
+          message: "Do not use process.env directly. Use ~/env instead"
+        }
+      ],
+      '@/quotes': [
+        'error',
+        'single',
+        {
+          allowTemplateLiterals: false,
+          avoidEscape: true,
+        },
+      ],
+    },
   },
   {
 		linterOptions: {
@@ -52,5 +64,5 @@ export default tseslint.config(
 				projectService: true
 			}
 		}
-	}
+	},
 )

@@ -1,4 +1,4 @@
-export type PocketbaseError = {
+export interface PocketbaseError {
   url: string;
   code: number;
   message: string;
@@ -11,19 +11,19 @@ export type PocketbaseError = {
       }
     >;
   };
-};
+}
 
-export type PocketbaseAuthMethods = {
-  name: "google";
-  displayName: "Google" | "Github";
+export interface PocketbaseAuthMethods {
+  name: 'google';
+  displayName: 'Google' | 'Github';
   state: string;
   authUrl: string;
   codeVerifier: string;
   codeChallenge: string;
   codeChallengeMethod: string;
-};
+}
 
-export type PBOAuthResponseGoogle = {
+export interface PBOAuthResponseGoogle {
   id: string;
   name: string;
   /**
@@ -39,9 +39,9 @@ export type PBOAuthResponseGoogle = {
     */
   expiry: string;
   isNew: boolean;
-};
+}
 
-export type PBAuthResponse = {
+export interface PBAuthResponse {
   meta?: PBOAuthResponseGoogle;
   record: {
     avatar: string;
@@ -56,4 +56,4 @@ export type PBAuthResponse = {
     verified: boolean;
   };
   token: string;
-};
+}
