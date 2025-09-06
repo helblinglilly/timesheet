@@ -124,7 +124,8 @@
         "title": "Edit {{ date }}",
         "fields": {
           "errors": {
-            "invalid_time": "Time must be in HH:MM"
+            "invalid_time": "Time must be in HH:MM",
+            "generic": "Something went wrong. Please try again later"
           },
           "clock_in": {
             "label": "Clock In"

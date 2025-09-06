@@ -21,16 +21,17 @@ export interface TimesheetEditFormState {
 }
 
 function parseBreaksFromFormData(formData: FormData) {
-  const breaks: { breakIn: string; breakOut: string | null }[] = [];
+  const breaks: { breakEntryId: string | null; breakIn: string | null; breakOut: string | null }[] = [];
 
   for (const [key, value] of formData.entries()) {
-    const match = /^breaks\[(\d+)\]\[(breakIn|breakOut)\]$/.exec(key);
+    const match = /^breaks\[(\d+)\]\[(breakIn|breakOut|breakEntryId)\]$/.exec(key);
     if (match) {
       const idx = Number(match[1]);
-      const field = match[2] as 'breakIn' | 'breakOut';
+      const field = match[2] as 'breakIn' | 'breakOut' | 'breakEntryId';
 
       breaks[idx] = {
-        breakIn: breaks[idx]?.breakIn ?? '',
+        breakEntryId: breaks[idx]?.breakEntryId ?? null,
+        breakIn: breaks[idx]?.breakIn ?? null,
         breakOut: breaks[idx]?.breakOut ?? null,
       };
 
@@ -137,12 +138,48 @@ async function editTimesheetDay(formData: FormData): Promise<TimesheetEditFormSt
       })
     }
 
-    console.log(timesheetEntryId);
+    const breakBatch = pb.createBatch();
+
+    parsed.data.breaks.forEach((breakEntry) => {
+      const breakInDate: Date = set(
+        parseISO(parsed.data.day), {
+          hours: Number(breakEntry.breakIn.split(':')[0]),
+          minutes: Number(breakEntry.breakIn.split(':')[1]),
+          seconds: 0,
+        },
+      );
+
+      const breakOutDate: Date | null = breakEntry.breakOut ? set(
+        parseISO(parsed.data.day), {
+          hours: Number(breakEntry.breakOut.split(':')[0]),
+          minutes: Number(breakEntry.breakOut.split(':')[1]),
+          seconds: 0,
+        },
+      ) : null;
+
+      if (breakEntry.breakEntryId){
+        breakBatch.collection(TableNames.TimesheetBreaks).update(breakEntry.breakEntryId, {
+          breakIn: breakInDate,
+          breakOut: breakOutDate
+        })
+      } else {
+        breakBatch.collection(TableNames.TimesheetBreaks).create({
+          user: pb.authStore?.record?.id,
+          timesheet_entry: timesheetEntryId,
+          breakIn: breakInDate,
+          breakOut: breakOutDate
+        })
+      }
+    })
+
+    if (parsed.data.breaks.length > 0){
+      await breakBatch.send();
+    }
   }
   catch (err) {
     const pbError = err instanceof Error ? err.message : 'Unknown';
     log.error('Failed to edit timesheet', pbError);
-    return { message: t('timesheet.[id].edit.error_generic') };
+    return { message: t('timesheet.[id].edit.fields.errors.generic') };
   }
 
   redirect(`/timesheet/${parsed.data.id}?date=${format(new Date(parsed.data.day), 'yyy-LL-dd')}&refetch_date=${format(new Date(parsed.data.day), 'yyy-LL-dd')}`);

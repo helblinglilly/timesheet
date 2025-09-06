@@ -40,6 +40,7 @@ export const EditTimesheetDay = ({
       clockIn: timesheet.clockIn ? format(timesheet.clockIn, 'HH:mm') : '09:00',
       breaks: timesheet.breaks
         ? timesheet.breaks.map(a => ({
+          breakEntryId: a.breakEntryId,
           breakIn: format(new Date(a.breakIn), 'HH:mm'),
           breakOut: a.breakOut ? format(new Date(a.breakOut), 'HH:mm') : '',
         }))
@@ -68,6 +69,11 @@ export const EditTimesheetDay = ({
     formData.append('clockOut', data.clockOut ?? '');
 
     data.breaks.forEach((breakData, i) => {
+      if (breakData.breakEntryId){
+        formData.append(`breaks[${i}][breakEntryId]`, breakData.breakEntryId)
+      } else {
+        formData.delete(`breaks[${i}][breakEntryId]`)
+      }
       formData.append(`breaks[${i}][breakIn]`, breakData.breakIn);
       formData.append(`breaks[${i}][breakOut]`, breakData.breakOut ?? '');
     });
