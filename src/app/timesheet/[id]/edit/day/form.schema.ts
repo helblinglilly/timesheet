@@ -23,7 +23,6 @@ export const formSchema = (t: TFunction<Namespace, undefined>) => z.object({
         val => !val || timeRegex.test(val),
         { message: t('timesheet.[id].edit.fields.errors.invalid_time') },
       ).optional(),
-    breakEntryId: z.string().nullable().optional(),
   })),
   clockOut: z.string()
     .refine(

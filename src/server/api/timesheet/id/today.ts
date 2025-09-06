@@ -53,6 +53,11 @@ export async function getTimesheetByDate(pb: Client, id: string, date: Date) {
         breakIn: breakRecord.breakIn,
         breakOut: breakRecord.breakOut,
       };
+    }).sort((a, b) => {
+      const aDate = new Date(a.breakIn);
+      const bDate = new Date(b.breakIn);
+
+      return aDate.valueOf() > bDate.valueOf() ? 1 : -1;
     }),
   };
 }

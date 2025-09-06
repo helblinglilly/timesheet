@@ -69,11 +69,6 @@ export const EditTimesheetDay = ({
     formData.append('clockOut', data.clockOut ?? '');
 
     data.breaks.forEach((breakData, i) => {
-      if (breakData.breakEntryId){
-        formData.append(`breaks[${i}][breakEntryId]`, breakData.breakEntryId)
-      } else {
-        formData.delete(`breaks[${i}][breakEntryId]`)
-      }
       formData.append(`breaks[${i}][breakIn]`, breakData.breakIn);
       formData.append(`breaks[${i}][breakOut]`, breakData.breakOut ?? '');
     });

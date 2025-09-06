@@ -21,16 +21,15 @@ export interface TimesheetEditFormState {
 }
 
 function parseBreaksFromFormData(formData: FormData) {
-  const breaks: { breakEntryId: string | null; breakIn: string | null; breakOut: string | null }[] = [];
+  const breaks: { breakIn: string | null; breakOut: string | null }[] = [];
 
   for (const [key, value] of formData.entries()) {
-    const match = /^breaks\[(\d+)\]\[(breakIn|breakOut|breakEntryId)\]$/.exec(key);
+    const match = /^breaks\[(\d+)\]\[(breakIn|breakOut)\]$/.exec(key);
     if (match) {
       const idx = Number(match[1]);
-      const field = match[2] as 'breakIn' | 'breakOut' | 'breakEntryId';
+      const field = match[2] as 'breakIn' | 'breakOut';
 
       breaks[idx] = {
-        breakEntryId: breaks[idx]?.breakEntryId ?? null,
         breakIn: breaks[idx]?.breakIn ?? null,
         breakOut: breaks[idx]?.breakOut ?? null,
       };
@@ -138,6 +137,20 @@ async function editTimesheetDay(formData: FormData): Promise<TimesheetEditFormSt
       })
     }
 
+    const deleteBreaksBatch = pb.createBatch();
+
+    if (parsed.data.breaks.length > 0){
+      const allBreaks = await pb.collection(TableNames.TimesheetBreaks).getFullList({
+        filter: `timesheet_entry.id = "${timesheetEntryId}"`
+      });
+
+      allBreaks.map((a) => {
+        deleteBreaksBatch.collection(TableNames.TimesheetBreaks).delete(a.id)
+      })
+
+      await deleteBreaksBatch.send();
+    }
+
     const breakBatch = pb.createBatch();
 
     parsed.data.breaks.forEach((breakEntry) => {
@@ -157,19 +170,12 @@ async function editTimesheetDay(formData: FormData): Promise<TimesheetEditFormSt
         },
       ) : null;
 
-      if (breakEntry.breakEntryId){
-        breakBatch.collection(TableNames.TimesheetBreaks).update(breakEntry.breakEntryId, {
-          breakIn: breakInDate,
-          breakOut: breakOutDate
-        })
-      } else {
-        breakBatch.collection(TableNames.TimesheetBreaks).create({
-          user: pb.authStore?.record?.id,
-          timesheet_entry: timesheetEntryId,
-          breakIn: breakInDate,
-          breakOut: breakOutDate
-        })
-      }
+      breakBatch.collection(TableNames.TimesheetBreaks).create({
+        user: pb.authStore?.record?.id,
+        timesheet_entry: timesheetEntryId,
+        breakIn: breakInDate,
+        breakOut: breakOutDate
+      })
     })
 
     if (parsed.data.breaks.length > 0){
