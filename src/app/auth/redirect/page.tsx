@@ -4,6 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { handleOAuthRedirect } from './actions';
+import { deleteCookieClient, getCookieClient } from '~/utils/cookies';
 
 export default function RedirectPage() {
   const { t } = useTranslation();
@@ -27,9 +28,22 @@ export default function RedirectPage() {
   }, [result]);
 
   useEffect(() => {
-    if (result) {
-      window.location.replace(result.success ? '/dashboard' : '/auth/login');
+    if (!result){
+      return;
     }
+
+    if (!result.success){
+      window.location.replace('/auth/login');
+    }
+
+    const successUri = '/dashboard';
+    const redirectUri = getCookieClient('redirect_uri');
+
+    if (redirectUri){
+      deleteCookieClient('redirect_uri', '/auth/redirect');
+    }
+
+    window.location.replace(redirectUri ?? successUri);
   }, [result]);
 
   return (

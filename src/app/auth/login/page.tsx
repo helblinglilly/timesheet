@@ -27,6 +27,7 @@ export default async function Login() {
       authUrl: `${method.authUrl}${headersList.get('x-forwarded-proto')}://${headersList.get('host')}/auth/redirect`,
     };
   });
+
   return (
     <>
       <div className="p-4">

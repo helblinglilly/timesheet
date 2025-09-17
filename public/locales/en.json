@@ -175,6 +175,9 @@
         "invite_email": {
           "subject": "Invite to timesheet {{ name }}",
           "body": "Hi there<br />You have been invited to access the timesheet \"{{ name }}\" on <a href=\"timesheet.helbling.uk\">timesheet.helbling.uk</a>.<br /><br />To accept this invite, follow this link: <a href=\"{{ link }}\">{{ link }}</a> <br /><br />Many thanks,<br />The timesheet team"
+        },
+        "redemption": {
+          "loading": "Accepting invite..."
         }
       },
       "weekly": {

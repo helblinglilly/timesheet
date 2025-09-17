@@ -5,6 +5,7 @@ import { Button } from '~/components/ui/button';
 import type { PocketbaseAuthMethods } from '~/pocketbase/builtin.types';
 import { setCookieClient } from '~/utils/cookies';
 import GoogleIcon from './google.svg';
+import { addMinutes } from 'date-fns';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const iconMap: Record<PocketbaseAuthMethods['name'], any> = {
@@ -15,6 +16,8 @@ const iconMap: Record<PocketbaseAuthMethods['name'], any> = {
 export default function OAuthMethod({
   authMethod,
 }: { authMethod: PocketbaseAuthMethods }) {
+
+
   return (
     <Button
       key={authMethod.name}
@@ -22,6 +25,17 @@ export default function OAuthMethod({
       type="button"
       onClick={() => {
         setCookieClient('auth_provider', JSON.stringify(authMethod));
+
+        const params = new URLSearchParams(window.location.search);
+        const redirectUri = params.get('redirect_uri');
+
+        if (redirectUri){
+          setCookieClient('redirect_uri', redirectUri, {
+            path: '/auth/redirect',
+            expires: addMinutes(new Date(), 2)
+          })
+        }
+
         window.location.assign(authMethod.authUrl);
       }}
     >
