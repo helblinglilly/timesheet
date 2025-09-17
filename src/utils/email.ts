@@ -16,7 +16,7 @@ export async function sendEmail({
   cc?: string | undefined;
   bcc?: string | undefined;
   subject: string;
-  text: string | undefined;
+  text?: string | undefined;
   html?: string | undefined;
 }){
   if (!env.SMTP_HOST || !env.SMTP_PORT || !env.SMTP_USER || !env.SMTP_PASSWORD || !env.EMAIL_SENDER){
@@ -33,6 +33,15 @@ export async function sendEmail({
         pass: env.SMTP_PASSWORD,
       }
     });
+
+    const domain = to.split('@')[1] ?? '';
+
+    if ([
+      'example.com',
+      'test.com'
+    ].includes(domain)){
+      return;
+    }
 
     await transporter.sendMail({
       from: env.EMAIL_SENDER,
