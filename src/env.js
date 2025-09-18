@@ -9,6 +9,8 @@ export const env = createEnv({
   server: {
     NODE_ENV: z.enum(["development", "test", "production"]),
     POCKETBASE_URL: z.string(),
+    POCKETBASE_SUPERUSER_EMAIL: z.string(),
+    POCKETBASE_SUPERUSER_PASSWORD: z.string(),
 
     // Only required if you want to send Emails
     SMTP_HOST: z.string().optional(),
@@ -16,6 +18,7 @@ export const env = createEnv({
     SMTP_USER: z.string().optional(),
     SMTP_PASSWORD: z.string().optional(),
     EMAIL_SENDER: z.string().optional(),
+
   },
 
   /**
@@ -35,6 +38,8 @@ export const env = createEnv({
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
     POCKETBASE_URL: process.env.POCKETBASE_URL,
+    POCKETBASE_SUPERUSER_EMAIL: process.env.POCKETBASE_SUPERUSER_EMAIL,
+    POCKETBASE_SUPERUSER_PASSWORD: process.env.POCKETBASE_SUPERUSER_PASSWORD,
     NEXT_PUBLIC_HOST: process.env.NEXT_PUBLIC_HOST,
     SMTP_HOST: process.env.SMTP_HOST,
     SMTP_PORT: process.env.SMTP_PORT ?? 587,

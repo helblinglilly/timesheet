@@ -20,3 +20,13 @@ export async function serverSideAuth() {
 
   return pb;
 }
+
+export async function superuserAuth(){
+  const pb = new Pocketbase(env.POCKETBASE_URL);
+  // Handled by react query
+  pb.autoCancellation(false);
+
+  await pb.collection('_superusers').authWithPassword(env.POCKETBASE_SUPERUSER_EMAIL, env.POCKETBASE_SUPERUSER_PASSWORD)
+
+  return pb;
+}

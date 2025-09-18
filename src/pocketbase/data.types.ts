@@ -6,6 +6,7 @@ export interface TimesheetConfig extends RecordModel {
   daysPerWeek: number;
   paidLunchMinutes: number;
   unpaidLunchMinutes: number;
+  sharedUsers: string[];
   kind: 'office' | 'freelance';
 }
 
@@ -21,4 +22,11 @@ export interface TimesheetBreaks extends RecordModel {
 
 export interface User extends RecordModel {
   name: string;
+}
+
+export interface TimesheetShare extends RecordModel {
+  timesheet: string;
+  user_email: string;
+  invite_code: string;
+  expires_at: string; // Date
 }

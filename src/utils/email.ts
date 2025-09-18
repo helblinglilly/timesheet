@@ -23,11 +23,13 @@ export async function sendEmail({
     throw new Error('Cannot send Email because environment variables are missing');
   }
 
+  log.info(`Sending Email with subject "${subject}" to "${to}"`)
+
   try {
     const transporter = nodemailer.createTransport({
       host: env.SMTP_HOST,
       port: env.SMTP_PORT,
-      secure: true,
+      secure: false,
       auth: {
         user: env.SMTP_USER,
         pass: env.SMTP_PASSWORD,
