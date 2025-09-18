@@ -1,10 +1,8 @@
-'use server';
-
 import { redirect } from 'next/navigation';
 import { createTranslation } from '~/i18n/server';
 import type { TimesheetConfig, User } from '~/pocketbase/data.types';
 import { serverSideAuth } from '~/pocketbase/server';
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Card, CardContent, CardFooter, CardHeader } from '~/components/ui/card';
 import HoursWorked from './HoursWorked';
 import { Button } from '~/components/ui/button';
@@ -17,6 +15,7 @@ import { TableNames } from '~/pocketbase/tables.types';
 import { TimesheetDayProvider } from '~/features/workday/useTimesheetDay';
 import WorkdayLog from '~/features/workday/WorkdayLog';
 import { TimesheetConfigProvider } from '~/hooks/useTimesheetConfig';
+import { Skeleton } from '~/components/ui/skeleton';
 
 export default async function Dashboard() {
   const { t } = await createTranslation();
@@ -49,18 +48,24 @@ export default async function Dashboard() {
                   <TimesheetDayProvider timesheetId={timesheet.id} day={today}>
                     <CardContent className="gap-4 grid">
                       <div className="grid md:flex gap-4 w-full md:justify-between">
-                        <ClockInButton className="md:w-1/5" />
-                        <BreakInButton className="md:w-1/5" />
-                        <BreakOutButton className="md:w-1/5" />
-                        <ClockOutButton className="md:w-1/5" />
+                        <Suspense fallback={<Skeleton className="w-full min-h-48 md:min-h-8" />}>
+                          <ClockInButton className="md:w-1/5" />
+                          <BreakInButton className="md:w-1/5" />
+                          <BreakOutButton className="md:w-1/5" />
+                          <ClockOutButton className="md:w-1/5" />
+                        </Suspense>
                       </div>
                       <h3 className="text-lg font-semibold">{ t('timesheet.today.log.title') }</h3>
-                      <WorkdayLog />
+                      <Suspense fallback={<div /> }>
+                        <WorkdayLog />
+                      </Suspense>
                     </CardContent>
 
                     <CardFooter>
                       <div className="grid w-full">
-                        <HoursWorked />
+                        <Suspense fallback={<div /> }>
+                          <HoursWorked />
+                        </Suspense>
                       </div>
 
                       <Link href={`/timesheet/${timesheet.id}`} className="w-full md:max-w-1/5">
