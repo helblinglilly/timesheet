@@ -5,7 +5,8 @@ import type Client from 'pocketbase';
 import { v4 as uuidv4 } from 'uuid';
 import { env } from '~/env';
 import { createTranslation } from '~/i18n/server';
-import { type TimesheetConfig } from '~/pocketbase/data.types';
+import { type User, type TimesheetConfig } from '~/pocketbase/data.types';
+import { superuserAuth } from '~/pocketbase/server';
 import { TableNames } from '~/pocketbase/tables.types';
 import { sendEmail } from '~/utils/email';
 
@@ -54,5 +55,42 @@ export async function removeUserAccess(pb: Client, {
 
   await pb.collection(TableNames.TimesheetConfig).update(timesheetConfigId, {
     sharedUsers: existingConfg.sharedUsers.filter((user) => user !== sharedUserId)
+  })
+}
+
+export async function getAllSharedUsers(pb: Client, {
+  timesheetConfigId,
+}: {
+  timesheetConfigId: string;
+}){
+  const result = await pb.collection<TimesheetConfig>(TableNames.TimesheetConfig).getOne(timesheetConfigId)
+
+  const superuser = await superuserAuth();
+
+  const filterString = result.sharedUsers.map((user) => `id="${user}"`).join(' || ');
+
+  /**
+   * This is dirty
+   * Users aren't meant to be query-able and this works around the emailVisibility field in PB
+   *
+   * At this point though, a user wil have accepted an invite from another user, effectively
+   * expressing consent that their Email can be shared.
+   * To help the timesheet owners manage other users vs their own alt accounts (i.e. work account)
+   * it's helpful for them to see the profile name + email in the list.
+   */
+  const users = await superuser.collection<User>(TableNames.User).getList(1, 10, {
+    filter: filterString
+  })
+
+  return users.items.map((user) => {
+    const [identifier, domain] = user.email.split('@');
+
+    const maskedIdentifier = (identifier ?? '').slice(0, 3) + '*'.repeat((identifier?.length ?? 0) - 3);
+
+    return {
+      id: user.id,
+      email: `${maskedIdentifier}@${domain}`,
+      name: user.name
+    }
   })
 }

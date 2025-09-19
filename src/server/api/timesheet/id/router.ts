@@ -4,8 +4,7 @@ import { getTimesheetByDate, clockIn, clockOut, breakIn, breakOut, deleteAllEntr
 import type { TimesheetConfig } from '~/pocketbase/data.types';
 import { TableNames } from '~/pocketbase/tables.types';
 import { getHoursWorked } from '../week';
-import { inviteUser, removeUserAccess } from '~/features/ShareTimesheet/invite';
-import type { PBAuthResponse } from '~/pocketbase/builtin.types';
+import { getAllSharedUsers, inviteUser, removeUserAccess } from '~/features/ShareTimesheet/invite';
 
 export const timesheetRouter = createTRPCRouter({
   /**
@@ -112,5 +111,14 @@ export const timesheetRouter = createTRPCRouter({
       timesheetConfigId: input.timesheetConfigId,
       sharedUserId: id
     })
-  })
+  }),
+
+  getAllSharedUsers: signedInProcedure.input(z.object({
+    timesheetConfigId: z.string(),
+  }))
+    .query(async ({ input, ctx }) => {
+      return getAllSharedUsers(ctx.pb, {
+        timesheetConfigId: input.timesheetConfigId
+      })
+    }),
 });

@@ -22,6 +22,7 @@ export interface TimesheetBreaks extends RecordModel {
 }
 
 export interface User extends RecordModel {
+  email: string;
   name: string;
 }
 

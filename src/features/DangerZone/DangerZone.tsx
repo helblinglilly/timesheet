@@ -6,9 +6,10 @@ import DeleteTimesheet from './delete/DeleteTimesheet';
 import { useAuthInfo } from '~/hooks/useAuthInfo';
 import { useTimesheetConfig } from '~/hooks/useTimesheetConfig';
 import { useTranslation } from 'react-i18next';
-import { UnlinkTimesheet } from './shared/Unlink';
+import { UnlinkTimesheetSelf } from './shared/UnlinkSelf';
 
-export const DangerZone = () => {
+
+const DangerZoneContent = () => {
   const { user } = useAuthInfo();
   const { config } = useTimesheetConfig();
   const { t } = useTranslation();
@@ -21,8 +22,8 @@ export const DangerZone = () => {
   if (isSharedTimesheet){
     return (
       <>
-        <UnlinkTimesheet />
-        <p><i>{ t('timesheet.[id].danger_zone.shared.owner') }</i></p>
+        <UnlinkTimesheetSelf />
+        <p><i>{ t('timesheet.[id].settings.share_zone.owner') }</i></p>
       </>
     )
   }
@@ -33,4 +34,17 @@ export const DangerZone = () => {
       <DeleteTimesheet />
     </>
   );
+}
+
+
+export const DangerZone = () => {
+  const { t } = useTranslation();
+
+  return (
+    <div className="grid gap-4">
+      <h2 className="text-xl font-semibold">{t('timesheet.[id].settings.danger_zone.title')}</h2>
+      <DangerZoneContent />
+    </div>
+  )
+
 }

@@ -8,7 +8,7 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 import { useTimesheetConfig } from '~/hooks/useTimesheetConfig';
 import { api } from '~/trpc/react';
 
-export const UnlinkTimesheet = () => {
+export const UnlinkTimesheetSelf = () => {
   const { t } = useTranslation();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const { config } = useTimesheetConfig();
@@ -29,17 +29,17 @@ export const UnlinkTimesheet = () => {
             <Button
               variant="destructive"
             >
-              {t('timesheet.[id].danger_zone.shared.unlink.title')}
+              {t('timesheet.[id].settings.share_zone.unlink.title')}
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-              <DialogTitle>{t('timesheet.[id].danger_zone.shared.unlink.title')}</DialogTitle>
+              <DialogTitle>{t('timesheet.[id].settings.share_zone.unlink.title')}</DialogTitle>
               <DialogDescription>
-                {t('timesheet.[id].danger_zone.shared.unlink.disclaimer')}
+                {t('timesheet.[id].settings.share_zone.unlink.self.disclaimer')}
                 <br />
                 <br />
-                {t('timesheet.[id].danger_zone.shared.unlink.description')}
+                {t('timesheet.[id].settings.share_zone.unlink.self.description')}
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4">
@@ -49,7 +49,7 @@ export const UnlinkTimesheet = () => {
             </div>
             <DialogFooter className="md:justify-between">
               <DialogClose asChild className="flex-start">
-                <Button variant="outline" ref={closeButtonRef}>{t('timesheet.[id].danger_zone.shared.unlink.buttons.cancel')}</Button>
+                <Button variant="outline" ref={closeButtonRef}>{t('timesheet.[id].settings.share_zone.unlink.self.buttons.cancel')}</Button>
               </DialogClose>
               <Button
                 variant="destructive"
@@ -59,7 +59,7 @@ export const UnlinkTimesheet = () => {
                   });
                 }}
               >
-                {t('timesheet.[id].danger_zone.shared.unlink.buttons.delete')}
+                {t('timesheet.[id].settings.share_zone.unlink.self.buttons.delete')}
               </Button>
             </DialogFooter>
           </DialogContent>

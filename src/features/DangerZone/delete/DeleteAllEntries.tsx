@@ -29,19 +29,20 @@ export default function DeleteAllEntries() {
         <DialogTrigger asChild>
           <Button
             variant="destructive"
+            className='w-full md:w-48'
           >
-            {t('timesheet.[id].danger_zone.delete_all_entries.open')}
+            {t('timesheet.[id].settings.danger_zone.delete_all_entries.open')}
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>{t('timesheet.[id].danger_zone.delete_all_entries.dialog.title')}</DialogTitle>
+            <DialogTitle>{t('timesheet.[id].settings.danger_zone.delete_all_entries.dialog.title')}</DialogTitle>
             <DialogDescription>
-              {t('timesheet.[id].danger_zone.delete_all_entries.dialog.description', { name: config.name })}
+              {t('timesheet.[id].settings.danger_zone.delete_all_entries.dialog.description', { name: config.name })}
 
               <br />
 
-              {t('timesheet.[id].danger_zone.delete_all_entries.dialog.guard_description')}
+              {t('timesheet.[id].settings.danger_zone.delete_all_entries.dialog.guard_description')}
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4">
@@ -60,7 +61,7 @@ export default function DeleteAllEntries() {
           </div>
           <DialogFooter className="md:justify-between">
             <DialogClose asChild className="flex-start">
-              <Button variant="outline" ref={closeButtonRef}>{t('timesheet.[id].danger_zone.delete_all_entries.dialog.buttons.cancel')}</Button>
+              <Button variant="outline" ref={closeButtonRef}>{t('timesheet.[id].settings.danger_zone.delete_all_entries.dialog.buttons.cancel')}</Button>
             </DialogClose>
             <Button
               variant="destructive"
@@ -71,7 +72,7 @@ export default function DeleteAllEntries() {
                 });
               }}
             >
-              {t('timesheet.[id].danger_zone.delete_all_entries.dialog.buttons.delete')}
+              {t('timesheet.[id].settings.danger_zone.delete_all_entries.dialog.buttons.delete')}
             </Button>
           </DialogFooter>
         </DialogContent>

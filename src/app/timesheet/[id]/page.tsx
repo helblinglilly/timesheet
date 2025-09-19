@@ -1,5 +1,4 @@
-import DeleteAllEntries from '../../../features/DangerZone/delete/DeleteAllEntries';
-import DeleteTimesheet from '../../../features/DangerZone/delete/DeleteTimesheet';
+
 import { Card, CardContent, CardHeader } from '~/components/ui/card';
 import { createTranslation } from '~/i18n/server';
 import { WeekLog } from '~/features/weeklyView/WeekLog';
@@ -14,8 +13,8 @@ import { Suspense } from 'react';
 import { Skeleton } from '~/components/ui/skeleton';
 import { format } from 'date-fns';
 import { TimesheetBreadcrumbs } from './Breadcrumbs';
-import { ShareTimesheet } from '~/features/ShareTimesheet/ShareTimesheet';
 import { DangerZone } from '~/features/DangerZone/DangerZone';
+import { ShareZone } from '~/features/DangerZone/shared/SharedZone';
 
 export default async function TimesheetPage(
   {
@@ -60,13 +59,8 @@ export default async function TimesheetPage(
           <h2 className="text-xl font-semibold">{t('timesheet.[id].settings.title')}</h2>
         </CardHeader>
         <CardContent className="grid gap-4">
-
-          <ShareTimesheet />
-
-          <div className="grid gap-4">
-            <h2 className="text-xl font-semibold">{t('timesheet.[id].danger_zone.title')}</h2>
-            <DangerZone />
-          </div>
+          <ShareZone />
+          <DangerZone />
         </CardContent>
       </Card>
     </div>

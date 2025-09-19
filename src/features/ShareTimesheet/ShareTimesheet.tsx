@@ -30,7 +30,7 @@ export const ShareTimesheet = () => {
     <>
       <Dialog>
         <DialogTrigger asChild>
-          <Button className="md:max-w-36">
+          <Button className='w-full md:w-48'>
             {t('timesheet.[id].share.cta')}
           </Button>
         </DialogTrigger>
@@ -56,7 +56,7 @@ export const ShareTimesheet = () => {
             </DialogHeader>
             <div className="grid gap-4 pt-2">
               <Label htmlFor="email">{t('timesheet.[id].share.dialog.fields.email.label')}</Label>
-              <Input ref={emailRef} id="email" name="email" defaultValue={t('timesheet.[id].share.dialog.fields.email.placeholder')} />
+              <Input ref={emailRef} id="email" name="email" type="email" defaultValue={t('timesheet.[id].share.dialog.fields.email.placeholder')} />
             </div>
             <DialogFooter className="pt-2">
               <DialogClose asChild>

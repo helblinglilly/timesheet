@@ -173,7 +173,7 @@
           "submit": "Send invite"
         },
         "invite_email": {
-          "subject": "Invite to timesheet {{ name }}",
+          "subject": "Invite to timesheet \"{{ name }}\"",
           "body": "Hi there<br />You have been invited to access the timesheet \"{{ name }}\" on <a href=\"timesheet.helbling.uk\">timesheet.helbling.uk</a>.<br /><br />To accept this invite, follow this link: <a href=\"{{ link }}\">{{ link }}</a> <br /><br />Many thanks,<br />The timesheet team"
         },
         "redemption": {
@@ -194,43 +194,57 @@
         }
       },
       "settings": {
-        "title": "Settings"
-      },
-      "danger_zone": {
-        "title": "Danger zone",
-        "shared": {
+        "title": "Settings",
+        "share_zone": {
+          "title": "Share management",
           "owner": "Not all options are available. To delete this timesheet please sign in with the owner's account or contact support.",
           "unlink": {
             "title": "Remove access",
-            "disclaimer": "This timesheet is not owned by you.",
-            "description": "By completing this action you will lose access to manage this timesheet but it will still exist. You will not delete it, or any data held within it.",
-            "buttons": {
-              "cancel": "Cancel",
-              "delete": "Remove access"
+            "self": {
+              "disclaimer": "This timesheet is not owned by you.",
+              "description": "By completing this action you will lose access to manage this timesheet but it will still exist. You will not delete it, or any data held within it.",
+              "buttons": {
+                "cancel": "Cancel",
+                "delete": "Remove access"
+              }
+            },
+            "others": {
+              "title": "Revoke user access",
+              "description": "List of accounts that are currently able to view and manage this timesheet",
+              "table": {
+                "name": "Name",
+                "email": "Email"
+              },
+              "buttons": {
+                "cancel": "Done"
+              }
             }
           }
         },
-        "delete_all_entries": {
-          "open": "Delete all entries",
-          "dialog": {
-            "title": "Delete all entries",
-            "description": "Doing this will delete ALL recorded entries for \"{{ name }}\". This action cannot be undone.",
-            "guard_description": "To confirm this action, please type the timesheet's name",
-            "buttons": {
-              "cancel": "Cancel",
-              "delete": "Delete"
+        "danger_zone": {
+          "title": "Danger zone",
+          "delete_all_entries": {
+            "open": "Delete all entries",
+            "dialog": {
+              "title": "Delete all entries",
+              "description": "Doing this will delete ALL recorded entries for \"{{ name }}\". This action cannot be undone.",
+              "guard_description": "To confirm this action, please type the timesheet's name",
+              "buttons": {
+                "cancel": "Cancel",
+                "delete": "Delete"
+              }
             }
-          }
-        },
-        "delete_timesheet": {
-          "open": "Delete timesheet",
-          "dialog": {
-            "title": "Delete timesheet",
-            "description": "Doing this will delete \"{{ name }}\" and all recorded entries.",
-            "guard_description": "To confirm this action, please type the timesheet's name",
-            "buttons": {
-              "cancel": "Cancel",
-              "delete": "Delete"
+          },
+          "delete_timesheet": {
+            "open": "Delete timesheet",
+            "dialog": {
+              "title": "Delete timesheet",
+              "description": "Doing this will delete \"{{ name }}\" and all recorded entries.",
+              "guard_description": "To confirm this action, please type the timesheet's name",
+              "buttons": {
+                "cancel": "Cancel",
+                "delete": "Delete"
+              }
             }
           }
         }
