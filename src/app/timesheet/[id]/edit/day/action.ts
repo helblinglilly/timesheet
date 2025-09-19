@@ -5,7 +5,7 @@ import { createTranslation } from '~/i18n/server';
 import { withNewRelicWebTransaction } from '~/utils/observability/withNewRelicWebTransaction';
 import { redirect } from 'next/navigation';
 import { formSchema } from './form.schema';
-import { format, parseISO, set } from 'date-fns';
+import { format, set } from 'date-fns';
 import { TableNames } from '~/pocketbase/tables.types';
 import log from '~/utils/log';
 
@@ -105,9 +105,11 @@ async function editTimesheetDay(formData: FormData): Promise<TimesheetEditFormSt
     return { errors: additionalErrors };
   }
 
+
+
   try {
     const clockInDate: Date = set(
-      parseISO(parsed.data.day), {
+      new Date(parsed.data.day), {
         hours: Number(parsed.data.clockIn.split(':')[0]),
         minutes: Number(parsed.data.clockIn.split(':')[1]),
         seconds: 0,
@@ -115,7 +117,7 @@ async function editTimesheetDay(formData: FormData): Promise<TimesheetEditFormSt
     );
 
     const clockOutDate: Date | null = parsed.data.clockOut ? set(
-      parseISO(parsed.data.day), {
+      new Date(parsed.data.day), {
         hours: Number(parsed.data.clockOut.split(':')[0]),
         minutes: Number(parsed.data.clockOut.split(':')[1]),
         seconds: 0,
@@ -157,7 +159,7 @@ async function editTimesheetDay(formData: FormData): Promise<TimesheetEditFormSt
 
     parsed.data.breaks.forEach((breakEntry) => {
       const breakInDate: Date = set(
-        parseISO(parsed.data.day), {
+        new Date(parsed.data.day), {
           hours: Number(breakEntry.breakIn.split(':')[0]),
           minutes: Number(breakEntry.breakIn.split(':')[1]),
           seconds: 0,
@@ -165,7 +167,7 @@ async function editTimesheetDay(formData: FormData): Promise<TimesheetEditFormSt
       );
 
       const breakOutDate: Date | null = breakEntry.breakOut ? set(
-        parseISO(parsed.data.day), {
+        new Date(parsed.data.day), {
           hours: Number(breakEntry.breakOut.split(':')[0]),
           minutes: Number(breakEntry.breakOut.split(':')[1]),
           seconds: 0,
