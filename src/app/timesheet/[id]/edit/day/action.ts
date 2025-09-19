@@ -144,11 +144,13 @@ async function editTimesheetDay(formData: FormData): Promise<TimesheetEditFormSt
         filter: `timesheet_entry.id = "${timesheetEntryId}"`
       });
 
-      allBreaks.map((a) => {
-        deleteBreaksBatch.collection(TableNames.TimesheetBreaks).delete(a.id)
-      })
+      if (allBreaks.length > 0){
+        allBreaks.map((a) => {
+          deleteBreaksBatch.collection(TableNames.TimesheetBreaks).delete(a.id)
+        })
 
-      await deleteBreaksBatch.send();
+        await deleteBreaksBatch.send();
+      }
     }
 
     const breakBatch = pb.createBatch();

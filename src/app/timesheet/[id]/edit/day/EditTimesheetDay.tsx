@@ -5,7 +5,7 @@ import React, { startTransition, useActionState, useEffect } from 'react';
 import { useQueryParamDate } from '~/hooks/useQueryParamDate';
 import { useTranslation } from 'react-i18next';
 import { api } from '~/trpc/react';
-import { format } from 'date-fns';
+import { format, formatISO } from 'date-fns';
 import { formSchema } from './form.schema';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -59,7 +59,7 @@ export const EditTimesheetDay = ({
   const onSubmit = async (data: FormValues) => {
     const formData = new FormData();
     formData.append('id', timesheetId);
-    formData.append('day', date.toISOString());
+    formData.append('day', formatISO(date));
     if (timesheet.timesheet_entry_id){
       formData.append('timesheet_entry_id', timesheet.timesheet_entry_id);
     } else {
