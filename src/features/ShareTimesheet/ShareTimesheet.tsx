@@ -12,7 +12,17 @@ import { api } from '~/trpc/react';
 export const ShareTimesheet = () => {
   const { t } = useTranslation();
   const { config } = useTimesheetConfig();
-  const { mutate } = api.timesheet.sendInvitation.useMutation();
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  const { mutate } = api.timesheet.sendInvitation.useMutation({
+    onSuccess: () => {
+      if (!closeButtonRef.current){
+        return;
+      }
+
+      closeButtonRef.current.click();
+    }
+  });
   const emailRef = useRef<HTMLInputElement>(null);
 
 
@@ -50,7 +60,7 @@ export const ShareTimesheet = () => {
             </div>
             <DialogFooter className="pt-2">
               <DialogClose asChild>
-                <Button variant="outline">{t('timesheet.[id].share.dialog.cancel')}</Button>
+                <Button ref={ closeButtonRef } variant="outline">{t('timesheet.[id].share.dialog.cancel')}</Button>
               </DialogClose>
               <Button type="submit">{ t('timesheet.[id].share.dialog.submit') }</Button>
             </DialogFooter>
