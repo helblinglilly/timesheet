@@ -15,7 +15,7 @@ export const ShareTimesheet = () => {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   const { mutate } = api.timesheet.sendInvitation.useMutation({
-    onSuccess: () => {
+    onSuccess: async () => {
       if (!closeButtonRef.current){
         return;
       }

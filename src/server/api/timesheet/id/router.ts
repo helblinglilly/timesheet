@@ -4,7 +4,8 @@ import { getTimesheetByDate, clockIn, clockOut, breakIn, breakOut, deleteAllEntr
 import type { TimesheetConfig } from '~/pocketbase/data.types';
 import { TableNames } from '~/pocketbase/tables.types';
 import { getHoursWorked } from '../week';
-import { inviteUser } from '~/features/ShareTimesheet/invite';
+import { inviteUser, removeUserAccess } from '~/features/ShareTimesheet/invite';
+import type { PBAuthResponse } from '~/pocketbase/builtin.types';
 
 export const timesheetRouter = createTRPCRouter({
   /**
@@ -94,6 +95,22 @@ export const timesheetRouter = createTRPCRouter({
       timesheetId: input.timesheetConfigId,
       timesheetName: input.timesheetName,
       email: input.inviteeEmail
+    })
+  }),
+
+  removeSharedAccess: signedInProcedure.input(z.object({
+    timesheetConfigId: z.string(),
+    sharedUserId: z.string().optional()
+  })).mutation(async({ input, ctx }) => {
+    const id = input.sharedUserId ?? ctx.pb.authStore.record?.id;
+
+    if (!id){
+      throw new Error('Wanted to remove access to a timesheet but no user id was provided');
+    }
+
+    await removeUserAccess(ctx.pb, {
+      timesheetConfigId: input.timesheetConfigId,
+      sharedUserId: id
     })
   })
 });

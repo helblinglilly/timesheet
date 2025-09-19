@@ -8,6 +8,7 @@ export interface TimesheetConfig extends RecordModel {
   unpaidLunchMinutes: number;
   sharedUsers: string[];
   kind: 'office' | 'freelance';
+  user: string;
 }
 
 export interface TimesheetEntry extends RecordModel {

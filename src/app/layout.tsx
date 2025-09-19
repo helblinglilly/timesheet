@@ -9,6 +9,9 @@ import { TRPCReactProvider } from '~/trpc/react';
 import { env } from '~/env';
 import Script from 'next/script';
 import { TickProvider } from '~/hooks/useTick';
+import { AuthInfoProvider } from '~/hooks/useAuthInfo';
+import { serverSideAuth } from '~/pocketbase/server';
+import type { PBAuthResponse } from '~/pocketbase/builtin.types';
 
 export const metadata: Metadata = {
   title: 'Create T3 App',
@@ -31,6 +34,8 @@ export default async function RootLayout({
     allowTransactionlessInjection: true,
   });
 
+  const pb = await serverSideAuth();
+
   return (
     <html lang="en" className={`${geist.variable}`} suppressHydrationWarning={true}>
       {
@@ -45,9 +50,14 @@ export default async function RootLayout({
       <body>
         <TRPCReactProvider>
           <TranslationProvider locale="en">
-            <TickProvider>
-              {children}
-            </TickProvider>
+            <AuthInfoProvider user={pb.authStore.record ? {
+              id: (pb.authStore.record as PBAuthResponse['record']).id,
+              email: (pb.authStore.record as PBAuthResponse['record']).email
+            } : undefined}>
+              <TickProvider>
+                {children}
+              </TickProvider>
+            </AuthInfoProvider>
           </TranslationProvider>
         </TRPCReactProvider>
       </body>

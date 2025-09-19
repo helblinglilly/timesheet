@@ -198,6 +198,18 @@
       },
       "danger_zone": {
         "title": "Danger zone",
+        "shared": {
+          "owner": "Not all options are available. To delete this timesheet please sign in with the owner's account or contact support.",
+          "unlink": {
+            "title": "Remove access",
+            "disclaimer": "This timesheet is not owned by you.",
+            "description": "By completing this action you will lose access to manage this timesheet but it will still exist. You will not delete it, or any data held within it.",
+            "buttons": {
+              "cancel": "Cancel",
+              "delete": "Remove access"
+            }
+          }
+        },
         "delete_all_entries": {
           "open": "Delete all entries",
           "dialog": {
