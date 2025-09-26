@@ -13,7 +13,9 @@ export const formSchema = (t: TFunction<Namespace, undefined>) => z.object({
       message: t('timesheet.new.fields.minutesPerDay.minutes.error_max'),
     }),
   }).required(),
-  daysPerWeek: z.coerce.number().min(0.5).max(7, {
+  daysPerWeek: z.coerce.number().min(0.5, {
+    message: t('timesheet.new.fields.daysPerWeek.error_min')
+  }).max(7, {
     message: t('timesheet.new.fields.daysPerWeek.error_max'),
   }),
   unpaidLunchMinutes: z.coerce.number().optional(),

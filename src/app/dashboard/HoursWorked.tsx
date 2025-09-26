@@ -7,9 +7,11 @@ import { formatDuration } from 'date-fns';
 import { useTimesheetDay } from '~/features/workday/useTimesheetDay';
 import { TargetHours } from '~/features/targetHours/TargetHours';
 import { useTick } from '~/hooks/useTick';
+import { useTimesheetConfig } from '~/hooks/useTimesheetConfig';
 
 export default function HoursWorked() {
   const { timesheetId: id, day } = useTimesheetDay();
+  const { config } = useTimesheetConfig();
   const { tick } = useTick();
 
   const [timesheet] = api.timesheet.getTimesheetDayById.useSuspenseQuery({
@@ -27,10 +29,16 @@ export default function HoursWorked() {
     return null;
   }
 
+  const hasTargetHours = !(config.minutesPerDay === 0 && config.daysPerWeek === 0);
+
   return (
     <>
       <p>{formatDuration(duration, { format: ['hours', 'minutes'] })}</p>
-      <TargetHours numberOfDays={1} durationWorked={duration} />
+      {
+        hasTargetHours && (
+          <TargetHours numberOfDays={1} durationWorked={duration} />
+        )
+      }
     </>
   );
 };

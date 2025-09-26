@@ -21,7 +21,7 @@ import { formSchema } from './form.schema';
 import { Card, CardContent, CardHeader } from '~/components/ui/card';
 import { createTimesheetWithState, type TimesheetFormState } from './action';
 
-export default function NewTimesheetPage() {
+export default function NewTargetHoursTimesheet() {
   const { t } = useTranslation();
   type FormValues = z.infer<ReturnType<typeof formSchema>>;
 
@@ -41,11 +41,10 @@ export default function NewTimesheetPage() {
 
   const [state, formAction, isPending] = useActionState<TimesheetFormState, FormData>(createTimesheetWithState, {});
 
-  // This will handle client-side validation and then call the server action
   const onSubmit = async (data: FormValues) => {
     const formData = new FormData();
     formData.append('name', data.name);
-    formData.append('minutesPerDay.hours', (data.minutesPerDay.hours ?? '').toString());
+    formData.append('minutesPerDay.hours', (data.minutesPerDay.hours ??  '').toString());
     formData.append('minutesPerDay.minutes', (data.minutesPerDay.minutes ?? '').toString());
     formData.append('daysPerWeek', (data.daysPerWeek ?? '').toString());
     formData.append('unpaidLunchMinutes', (data.unpaidLunchMinutes ?? '').toString());
@@ -60,23 +59,25 @@ export default function NewTimesheetPage() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 md:max-w-1/2 md:justify-self-center">
         <Card>
-          <CardContent>
+          <CardHeader>
+            <FormLabel className="text-xl">{ t('timesheet.new.fields.meta.title')}</FormLabel>
+          </CardHeader>
+
+          <CardContent className="grid gap-4">
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{ t('timesheet.new.fields.name.label')}</FormLabel>
-                  <FormControl>
-                    <Input placeholder={t('timesheet.new.fields.name.placeholder')} {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    {t('timesheet.new.fields.name.description')}
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
+                <>
+                  <FormItem>
+                    <FormLabel>{ t('timesheet.new.fields.name.label')}</FormLabel>
+                    <FormControl>
+                      <Input placeholder={t('timesheet.new.fields.name.placeholder')} {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                </>
               )}
-
             />
           </CardContent>
         </Card>
@@ -189,6 +190,7 @@ export default function NewTimesheetPage() {
           </CardContent>
         </Card>
 
+
         <div className="grid w-full">
           <div className="w-full md:max-w-96 md:justify-self-center">
             {state && (
@@ -196,7 +198,6 @@ export default function NewTimesheetPage() {
             )}
             <Button type="submit" className="w-full">{isPending ? t('timesheet.new.loading') : t('timesheet.new.submit')}</Button>
           </div>
-
         </div>
       </form>
     </Form>
