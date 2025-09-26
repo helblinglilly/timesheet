@@ -40,17 +40,23 @@ function Button({
   variant,
   size,
   asChild = false,
+  selected = false,
   ...props
 }: React.ComponentProps<'button'>
   & VariantProps<typeof buttonVariants> & {
     asChild?: boolean;
+    selected?: boolean;
   }) {
   const Comp = asChild ? Slot : 'button';
 
   return (
     <Comp
       data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }))}
+      data-selected={selected ? '' : undefined}
+      className={cn(
+        buttonVariants({ variant, size, className }),
+        selected && 'bg-accent text-accent-foreground'
+      )}
       {...props}
     />
   );
