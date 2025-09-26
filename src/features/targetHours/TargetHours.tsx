@@ -23,13 +23,21 @@ export const TargetHours = ({
 
   const { isPositive, duration: difference } = subtractDurations(durationWorked, targetMinutes);
 
+  const hasTargetHours = !(config.minutesPerDay === 0 && config.daysPerWeek === 0);
+
   return (
     <p>
-      {' '}
-      { isPositive
-        ? t('timesheet.[id].weekly.log.summary.over')
-        : t('timesheet.[id].weekly.log.summary.under')}
-      {' '}
+      {
+        hasTargetHours && (
+          <>
+            { isPositive
+              ? t('timesheet.[id].weekly.log.summary.over')
+              : t('timesheet.[id].weekly.log.summary.under')
+            }
+            {' '}
+          </>
+        )
+      }
       {formatDuration(difference, { format: ['hours', 'minutes'] })}
     </p>
   );
