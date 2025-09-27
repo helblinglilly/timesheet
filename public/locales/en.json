@@ -195,6 +195,9 @@
       },
       "settings": {
         "title": "Settings",
+        "timesheet_zone": {
+          "title": "Timesheet"
+        },
         "share_zone": {
           "title": "Share management",
           "owner": "Not all options are available. To delete this timesheet please sign in with the owner's account or contact support.",
