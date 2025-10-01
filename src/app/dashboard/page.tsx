@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { createTranslation } from '~/i18n/server';
-import type { TimesheetConfig, User } from '~/pocketbase/data.types';
+import { type TimesheetEntry, type TimesheetConfig, type User } from '~/pocketbase/data.types';
 import { serverSideAuth } from '~/pocketbase/server';
 import React, { Suspense } from 'react';
 import { Card, CardContent, CardFooter, CardHeader } from '~/components/ui/card';
@@ -24,11 +24,50 @@ export default async function Dashboard() {
 
   const user: User = await pb.collection(TableNames.User).getOne(pb.authStore.record?.id ?? '');
 
-  const timesheets: TimesheetConfig[] = await pb.collection(TableNames.TimesheetConfig).getFullList();
-
-  if (timesheets.length === 0) {
+  const rawTimesheets = await pb.collection<TimesheetConfig>(TableNames.TimesheetConfig).getFullList();
+  if (rawTimesheets.length === 0) {
     redirect('/timesheet/new');
   }
+
+  const timesheetEntryPromises = await Promise.allSettled(rawTimesheets.map((timesheet) => (
+    pb.collection<TimesheetEntry>(TableNames.TimesheetEntry)
+      .getList(1, 1, {
+        filter: `config = "${timesheet.id}"`,
+        sort: '-created'
+      })
+  )))
+
+  // Prioritise those with actual entries
+  const sortOrder = timesheetEntryPromises
+    .filter((promise) => promise.status === 'fulfilled')
+    .flatMap((fulfilledPromise) => fulfilledPromise.value.items
+      .map((timesheet) => (
+        {
+          ...timesheet,
+          updated: new Date(timesheet.updated.replaceAll(' ', 'T')),
+          created: new Date(timesheet.created.replaceAll(' ', 'T')),
+        }
+      ))
+    )
+    .sort((a, b) =>  a.updated < b.updated ? 1 : -1)
+    .map((timesheet) => timesheet.config);
+
+  // Then populate the rest in last modified order
+  rawTimesheets
+    .map((timesheet) => ({
+      ...timesheet,
+      updated: new Date(timesheet.updated),
+    }))
+    .sort((a, b) => a > b ? 1 : -1)
+    .forEach((timesheet) => {
+      if (!sortOrder.includes(timesheet.id)){
+        sortOrder.push(timesheet.id);
+      }
+    })
+
+  const timesheets = sortOrder
+    .map((id) => rawTimesheets.find(timesheet => timesheet.id === id))
+    .filter((timesheet) => !!timesheet);
 
   return (
     <div className="grid gap-4 px-4 pt-4 pb-8 md:justify-center">

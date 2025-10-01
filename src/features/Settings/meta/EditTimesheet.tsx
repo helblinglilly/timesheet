@@ -3,14 +3,11 @@
 import React, { useMemo } from 'react'
 import { useAuthInfo } from '~/hooks/useAuthInfo';
 import { useTimesheetConfig } from '~/hooks/useTimesheetConfig';
-import { Dialog, DialogDescription, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '~/components/ui/dialog';
-import { useTranslation } from 'react-i18next';
+import { Dialog, DialogContent, DialogTrigger } from '~/components/ui/dialog';
 import { Button } from '~/components/ui/button';
 import NewTimesheetForm from '~/app/timesheet/new/form';
 
 const EditTimesheetContent = () => {
-  const { config } = useTimesheetConfig();
-  const { t } = useTranslation();
 
   return (
     <>
@@ -34,7 +31,6 @@ const EditTimesheetContent = () => {
 }
 
 export const EditTimesheetZone = () => {
-  const { t } = useTranslation();
   const { user } = useAuthInfo();
   const { config } = useTimesheetConfig();
 

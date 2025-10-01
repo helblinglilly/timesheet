@@ -1,6 +1,11 @@
 import { type RecordModel } from 'pocketbase';
 
-export interface TimesheetConfig extends RecordModel {
+export interface ExtendedRecordModel extends RecordModel {
+  created: string;
+  updated: string;
+}
+
+export interface TimesheetConfig extends ExtendedRecordModel {
   name: string;
   minutesPerDay: number;
   daysPerWeek: number;
@@ -11,22 +16,23 @@ export interface TimesheetConfig extends RecordModel {
   user: string;
 }
 
-export interface TimesheetEntry extends RecordModel {
+export interface TimesheetEntry extends ExtendedRecordModel {
   clockIn: string;
   clockOut?: string;
+  config: string;
 }
 
-export interface TimesheetBreaks extends RecordModel {
+export interface TimesheetBreaks extends ExtendedRecordModel {
   breakIn: string;
   breakOut?: string;
 }
 
-export interface User extends RecordModel {
+export interface User extends ExtendedRecordModel {
   email: string;
   name: string;
 }
 
-export interface TimesheetShare extends RecordModel {
+export interface TimesheetShare extends ExtendedRecordModel {
   timesheet: string;
   user_email: string;
   invite_code: string;
