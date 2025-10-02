@@ -1,31 +1,27 @@
 'use client'
 
+import Link from 'next/link';
 import React, { useMemo } from 'react'
+import { useTranslation } from 'react-i18next';
+import { Button } from '~/components/ui/button';
 import { useAuthInfo } from '~/hooks/useAuthInfo';
 import { useTimesheetConfig } from '~/hooks/useTimesheetConfig';
-import { Dialog, DialogContent, DialogTrigger } from '~/components/ui/dialog';
-import { Button } from '~/components/ui/button';
-import NewTimesheetForm from '~/app/timesheet/new/form';
 
 const EditTimesheetContent = () => {
+  const { t } = useTranslation();
+  const { config } = useTimesheetConfig();
 
   return (
     <>
-      <Dialog>
-        <form>
-          <DialogTrigger asChild>
-            <Button
-              variant="destructive"
-              className='w-full md:w-48'
-            >
-              {'Test'}
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
-            <NewTimesheetForm />
-          </DialogContent>
-        </form>
-      </Dialog>
+      <Link
+        href={`/timesheet/${config.id}/edit`}
+        className="w-48"
+      >
+        <Button
+          className="w-48">
+          {t('timesheet.[id].settings.timesheet_zone.edit')}
+        </Button>
+      </Link>
     </>
   );
 }

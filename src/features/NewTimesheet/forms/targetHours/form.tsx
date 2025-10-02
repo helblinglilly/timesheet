@@ -36,19 +36,32 @@ export default function NewTargetHoursTimesheet() {
       daysPerWeek: undefined,
       unpaidLunchMinutes: undefined,
       paidLunchMinutes: undefined,
+      mode: undefined,
     },
   });
+
+  const mode = form.watch('mode');
 
   const [state, formAction, isPending] = useActionState<TimesheetFormState, FormData>(createTimesheetWithState, {});
 
   const onSubmit = async (data: FormValues) => {
     const formData = new FormData();
     formData.append('name', data.name);
-    formData.append('minutesPerDay.hours', (data.minutesPerDay.hours ??  '').toString());
-    formData.append('minutesPerDay.minutes', (data.minutesPerDay.minutes ?? '').toString());
-    formData.append('daysPerWeek', (data.daysPerWeek ?? '').toString());
-    formData.append('unpaidLunchMinutes', (data.unpaidLunchMinutes ?? '').toString());
-    formData.append('paidLunchMinutes', (data.paidLunchMinutes ?? '').toString());
+    formData.append('mode', (data.mode ?? '').
+      toString());
+    if (data.mode === 'target'){
+      formData.append('minutesPerDay.hours', (data.minutesPerDay.hours ??  '').toString());
+      formData.append('minutesPerDay.minutes', (data.minutesPerDay.minutes ?? '').toString());
+      formData.append('daysPerWeek', (data.daysPerWeek ?? '').toString());
+      formData.append('unpaidLunchMinutes', (data.unpaidLunchMinutes ?? '').toString());
+      formData.append('paidLunchMinutes', (data.paidLunchMinutes ?? '').toString());
+    } else {
+      formData.delete('minutesPerDay.hours');
+      formData.delete('minutesPerDay.minutes');
+      formData.delete('daysPerWeek');
+      formData.delete('unpaidLunchMinutes');
+      formData.delete('paidLunchMinutes');
+    }
 
     startTransition(() => {
       formAction(formData);
@@ -83,6 +96,54 @@ export default function NewTargetHoursTimesheet() {
         </Card>
 
         <Card>
+          <CardHeader>
+            <FormLabel className="text-xl">{ t('timesheet.new.fields.mode.label')}</FormLabel>
+          </CardHeader>
+
+          <CardContent className="grid gap-4">
+            <FormField
+              control={form.control}
+              name="mode"
+              render={({ field }) => (
+                <>
+                  <FormItem>
+                    <FormControl>
+                      <div className="grid sm:grid-cols-2 gap-4 w-full mx-auto">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          selected={field.value === 'no_target'}
+                          onClick={() => field.onChange('no_target')}
+                          className="w-full h-full flex flex-col items-start text-left whitespace-normal"
+                        >
+                          <div className="w-full break-words whitespace-normal">
+                            <p className="font-medium">{t('timesheet.new.fields.mode.no_target.title')}</p>
+                            <p className="text-sm text-muted-foreground">{t('timesheet.new.fields.mode.no_target.description')}</p>
+                          </div>
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          selected={field.value === 'target'}
+                          onClick={() => field.onChange('target')}
+                          className="w-full h-full flex flex-col items-start text-left whitespace-normal"
+                        >
+                          <div className="w-full break-words whitespace-normal">
+                            <p className="font-medium">{t('timesheet.new.fields.mode.target.title')}</p>
+                            <p className="text-sm text-muted-foreground">{t('timesheet.new.fields.mode.target.description')}</p>
+                          </div>
+                        </Button>
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                </>
+              )}
+            />
+          </CardContent>
+        </Card>
+
+        <Card hidden={['no_target', undefined].includes(mode)}>
           <CardHeader>
             <FormLabel className="text-xl mb-2">{ t('timesheet.new.hours_worked')}</FormLabel>
             <FormDescription>{ t('timesheet.new.hours_worked_description')}</FormDescription>
@@ -143,7 +204,7 @@ export default function NewTargetHoursTimesheet() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card hidden={['no_target', undefined].includes(mode)}>
           <CardHeader>
             <FormLabel className="text-xl mb-2">{ t('timesheet.new.fields.breaks.label')}</FormLabel>
             <FormDescription>{ t('timesheet.new.fields.breaks.description')}</FormDescription>

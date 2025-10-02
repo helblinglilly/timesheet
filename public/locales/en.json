@@ -210,7 +210,8 @@
       "settings": {
         "title": "Settings",
         "timesheet_zone": {
-          "title": "Timesheet"
+          "title": "Timesheet",
+          "edit": "Edit"
         },
         "share_zone": {
           "title": "Share management",
