@@ -3,7 +3,6 @@
 import React, { Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader } from '~/components/ui/card';
-import HoursWorked from '~/app/dashboard/HoursWorked';
 import Link from 'next/link';
 
 import { Skeleton } from '~/components/ui/skeleton';
@@ -11,14 +10,15 @@ import { useQueryParamDate } from '~/hooks/useQueryParamDate';
 import { TimesheetDayProvider } from '~/features/workday/useTimesheetDay';
 import WorkdayLog from '~/features/workday/WorkdayLog';
 import { useTimesheetConfig } from '~/hooks/useTimesheetConfig';
-import { format } from 'date-fns';
-import { WeekHoursWorked } from './WeekHoursWorked';
+import { addDays, endOfWeek, format, startOfWeek } from 'date-fns';
 import { ErrorBoundary } from '../ErrorBoundary';
+import { HoursWorked } from '~/features/HoursWorked/HoursWorked';
 
 export const WeekLog = () => {
   const { config } = useTimesheetConfig();
   const { t } = useTranslation();
   const { daysInWeek } = useQueryParamDate();
+  const { date } = useQueryParamDate();
 
   return (
     <>
@@ -31,7 +31,10 @@ export const WeekLog = () => {
           <CardContent className="grid gap-4">
             <ErrorBoundary fallback={<div>Error</div>}>
               <Suspense fallback={<Skeleton className="h-8 w-full" />}>
-                <WeekHoursWorked />
+                <HoursWorked
+                  from={startOfWeek(date, { weekStartsOn: 1 })}
+                  to={endOfWeek(date, { weekStartsOn: 1 }) }
+                />
               </Suspense>
             </ErrorBoundary>
           </CardContent>
@@ -61,7 +64,7 @@ export const WeekLog = () => {
                           }
                         >
                           <WorkdayLog noDataText={t('timesheet.[id].weekly.log.no_data')} />
-                          <HoursWorked />
+                          <HoursWorked from={ new Date(day)} to={addDays(day, 1)} />
                         </Suspense>
                       </ErrorBoundary>
                     </CardContent>

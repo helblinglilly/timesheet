@@ -8,10 +8,10 @@ import { subtractDurations } from '~/utils/date';
 
 export const TargetHours = ({
   numberOfDays,
-  durationWorked,
+  duration,
 }: {
   numberOfDays: number;
-  durationWorked: Duration;
+  duration: Duration;
 }) => {
   const { config } = useTimesheetConfig();
   const { t } = useTranslation();
@@ -21,23 +21,22 @@ export const TargetHours = ({
     minutes: (config.minutesPerDay * numberOfDays) % 60,
   };
 
-  const { isPositive, duration: difference } = subtractDurations(durationWorked, targetMinutes);
+  const { isPositive, duration: difference } = subtractDurations(duration, targetMinutes);
 
   const hasTargetHours = !(config.minutesPerDay === 0 && config.daysPerWeek === 0);
+  if (!hasTargetHours){
+    console.warn('<TargetHours /> was attempted to render for a Timesheet that does not have target hours. You should try to guard against this at a higher level than this.')
+    return null;
+  }
 
   return (
     <p>
-      {
-        hasTargetHours && (
-          <>
-            { isPositive
-              ? t('timesheet.[id].weekly.log.summary.over')
-              : t('timesheet.[id].weekly.log.summary.under')
-            }
-            {' '}
-          </>
-        )
+      { isPositive
+        ? t('timesheet.[id].weekly.log.summary.over')
+        : t('timesheet.[id].weekly.log.summary.under')
       }
+      {' '}
+
       {formatDuration(difference, { format: ['hours', 'minutes'] })}
     </p>
   );
