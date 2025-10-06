@@ -41,11 +41,24 @@
       "hours_worked": "How much you work",
       "hours_worked_description": "We will keep track of how much you work on a weekly basis and tell you how much overtime you've worked that week, or if you need to make up some hours.",
       "fields": {
+        "meta": {
+          "title": "The Gig"
+        },
         "name": {
-          "label": "What's this gig called?*",
+          "label": "Name",
           "placeholder": "Facebook",
-          "description": "This will be the name for this timesheet",
           "error_short": "Must be at least 3 characters"
+        },
+        "mode": {
+          "label": "How you want to track your hours",
+          "target": {
+            "title": "Weekly hours",
+            "description": "You work predictable hours every week to keep track of overtime."
+          },
+          "no_target": {
+            "title": "Simple tracking",
+            "description": "Just track how much you've worked on something."
+          }
         },
         "minutesPerDay": {
           "label": "How long's each day?",
@@ -65,6 +78,7 @@
           "label": "How many days do you work in a week?*",
           "placeholder": "5 days/week",
           "description": "If your days vary, put down your average",
+          "error_min": "If you don't work regular hours, a simple timesheet might work better for you",
           "error_max": "No more than 7 days in a week"
         },
         "breaks": {
@@ -196,7 +210,8 @@
       "settings": {
         "title": "Settings",
         "timesheet_zone": {
-          "title": "Timesheet"
+          "title": "Timesheet",
+          "edit": "Edit"
         },
         "share_zone": {
           "title": "Share management",

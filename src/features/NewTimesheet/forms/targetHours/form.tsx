@@ -21,7 +21,7 @@ import { formSchema } from './form.schema';
 import { Card, CardContent, CardHeader } from '~/components/ui/card';
 import { createTimesheetWithState, type TimesheetFormState } from './action';
 
-export default function NewTimesheetPage() {
+export default function NewTargetHoursTimesheet() {
   const { t } = useTranslation();
   type FormValues = z.infer<ReturnType<typeof formSchema>>;
 
@@ -36,20 +36,32 @@ export default function NewTimesheetPage() {
       daysPerWeek: undefined,
       unpaidLunchMinutes: undefined,
       paidLunchMinutes: undefined,
+      mode: undefined,
     },
   });
 
+  const mode = form.watch('mode');
+
   const [state, formAction, isPending] = useActionState<TimesheetFormState, FormData>(createTimesheetWithState, {});
 
-  // This will handle client-side validation and then call the server action
   const onSubmit = async (data: FormValues) => {
     const formData = new FormData();
     formData.append('name', data.name);
-    formData.append('minutesPerDay.hours', (data.minutesPerDay.hours ?? '').toString());
-    formData.append('minutesPerDay.minutes', (data.minutesPerDay.minutes ?? '').toString());
-    formData.append('daysPerWeek', (data.daysPerWeek ?? '').toString());
-    formData.append('unpaidLunchMinutes', (data.unpaidLunchMinutes ?? '').toString());
-    formData.append('paidLunchMinutes', (data.paidLunchMinutes ?? '').toString());
+    formData.append('mode', (data.mode ?? '').
+      toString());
+    if (data.mode === 'target'){
+      formData.append('minutesPerDay.hours', (data.minutesPerDay.hours ??  '').toString());
+      formData.append('minutesPerDay.minutes', (data.minutesPerDay.minutes ?? '').toString());
+      formData.append('daysPerWeek', (data.daysPerWeek ?? '').toString());
+      formData.append('unpaidLunchMinutes', (data.unpaidLunchMinutes ?? '').toString());
+      formData.append('paidLunchMinutes', (data.paidLunchMinutes ?? '').toString());
+    } else {
+      formData.delete('minutesPerDay.hours');
+      formData.delete('minutesPerDay.minutes');
+      formData.delete('daysPerWeek');
+      formData.delete('unpaidLunchMinutes');
+      formData.delete('paidLunchMinutes');
+    }
 
     startTransition(() => {
       formAction(formData);
@@ -60,28 +72,78 @@ export default function NewTimesheetPage() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 md:max-w-1/2 md:justify-self-center">
         <Card>
-          <CardContent>
+          <CardHeader>
+            <FormLabel className="text-xl">{ t('timesheet.new.fields.meta.title')}</FormLabel>
+          </CardHeader>
+
+          <CardContent className="grid gap-4">
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{ t('timesheet.new.fields.name.label')}</FormLabel>
-                  <FormControl>
-                    <Input placeholder={t('timesheet.new.fields.name.placeholder')} {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    {t('timesheet.new.fields.name.description')}
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
+                <>
+                  <FormItem>
+                    <FormLabel>{ t('timesheet.new.fields.name.label')}</FormLabel>
+                    <FormControl>
+                      <Input placeholder={t('timesheet.new.fields.name.placeholder')} {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                </>
               )}
-
             />
           </CardContent>
         </Card>
 
         <Card>
+          <CardHeader>
+            <FormLabel className="text-xl">{ t('timesheet.new.fields.mode.label')}</FormLabel>
+          </CardHeader>
+
+          <CardContent className="grid gap-4">
+            <FormField
+              control={form.control}
+              name="mode"
+              render={({ field }) => (
+                <>
+                  <FormItem>
+                    <FormControl>
+                      <div className="grid sm:grid-cols-2 gap-4 w-full mx-auto">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          selected={field.value === 'no_target'}
+                          onClick={() => field.onChange('no_target')}
+                          className="w-full h-full flex flex-col items-start text-left whitespace-normal"
+                        >
+                          <div className="w-full break-words whitespace-normal">
+                            <p className="font-medium">{t('timesheet.new.fields.mode.no_target.title')}</p>
+                            <p className="text-sm text-muted-foreground">{t('timesheet.new.fields.mode.no_target.description')}</p>
+                          </div>
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          selected={field.value === 'target'}
+                          onClick={() => field.onChange('target')}
+                          className="w-full h-full flex flex-col items-start text-left whitespace-normal"
+                        >
+                          <div className="w-full break-words whitespace-normal">
+                            <p className="font-medium">{t('timesheet.new.fields.mode.target.title')}</p>
+                            <p className="text-sm text-muted-foreground">{t('timesheet.new.fields.mode.target.description')}</p>
+                          </div>
+                        </Button>
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                </>
+              )}
+            />
+          </CardContent>
+        </Card>
+
+        <Card hidden={['no_target', undefined].includes(mode)}>
           <CardHeader>
             <FormLabel className="text-xl mb-2">{ t('timesheet.new.hours_worked')}</FormLabel>
             <FormDescription>{ t('timesheet.new.hours_worked_description')}</FormDescription>
@@ -142,7 +204,7 @@ export default function NewTimesheetPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card hidden={['no_target', undefined].includes(mode)}>
           <CardHeader>
             <FormLabel className="text-xl mb-2">{ t('timesheet.new.fields.breaks.label')}</FormLabel>
             <FormDescription>{ t('timesheet.new.fields.breaks.description')}</FormDescription>
@@ -189,6 +251,7 @@ export default function NewTimesheetPage() {
           </CardContent>
         </Card>
 
+
         <div className="grid w-full">
           <div className="w-full md:max-w-96 md:justify-self-center">
             {state && (
@@ -196,7 +259,6 @@ export default function NewTimesheetPage() {
             )}
             <Button type="submit" className="w-full">{isPending ? t('timesheet.new.loading') : t('timesheet.new.submit')}</Button>
           </div>
-
         </div>
       </form>
     </Form>

@@ -4,7 +4,6 @@ import { type TimesheetEntry, type TimesheetConfig, type User } from '~/pocketba
 import { serverSideAuth } from '~/pocketbase/server';
 import React, { Suspense } from 'react';
 import { Card, CardContent, CardFooter, CardHeader } from '~/components/ui/card';
-import HoursWorked from './HoursWorked';
 import { Button } from '~/components/ui/button';
 import Link from 'next/link';
 import BreakInButton from '~/features/workday/recordDaily/BreakIn';
@@ -16,6 +15,8 @@ import { TimesheetDayProvider } from '~/features/workday/useTimesheetDay';
 import WorkdayLog from '~/features/workday/WorkdayLog';
 import { TimesheetConfigProvider } from '~/hooks/useTimesheetConfig';
 import { Skeleton } from '~/components/ui/skeleton';
+import { HoursWorked } from '~/features/HoursWorked/HoursWorked';
+import { addDays } from 'date-fns';
 
 export default async function Dashboard() {
   const { t } = await createTranslation();
@@ -103,7 +104,7 @@ export default async function Dashboard() {
                     <CardFooter>
                       <div className="grid w-full">
                         <Suspense fallback={<div /> }>
-                          <HoursWorked />
+                          <HoursWorked from={ new Date() } to={ addDays(new Date(), 1) } />
                         </Suspense>
                       </div>
 

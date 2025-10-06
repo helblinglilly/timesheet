@@ -15,6 +15,7 @@ export interface TimesheetFormState {
     daysPerWeek?: string[] | undefined;
     unpaidLunchMinutes?: string[] | undefined;
     paidLunchMinutes?: string[] | undefined;
+    mode?: string[] | undefined;
   };
   message?: string | undefined;
 }
@@ -33,6 +34,7 @@ async function createTimesheet(formData: FormData): Promise<TimesheetFormState> 
     daysPerWeek: formData.get('daysPerWeek'),
     unpaidLunchMinutes: formData.get('unpaidLunchMinutes'),
     paidLunchMinutes: formData.get('paidLunchMinutes'),
+    mode: formData.get('mode'),
   };
 
   const parsed = schema.safeParse(values);
@@ -44,14 +46,26 @@ async function createTimesheet(formData: FormData): Promise<TimesheetFormState> 
   }
 
   try {
-    await pb.collection(TableNames.TimesheetConfig).create({
-      user: pb.authStore.record?.id,
-      name: parsed.data.name,
-      minutesPerDay: (parsed.data.minutesPerDay.hours * 60) + parsed.data.minutesPerDay.minutes,
-      daysPerWeek: parsed.data.daysPerWeek,
-      paidLunchMinutes: parsed.data.paidLunchMinutes,
-      unpaidLunchMinutes: parsed.data.unpaidLunchMinutes,
-    });
+    if (parsed.data.mode === 'target'){
+      await pb.collection(TableNames.TimesheetConfig).create({
+        user: pb.authStore.record?.id,
+        name: parsed.data.name,
+        minutesPerDay: (parsed.data.minutesPerDay.hours * 60) + parsed.data.minutesPerDay.minutes,
+        daysPerWeek: parsed.data.daysPerWeek,
+        paidLunchMinutes: parsed.data.paidLunchMinutes,
+        unpaidLunchMinutes: parsed.data.unpaidLunchMinutes,
+      });
+    } else {
+      await pb.collection(TableNames.TimesheetConfig).create({
+        user: pb.authStore.record?.id,
+        name: parsed.data.name,
+        minutesPerDay: 0,
+        daysPerWeek: 0,
+        paidLunchMinutes: 0,
+        unpaidLunchMinutes: 0,
+      });
+    }
+
   }
   catch (err) {
     const pbError = err instanceof Error ? err.message : 'Unknown';
