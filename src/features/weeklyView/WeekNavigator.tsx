@@ -19,7 +19,7 @@ export const WeekNavigator = () => {
   return (
     <div className="inline-flex justify-between">
       <Button
-        className="pr-4 w-24"
+        className="pr-4 md:w-24"
         onClick={() => {
           router.push(`?date=${format(startOfLastWeek, 'yyy-LL-dd')}`);
         }}
@@ -41,9 +41,9 @@ export const WeekNavigator = () => {
       </Link>
 
       {
-        isAfter(startOfNextWeek, new Date()) ? <div className="pl-4 w-24" /> : (
+        isAfter(startOfNextWeek, new Date()) ? <div className="pl-4 md:w-24" /> : (
           <Button
-            className="pl-4 w-24"
+            className="pl-4 md:w-24"
             onClick={() => {
               router.push(`?date=${format(startOfNextWeek, 'yyy-LL-dd')}`);
             }}
