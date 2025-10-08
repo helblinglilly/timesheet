@@ -9,10 +9,10 @@ export function hasIncompleteBreakEntry(breaks: Pick<TimesheetBreaks, 'breakIn' 
 type Timesheet = Awaited<ReturnType<typeof getTimesheetByDate>>;
 
 type TimesheetEntry = Pick<Timesheet, 'clockIn' | 'clockOut'>;
-type TimesheetBreak = Pick<NonNullable<Timesheet['breaks']>[number], 'breakIn' | 'breakOut'>;
+type TimesheetBreak = Pick<TimesheetBreaks, 'breakIn' | 'breakOut'>;
 
 type MinimalTimesheet = TimesheetEntry & {
-  breaks: TimesheetBreak[];
+  breaks: TimesheetBreak[] | undefined;
 };
 
 export const workMillisecondsInDay = (

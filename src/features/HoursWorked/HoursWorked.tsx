@@ -7,6 +7,8 @@ import { useTimesheetConfig } from '~/hooks/useTimesheetConfig';
 import { api } from '~/trpc/react';
 import { workDurationInDay } from '~/lib/workday';
 import { TargetHours } from './TargetHours';
+import { addDurations } from '~/utils/date';
+
 
 export const HoursWorked = ({
   from,
@@ -27,26 +29,10 @@ export const HoursWorked = ({
   });
 
   const duration = useMemo(() => {
-    // @ts-expect-error Dealing with this later
+
     const durations = timesheets.map(timesheet => workDurationInDay(timesheet));
 
-    return durations.reduce(
-      (acc, current) => {
-        return {
-          years: (acc.years ?? 0) + (current.years ?? 0),
-          months: (acc.months ?? 0) + (current.months ?? 0),
-          weeks: (acc.weeks ?? 0) + (current.weeks ?? 0),
-          days: (acc.days ?? 0) + (current.days ?? 0),
-          hours: (acc.hours ?? 0) + (current.hours ?? 0),
-          minutes: (acc.minutes ?? 0) + (current.minutes ?? 0),
-          seconds: (acc.seconds ?? 0) + (current.seconds ?? 0),
-        };
-      },
-      {
-        hours: 0,
-        minutes: 0,
-      },
-    );
+    return addDurations(...durations);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timesheets, tick]); // Tick will retrigger

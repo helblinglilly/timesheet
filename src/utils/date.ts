@@ -50,3 +50,13 @@ export function subtractDurations(base: Duration, ...subs: Duration[]) {
     duration: intervalToDuration({ start: 0, end: ms }),
   };
 }
+
+export function addDurations(...durations: Duration[]): Duration {
+  let totalMs = 0;
+
+  for (const duration of durations) {
+    totalMs += durationToMilliseconds(duration);
+  }
+
+  return intervalToDuration({ start: 0, end: totalMs });
+}
