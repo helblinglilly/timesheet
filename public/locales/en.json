@@ -22,6 +22,7 @@
     "navigation": {
       "dashboard": "Dashboard",
       "timesheet_name": "{{ name }}",
+      "edit_timesheet": "Edit",
       "edit_day": "Edit {{ date }}"
     }
   },

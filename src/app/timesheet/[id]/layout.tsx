@@ -2,7 +2,7 @@ import { TimesheetConfigProvider } from '~/hooks/useTimesheetConfig';
 import type { TimesheetConfig } from '~/pocketbase/data.types';
 import { serverSideAuth } from '~/pocketbase/server';
 import { TableNames } from '~/pocketbase/tables.types';
-import { QueryParamInvalidator } from './edit/day/QueryParamInvalidator';
+import { QueryParamInvalidator } from './QueryParamInvalidator';
 
 export default async function TimesheetIdLayout({
   children,

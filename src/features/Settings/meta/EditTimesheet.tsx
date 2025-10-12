@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '~/components/ui/button';
 import { useAuthInfo } from '~/hooks/useAuthInfo';
 import { useTimesheetConfig } from '~/hooks/useTimesheetConfig';
-import { RenameTimesheet } from './Rename';
+import { RenameTimesheet } from '../rename/Rename';
 
 const EditTimesheetContent = () => {
   const { t } = useTranslation();
