@@ -40,10 +40,32 @@ export default async function RootLayout({
     <html lang="en" className={`${geist.variable}`} suppressHydrationWarning={true}>
       {
         env.NODE_ENV === 'production' && (
-          <Script
-            id="nr-browser-agent"
-            dangerouslySetInnerHTML={{ __html: browserTimingHeader }}
-          />
+          <>
+            <Script
+              id="nr-browser-agent"
+              dangerouslySetInnerHTML={{ __html: browserTimingHeader }}
+            />
+
+            <Script
+              src="https://analytics.helbling.uk/script.js"
+              data-website-id="78d18f80-ac24-487d-8545-9e22266159b3"
+              strategy="afterInteractive"
+            />
+
+            <Script id="outbound-link-tracking" strategy="afterInteractive">
+              {`
+                (() => {
+                  const name = 'outbound-link-click';
+                  document.querySelectorAll('a').forEach(a => {
+                    if (a.host !== window.location.host && !a.getAttribute('data-umami-event')) {
+                      a.setAttribute('data-umami-event', name);
+                      a.setAttribute('data-umami-event-url', a.href);
+                    }
+                  });
+                })();
+              `}
+            </Script>
+          </>
         )
       }
 
