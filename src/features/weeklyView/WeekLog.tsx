@@ -32,6 +32,7 @@ export const WeekLog = () => {
             <ErrorBoundary fallback={<div>Error</div>}>
               <Suspense fallback={<Skeleton className="h-8 w-full" />}>
                 <HoursWorked
+                  showNoDataText={true}
                   from={startOfWeek(date, { weekStartsOn: 1 })}
                   to={endOfWeek(date, { weekStartsOn: 1 }) }
                 />
@@ -64,7 +65,7 @@ export const WeekLog = () => {
                           }
                         >
                           <WorkdayLog noDataText={t('timesheet.[id].weekly.log.no_data')} />
-                          <HoursWorked from={ new Date(day)} to={addDays(day, 1)} />
+                          <HoursWorked from={new Date(day)} to={addDays(day, 1)} showNoDataText={false} />
                         </Suspense>
                       </ErrorBoundary>
                     </CardContent>

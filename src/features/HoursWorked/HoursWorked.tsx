@@ -12,10 +12,12 @@ import { addDurations } from '~/utils/date';
 
 export const HoursWorked = ({
   from,
-  to
+  to,
+  showNoDataText = false
 } : {
   from: Date,
   to: Date
+  showNoDataText?: boolean
 }) => {
   const { config } = useTimesheetConfig();
   const { t } = useTranslation();
@@ -37,8 +39,11 @@ export const HoursWorked = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timesheets, tick]); // Tick will retrigger
 
-  if (timesheets.length === 0) {
+  if (timesheets.length === 0 && showNoDataText) {
     return <p>{t('timesheet.[id].weekly.log.no_data')}</p>;
+  }
+  if (timesheets.length === 0 && !showNoDataText) {
+    return null;
   }
 
   const hasTargetHours = !(config.minutesPerDay === 0 && config.daysPerWeek === 0);

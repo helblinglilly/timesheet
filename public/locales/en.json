@@ -211,7 +211,7 @@
         "title": "Settings",
         "timesheet_zone": {
           "title": "Timesheet",
-          "edit": "Edit"
+          "edit": "Adjust targets"
         },
         "rename": {
           "open": "Rename",
