@@ -213,6 +213,17 @@
           "title": "Timesheet",
           "edit": "Edit"
         },
+        "rename": {
+          "open": "Rename",
+          "dialog": {
+            "title": "Rename \"{{ name }}\"",
+            "description": "",
+            "buttons": {
+              "cancel": "Cancel",
+              "apply": "Apply"
+            }
+          }
+        },
         "share_zone": {
           "title": "Share management",
           "owner": "Not all options are available. To delete this timesheet please sign in with the owner's account or contact support.",

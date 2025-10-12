@@ -5,6 +5,7 @@ import type { TimesheetConfig } from '~/pocketbase/data.types';
 import { TableNames } from '~/pocketbase/tables.types';
 import { getHoursWorked } from '../week';
 import { getAllSharedUsers, inviteUser, removeUserAccess } from '~/features/ShareTimesheet/invite';
+import { renameTimesheet } from '~/features/Settings/meta/renameAction';
 
 export const timesheetRouter = createTRPCRouter({
   /**
@@ -121,4 +122,14 @@ export const timesheetRouter = createTRPCRouter({
         timesheetConfigId: input.timesheetConfigId
       })
     }),
+
+  rename: signedInProcedure.input(z.object({
+    timesheetConfigId: z.string(),
+    newName: z.string()
+  })).mutation(async ({ input, ctx }) => {
+    await renameTimesheet(ctx.pb, {
+      timesheetConfigId: input.timesheetConfigId,
+      newName: input.newName
+    })
+  })
 });

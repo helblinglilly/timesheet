@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '~/components/ui/button';
 import { useAuthInfo } from '~/hooks/useAuthInfo';
 import { useTimesheetConfig } from '~/hooks/useTimesheetConfig';
+import { RenameTimesheet } from './Rename';
 
 const EditTimesheetContent = () => {
   const { t } = useTranslation();
@@ -13,6 +14,7 @@ const EditTimesheetContent = () => {
 
   return (
     <>
+      <RenameTimesheet />
       <Link
         href={`/timesheet/${config.id}/edit`}
         className="w-48"
