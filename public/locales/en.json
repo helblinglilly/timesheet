@@ -54,15 +54,15 @@
           "label": "How you want to track your hours",
           "target": {
             "title": "Weekly hours",
-            "description": "You work predictable hours every week to keep track of overtime."
+            "description": "You work predictable hours every week and want to keep track of overtime."
           },
           "no_target": {
             "title": "Simple tracking",
-            "description": "Just track how much you've worked on something."
+            "description": "Just track how long you've worked on something."
           }
         },
         "minutesPerDay": {
-          "label": "How long's each day?",
+          "label": "How long is each day?",
           "description": "",
           "hours": {
             "placeholder": "7 hours",
