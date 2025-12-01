@@ -30,16 +30,19 @@ export default async function Login() {
 
   return (
     <>
-      <div className="p-4">
-        <p className="text-2xl">{ t('authentication.login.title') }</p>
-        <p className="text-lg">{ t('authentication.login.tagline') }</p>
-        <p className="pt-4">{t('authentication.login.social')}</p>
-      </div>
-      <div className="px-4 w-full flex justify-center">
-        <div className="grid gap-4 w-full md:w-[50%] max-w-[600px]">
-          {mappedAuthMethods.map((authMethod) => {
-            return <OAuthMethod authMethod={authMethod} key={authMethod.name} />;
-          })}
+      <div className='px-2 pt-8 grid gap-4 justify-center w-full'>
+        <div className='grid gap-10'>
+          <div className='grid gap-2'>
+            <p className="text-2xl">{ t('authentication.login.title') }</p>
+            <p className="text-lg">{ t('authentication.login.tagline') }</p>
+            <p className="">{t('authentication.login.social')}</p>
+          </div>
+
+          <div className="grid gap-4 w-full ">
+            {mappedAuthMethods.map((authMethod) => {
+              return <OAuthMethod authMethod={authMethod} key={authMethod.name} />;
+            })}
+          </div>
         </div>
       </div>
     </>
