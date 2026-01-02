@@ -337,5 +337,23 @@
         }
       }
     }
+  },
+  "navbar": {
+    "dashboard": {
+      "title": "Dashboard"
+    },
+    "timesheets": {
+      "title": "Timesheets",
+      "new": "New"
+    },
+    "account": {
+      "title": "Me"
+    },
+    "logout": {
+      "title": "Log out"
+    }
+  },
+  "account": {
+    "title": "Account management"
   }
 }

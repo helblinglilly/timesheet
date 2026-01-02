@@ -1,20 +1,23 @@
+'use server'
+
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
+import { redirect} from 'next/navigation';
 
-import { LatestPost } from '~/app/post';
 import { serverSideAuth } from '~/pocketbase/server';
-import { api, HydrateClient } from '~/trpc/server';
+import {  HydrateClient } from '~/trpc/server';
 
-export default async function Home() {
+export default async function Home({
+  searchParams
+}: {
+  searchParams: Promise < Record<string, string | string[] | undefined> > ;
+}) {
   const pb = await serverSideAuth();
+  const query = await searchParams;
 
-  if (pb.authStore.isValid) {
+  if (pb.authStore.isValid && query.stay !== 'true') {
     redirect('/dashboard');
   }
 
-  const hello = await api.post.hello({ text: 'from tRPC' });
-
-  void api.post.getLatest.prefetch();
 
   return (
     <HydrateClient>
@@ -51,13 +54,6 @@ export default async function Home() {
               </div>
             </Link>
           </div>
-          <div className="flex flex-col items-center gap-2">
-            <p className="text-2xl text-white">
-              {hello ? hello.greeting : 'Loading tRPC query...'}
-            </p>
-          </div>
-
-          <LatestPost />
         </div>
       </main>
     </HydrateClient>
