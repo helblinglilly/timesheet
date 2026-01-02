@@ -14,12 +14,14 @@ export default function DeleteAllEntries() {
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const { config } = useTimesheetConfig();
+  const utils = api.useUtils();
 
   const deleteAllEntriesMutation = api.timesheet.deleteAllEntries.useMutation({
     onSuccess: async () => {
       if (closeButtonRef.current) {
         closeButtonRef.current.click();
       }
+      await utils.timesheet.invalidate();
     },
   });
 
