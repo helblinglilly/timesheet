@@ -57,8 +57,8 @@
             "description": "You work predictable hours every week and want to keep track of overtime."
           },
           "no_target": {
-            "title": "Simple tracking",
-            "description": "Just track how long you've worked on something."
+            "title": "Timer",
+            "description": "Track how long you've worked on something."
           }
         },
         "minutesPerDay": {
@@ -83,7 +83,64 @@
           "error_max": "No more than 7 days in a week"
         },
         "breaks": {
-          "label": "How much you rest",
+          "label": "Let's talk breaks",
+          "description": "Enter how long you tend to take a break for. This will be used to predict when you'll finish for the day.",
+          "unpaid": {
+            "label": "Unpaid (mins)",
+            "placeholder": "60 minutes",
+            "description": "Will not count as hours worked."
+          },
+          "paid": {
+            "label": "Paid (mins)",
+            "placeholder": "60 minutes",
+            "description": "Will count towards hours worked."
+          }
+        }
+      }
+    },
+    "edit": {
+      "required": "required field",
+      "error_data": "Provided data was not valid",
+      "error_generic": "Something went wrong. Please try again.",
+      "loading": "Processing...",
+      "submit": "Save",
+      "hours_worked": "Hours on the clock",
+      "hours_worked_description": "We will keep track of how much you work on a weekly basis and tell you how much overtime you've worked that week, or if you need to make up some hours.",
+      "fields": {
+        "mode": {
+          "label": "How you track your hours",
+          "target": {
+            "title": "Office hours",
+            "description": "Predictable hours and keeping track of overtime. Most suitable for jobs with weekly hour targets."
+          },
+          "no_target": {
+            "title": "Timer",
+            "description": "Track how long you've worked on something."
+          }
+        },
+        "minutesPerDay": {
+          "label": "How long is each day?",
+          "description": "",
+          "hours": {
+            "placeholder": "7 hours",
+            "label": "hours*",
+            "error_max": "Can't work more than 24h/day"
+          },
+          "minutes": {
+            "placeholder": "30 minutes",
+            "label": "minutes*",
+            "error_max": "No more than 59 minutes in an hour"
+          }
+        },
+        "daysPerWeek": {
+          "label": "How many days do you work in a week?*",
+          "placeholder": "5 days/week",
+          "description": "If your days vary, put down your average",
+          "error_min": "If you don't work regular hours, a simple timesheet might work better for you",
+          "error_max": "No more than 7 days in a week"
+        },
+        "breaks": {
+          "label": "Breaks",
           "description": "This will be used to predict when you've reached your hours for the day.",
           "unpaid": {
             "label": "Unpaid (mins)",

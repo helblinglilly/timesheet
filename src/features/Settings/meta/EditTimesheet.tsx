@@ -17,10 +17,10 @@ const EditTimesheetContent = () => {
       <RenameTimesheet />
       <Link
         href={`/timesheet/${config.id}/edit`}
-        className="w-48"
+        className="w-full md:w-48"
       >
         <Button
-          className="w-48">
+          className="w-full">
           {t('timesheet.[id].settings.timesheet_zone.edit')}
         </Button>
       </Link>
