@@ -49,7 +49,7 @@ export function Navbar() {
       <NavigationMenuList>
         <NavigationMenuItem className='pl-auto'>
           <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-            <Link href="/auth/logout">{t('navbar.logout.title')}</Link>
+            <a href="/auth/logout">{t('navbar.logout.title')}</a>
           </NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>
