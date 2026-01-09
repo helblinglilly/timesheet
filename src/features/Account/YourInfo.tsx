@@ -13,9 +13,8 @@ import { Label } from '~/components/ui/label';
 import { Tooltip, TooltipContent, TooltipTrigger } from '~/components/ui/tooltip';
 import { api } from '~/trpc/react';
 
-export const YourInfo = ({ }: {}) => {
+export const YourInfo = () => {
   const [user] = api.account.getFullUserDetails.useSuspenseQuery();
-  console.log('full user', user);
 
   const { t } = useTranslation();
   const apiUtils = api.useUtils();

@@ -59,7 +59,7 @@ export default async function TimesheetPage(
         <CardHeader>
           <h2 className="text-xl font-semibold">{t('timesheet.[id].settings.title')}</h2>
         </CardHeader>
-        <CardContent className="grid gap-4">
+        <CardContent className="grid gap-4 md:grid-cols-2">
           <EditTimesheetZone />
           <ShareZone />
           <DangerZone />

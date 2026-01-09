@@ -31,6 +31,7 @@ const EditTimesheetContent = () => {
 export const EditTimesheetZone = () => {
   const { user } = useAuthInfo();
   const { config } = useTimesheetConfig();
+  const { t } = useTranslation();
 
   const isSharedTimesheet = useMemo(() => {
     return user?.id !== config.user
@@ -42,6 +43,7 @@ export const EditTimesheetZone = () => {
 
   return (
     <div className="grid gap-4">
+      <h2 className="text-xl font-semibold">{t('timesheet.[id].settings.title_meta')}</h2>
       <EditTimesheetContent />
     </div>
   )

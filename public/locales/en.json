@@ -271,6 +271,7 @@
           "title": "Timesheet",
           "edit": "Adjust targets"
         },
+        "title_meta": "General",
         "rename": {
           "open": "Rename",
           "dialog": {

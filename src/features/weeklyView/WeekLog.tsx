@@ -24,7 +24,7 @@ export const WeekLog = () => {
     <>
       <div className="grid md:grid-cols-2 gap-8">
 
-        <Card className="p-4 w-full md:min-w-sm gap-0">
+        <Card className="p-4 w-full gap-0">
           <CardHeader>
             <b>{ t('timesheet.[id].weekly.log.summary.title')}</b>
           </CardHeader>
