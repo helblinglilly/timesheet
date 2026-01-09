@@ -12,7 +12,9 @@ export default async function AuthenticatedLayout({ children }: { children: Reac
   return (
     <>
       <Navbar />
-      {children}
+      <div className="px-8 py-2">
+        {children}
+      </div>
     </>
   );
 }

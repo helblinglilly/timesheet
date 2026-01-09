@@ -51,7 +51,7 @@ export interface PBAuthResponse {
     email: string;
     emailVisibility: boolean;
     id: string;
-    username: string;
+    name: string;
     updated: string;
     verified: boolean;
   };

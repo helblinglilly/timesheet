@@ -74,7 +74,8 @@ export default async function RootLayout({
           <TranslationProvider locale="en">
             <AuthInfoProvider user={pb.authStore.record ? {
               id: (pb.authStore.record as PBAuthResponse['record']).id,
-              email: (pb.authStore.record as PBAuthResponse['record']).email
+              email: (pb.authStore.record as PBAuthResponse['record']).email,
+              name: (pb.authStore.record as PBAuthResponse['record']).name
             } : undefined}>
               <TickProvider>
                 {children}

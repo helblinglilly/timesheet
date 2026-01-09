@@ -5,7 +5,7 @@ export function authDataToCookie(
   authData: PBAuthResponse | RecordAuthResponse<RecordModel>,
 ) {
   const avatar = `${authData.meta?.avatarUrl ?? authData.record.avatar}`;
-  const name = `${authData.record.username ?? authData.meta?.name}`;
+  const name = `${authData.meta?.name}`;
 
   return {
     token: authData.token,

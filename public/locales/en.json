@@ -354,6 +354,26 @@
     }
   },
   "account": {
-    "title": "Account management"
+    "title": "Account management",
+    "your_info": {
+      "section_header": "Your details",
+      "avatar_alt": "Generic, non-customisable Avatar",
+      "name": {
+        "label": "Name:",
+        "change_name": {
+          "open_dialog_aria": "{{ name }}, press to edit",
+          "title": "Change your name",
+          "description": "Your name is only visible to yourself and is tied to this account.",
+          "submit_cta": "Save"
+        }
+      },
+      "email": {
+        "label": "Email: ",
+        "no_change": "You cannot change your Email address."
+      },
+      "created_at": {
+        "label": "User since: "
+      }
+    }
   }
 }
