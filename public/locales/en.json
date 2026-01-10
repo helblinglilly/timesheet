@@ -256,6 +256,11 @@
         "transfer_email": {
           "subject": "Invite to own timesheet \"{{ name }}\"",
           "body": "Hi there<br />You have been invited to <b>take ownership</b> of the timesheet \"{{ name }}\" on <a href=\"timesheet.helbling.uk\">timesheet.helbling.uk</a>.<br /><br />To assume ownership, follow this link: <a href=\"{{ link }}\">{{ link }}</a> <br /><br />Many thanks,<br />The timesheet team"
+        },
+        "redemption": {
+          "loading": "Accepting timesheet transfer...",
+          "expired": "The transfer code has expired",
+          "error": "Something went wrong"
         }
       },
       "share": {

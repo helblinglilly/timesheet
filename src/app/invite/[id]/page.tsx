@@ -28,10 +28,19 @@ export default async function InviteRedemption(
     if (!pb.authStore.record){
       throw new Error('Did not have an authStore model')
     }
+    if (typeof pb.authStore.record.email !== 'string') {
+      throw new Error('PB Auth store email was not a string')
+    }
 
     const invite = await pb.collection<TimesheetShare>(TableNames.TimesheetShares).getFirstListItem(`invite_code="${id}"`);
-    const expiryDate = new Date(invite.expires_at);
 
+    // Ensure the person redeeming is the person that was invited - Email not forwarded
+    if (invite.user_email.toLowerCase() !== pb.authStore.record.email.toLowerCase()) {
+      throw new Error('Tried to redeem invite code that was sent to another user');
+    }
+
+    // Check Expiry
+    const expiryDate = new Date(invite.expires_at);
     if (isBefore(expiryDate, new Date())){
       return (<div>
         <p>{ t('timesheet.[id].share.redemption.expired') }</p>
