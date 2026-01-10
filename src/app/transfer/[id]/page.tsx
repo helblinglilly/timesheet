@@ -55,21 +55,23 @@ export default async function TransferRedemption(
     }
 
     if (previousOwner === pb.authStore.record.id) {
-      throw new Error('The timesheet is already owned by the person trying to accept a transfer')
+      redirect(`/timesheet/${timesheetConfig.id}?transfer_status=already_owned`);
     }
 
     // Update
     await superuserPb.collection(TableNames.TimesheetConfig).update(transferRequest.timesheet, {
-      owner: pb.authStore.record.id,
+      user: pb.authStore.record.id,
+      name: timesheetConfig.name,
       sharedUsers: timesheetConfig.sharedUsers
         .filter((sharedUser) => sharedUser !== pb.authStore.record?.id)
         .filter((sharedUser) => sharedUser !== previousOwner)
         .concat(previousOwner)
     })
 
-    await pb.collection(TableNames.TimesheetTransferRequests).delete(transferRequest.id);
 
-    redirect(`/timesheet/${timesheetConfig.id}?transfer_success=true`);
+
+    await pb.collection(TableNames.TimesheetTransferRequests).delete(transferRequest.id);
+    redirect(`/timesheet/${timesheetConfig.id}?transfer_status=success`);
 
   } catch(err){
     // @ts-expect-error Don't care

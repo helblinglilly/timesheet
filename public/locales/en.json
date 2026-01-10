@@ -10,6 +10,7 @@
   },
   "common": {
     "loading": "Loading",
+    "close": "Close",
     "units": {
       "hour_short": "{{count}} h",
       "hour_long_one": "{{count}} hour",
@@ -260,7 +261,17 @@
         "redemption": {
           "loading": "Accepting timesheet transfer...",
           "expired": "The transfer code has expired",
-          "error": "Something went wrong"
+          "error": "Something went wrong",
+          "alert": {
+            "success": {
+              "title": "Success! You now own this timesheet",
+              "description": "The timesheet has been shared with the previous owner."
+            },
+            "already_owned": {
+              "title": "You already own this timesheet.",
+              "description": "Log into a different account to claim ownership. The same transfer code is still valid."
+            }
+          }
         }
       },
       "share": {
@@ -408,6 +419,28 @@
       },
       "created_at": {
         "label": "User since: "
+      }
+    },
+    "delete_account": {
+      "section_header": "Delete your account",
+      "remaining_timesheets": {
+        "title": "You cannot delete your account yet.",
+        "description": "To prevent accidental data loss, you must either <strong>delete</strong> or <strong>transfer ownership</strong> of your timesheets.",
+        "list_title_expand": "Show owned timesheets",
+        "list_title_collapse": "Hide owned timesheets",
+        "list_remaining_number_one": "You own {{ number }} timesheet.",
+        "list_remaining_number_2": "You own {{ number }} timesheets.",
+        "list_remaining_number_3": "You own {{ number }} timesheets.",
+        "list_remaining_number_other": "You own {{ number }} timesheets. Here are shortcuts to the for the first 3."
+      },
+      "dialog": {
+        "label": "Delete account",
+        "title": "Are you sure?",
+        "description": "This action cannot be undone. Your account will be permanently deleted.",
+        "cancel": "Cancel",
+        "loading": "Deleting...",
+        "redirecting": "Signing out... Goodbye",
+        "confirm": "Yes, delete my account"
       }
     }
   }

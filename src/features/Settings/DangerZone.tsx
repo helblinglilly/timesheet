@@ -41,7 +41,7 @@ export const DangerZone = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="grid gap-4">
+    <div className="grid gap-4" id="dangerZone">
       <h2 className="text-xl font-semibold">{t('timesheet.[id].settings.danger_zone.title')}</h2>
       <DangerZoneContent />
     </div>

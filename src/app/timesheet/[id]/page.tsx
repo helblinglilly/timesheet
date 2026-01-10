@@ -16,6 +16,7 @@ import { TimesheetBreadcrumbs } from './Breadcrumbs';
 import { DangerZone } from '~/features/Settings/DangerZone';
 import { ShareZone } from '~/features/Settings/shared/SharedZone';
 import { EditTimesheetZone } from '~/features/Settings/meta/EditTimesheet';
+import { TransferStatus } from './TransferStatus';
 
 export default async function TimesheetPage(
   {
@@ -31,6 +32,7 @@ export default async function TimesheetPage(
     <div className="grid px-4 pt-4 pb-8 gap-8 w-full md:w-[90%] md:mx-auto lg:w-[80%] xl:w-[70%]">
       <div className="grid gap-4">
         <TimesheetBreadcrumbs />
+        <TransferStatus />
         <Title />
 
         <h2 className="text-xl font-semibold">{t('timesheet.[id].today.title', { date: format(new Date(), 'EEEE do') })}</h2>
