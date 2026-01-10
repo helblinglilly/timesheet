@@ -38,7 +38,7 @@ export const ShareZone = () => {
   }
 
   return (
-    <div className="grid gap-4">
+    <div className="grid gap-4 h-fit">
       <h2 className="text-xl font-semibold">{t('timesheet.[id].settings.share_zone.title')}</h2>
       <ShareZoneContent />
     </div>

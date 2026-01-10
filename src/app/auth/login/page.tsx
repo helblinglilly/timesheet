@@ -5,6 +5,7 @@ import { env } from '~/env';
 import type { PocketbaseAuthMethods } from '~/pocketbase/builtin.types';
 import OAuthMethod from './OAuthMethods';
 import { createTranslation } from '~/i18n/server';
+import { Navbar } from '~/features/Navbar/Navbar';
 
 export default async function Login() {
   const res = await fetch(
@@ -30,6 +31,7 @@ export default async function Login() {
 
   return (
     <>
+      <Navbar></Navbar>
       <div className='px-2 pt-8 grid gap-4 justify-center w-full'>
         <div className='grid gap-10'>
           <div className='grid gap-2'>

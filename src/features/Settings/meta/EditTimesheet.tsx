@@ -38,11 +38,16 @@ export const EditTimesheetZone = () => {
   }, [user, config])
 
   if (isSharedTimesheet){
-    return null;
+    return (
+      <div className="grid gap-4 h-fit">
+        <h2 className="text-xl font-semibold">{t('timesheet.[id].settings.title_meta')}</h2>
+        <p className="mb-auto">This is a shared timesheet.</p>
+      </div>
+    )
   }
 
   return (
-    <div className="grid gap-4">
+    <div className="grid gap-4 h-fit">
       <h2 className="text-xl font-semibold">{t('timesheet.[id].settings.title_meta')}</h2>
       <EditTimesheetContent />
     </div>
