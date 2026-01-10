@@ -38,3 +38,13 @@ export interface TimesheetShare extends ExtendedRecordModel {
   invite_code: string;
   expires_at: string; // Date
 }
+
+export interface TimesheetTransferRequest extends ExtendedRecordModel {
+  timesheet: string;
+  user_email: string;
+  transfer_code: string;
+  /**
+   * Date string
+   */
+  expires_at: string;
+}

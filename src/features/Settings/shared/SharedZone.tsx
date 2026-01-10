@@ -6,6 +6,7 @@ import { useTimesheetConfig } from '~/hooks/useTimesheetConfig';
 import { useTranslation } from 'react-i18next';
 import { ShareTimesheet } from '~/features/ShareTimesheet/ShareTimesheet';
 import { ManageSharedUsers } from './ManageSharedUsers';
+import { TransferOwnership } from '~/features/TransferOwnership/TransferOwnership';
 
 const ShareZoneContent = () => {
   const { config } = useTimesheetConfig();
@@ -18,6 +19,7 @@ const ShareZoneContent = () => {
           <ManageSharedUsers />
         )
       }
+      <TransferOwnership />
     </>
   );
 }

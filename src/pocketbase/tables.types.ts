@@ -3,5 +3,6 @@ export enum TableNames {
   TimesheetEntry = 'timesheet_entries',
   TimesheetBreaks = 'timesheet_breaks',
   TimesheetShares = 'timesheet_shares',
+  TimesheetTransferRequests = 'timesheet_transfer_requests',
   User = 'users',
 }

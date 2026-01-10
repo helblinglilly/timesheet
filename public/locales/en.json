@@ -24,6 +24,16 @@
       "timesheet_name": "{{ name }}",
       "edit_timesheet": "Edit",
       "edit_day": "Edit {{ date }}"
+    },
+    "support": {
+      "toast": {
+        "main": "Something went wrong",
+        "description": "Try again or contact support.",
+        "link": {
+          "label": "Support",
+          "slug": "/support"
+        }
+      }
     }
   },
   "dashboard": {
@@ -230,6 +240,24 @@
       "today": {
         "title": "Today {{ date }}"
       },
+      "transfer": {
+        "cta": "Transfer Ownership",
+        "dialog": {
+          "description": "A request to transfer ownership will be sent to this account.<br />It will be valid for <strong>15 minutes</strong>.<br />Once accepted, it will automatically be shared with you.",
+          "fields": {
+            "email": {
+              "label": "New owner's Email address",
+              "placeholder": "me@example.com"
+            }
+          },
+          "cancel": "Cancel",
+          "submit": "Save"
+        },
+        "transfer_email": {
+          "subject": "Invite to own timesheet \"{{ name }}\"",
+          "body": "Hi there<br />You have been invited to <b>take ownership</b> of the timesheet \"{{ name }}\" on <a href=\"timesheet.helbling.uk\">timesheet.helbling.uk</a>.<br /><br />To assume ownership, follow this link: <a href=\"{{ link }}\">{{ link }}</a> <br /><br />Many thanks,<br />The timesheet team"
+        }
+      },
       "share": {
         "cta": "Share",
         "dialog": {
@@ -242,7 +270,8 @@
             }
           },
           "cancel": "Cancel",
-          "submit": "Send invite"
+          "submit": "Send invite",
+          "confirmation": "The invite has been sent. It will be valid for 15 minutes."
         },
         "invite_email": {
           "subject": "Invite to timesheet \"{{ name }}\"",

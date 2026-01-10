@@ -5,7 +5,7 @@ import type Client from 'pocketbase';
 import { v4 as uuidv4 } from 'uuid';
 import { env } from '~/env';
 import { createTranslation } from '~/i18n/server';
-import { type User, type TimesheetConfig } from '~/pocketbase/data.types';
+import { type User, type TimesheetConfig, type TimesheetShare } from '~/pocketbase/data.types';
 import { superuserAuth } from '~/pocketbase/server';
 import { TableNames } from '~/pocketbase/tables.types';
 import { sendEmail } from '~/utils/email';
@@ -18,14 +18,24 @@ export async function inviteUser(pb: Client, {
   timesheetId: string,
   timesheetName: string,
   email: string
-}){
+}) {
   const inviteCode = uuidv4();
   const expiryTime = addMinutes(new Date(), 15);
   const { t } = await createTranslation('translation');
 
+  try {
+    const existing = await pb.collection<TimesheetShare>(TableNames.TimesheetShares).getFirstListItem(
+      `user_email = "${email.toLowerCase()}"`
+    )
+
+    await pb.collection(TableNames.TimesheetShares).delete(existing.id);
+  } catch {
+    // Either none exist, or the removal call has failed. Let's see what .create will do
+  }
+
   await pb.collection(TableNames.TimesheetShares).create({
     timesheet: timesheetId,
-    user_email: email,
+    user_email: email.toLowerCase(),
     invite_code: inviteCode,
     expires_at: expiryTime.toISOString()
   })

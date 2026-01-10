@@ -6,6 +6,7 @@ import { TableNames } from '~/pocketbase/tables.types';
 import { getHoursWorked } from '../week';
 import { getAllSharedUsers, inviteUser, removeUserAccess } from '~/features/ShareTimesheet/invite';
 import { renameTimesheet } from '~/features/Settings/rename/renameAction';
+import { inviteOwnership } from '~/features/TransferOwnership/transfer';
 
 export const timesheetRouter = createTRPCRouter({
   /**
@@ -97,6 +98,20 @@ export const timesheetRouter = createTRPCRouter({
       email: input.inviteeEmail
     })
   }),
+
+  sendOwnershipInvitation: signedInProcedure.input(z.object({
+    timesheetConfigId: z.string(),
+    timesheetName: z.string(),
+    inviteeEmail: z.string(),
+  })).mutation(async({ input, ctx }) => {
+
+    await inviteOwnership(ctx.pb, {
+      timesheetId: input.timesheetConfigId,
+      timesheetName: input.timesheetName,
+      email: input.inviteeEmail
+    })
+  }),
+
 
   removeSharedAccess: signedInProcedure.input(z.object({
     timesheetConfigId: z.string(),
