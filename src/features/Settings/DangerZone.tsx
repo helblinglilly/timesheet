@@ -3,14 +3,14 @@
 import React, { useMemo } from 'react'
 import DeleteAllEntries from './delete/DeleteAllEntries';
 import DeleteTimesheet from './delete/DeleteTimesheet';
-import { useAuthInfo } from '~/hooks/useAuthInfo';
 import { useTimesheetConfig } from '~/hooks/useTimesheetConfig';
 import { useTranslation } from 'react-i18next';
 import { UnlinkTimesheetSelf } from './shared/UnlinkSelf';
+import { api } from '~/trpc/react';
 
 
 const DangerZoneContent = () => {
-  const { user } = useAuthInfo();
+  const [user] = api.account.getFullUserDetails.useSuspenseQuery();
   const { config } = useTimesheetConfig();
   const { t } = useTranslation();
 

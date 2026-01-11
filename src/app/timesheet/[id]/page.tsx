@@ -62,9 +62,19 @@ export default async function TimesheetPage(
           <h2 className="text-xl font-semibold">{t('timesheet.[id].settings.title')}</h2>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2">
-          <EditTimesheetZone />
-          <ShareZone />
-          <DangerZone />
+
+          <Suspense fallback={
+            (
+              <>
+                <Skeleton className="w-full min-h-24" />
+                <Skeleton className="w-full min-h-24" />
+              </>
+            )
+          }>
+            <EditTimesheetZone />
+            <ShareZone />
+            <DangerZone />
+          </Suspense>
         </CardContent>
       </Card>
     </div>

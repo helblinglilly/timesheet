@@ -4,9 +4,9 @@ import Link from 'next/link';
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next';
 import { Button } from '~/components/ui/button';
-import { useAuthInfo } from '~/hooks/useAuthInfo';
 import { useTimesheetConfig } from '~/hooks/useTimesheetConfig';
 import { RenameTimesheet } from '../rename/Rename';
+import { api } from '~/trpc/react';
 
 const EditTimesheetContent = () => {
   const { t } = useTranslation();
@@ -29,7 +29,7 @@ const EditTimesheetContent = () => {
 }
 
 export const EditTimesheetZone = () => {
-  const { user } = useAuthInfo();
+  const [user] = api.account.getFullUserDetails.useSuspenseQuery();
   const { config } = useTimesheetConfig();
   const { t } = useTranslation();
 

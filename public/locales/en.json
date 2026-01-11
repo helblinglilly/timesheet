@@ -30,6 +30,7 @@
       "toast": {
         "main": "Something went wrong",
         "description": "Try again or contact support.",
+        "description_no_support": "Try again.",
         "link": {
           "label": "Support",
           "slug": "/support"

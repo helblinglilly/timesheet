@@ -2,7 +2,7 @@
 
 import { ChevronsUpDown } from 'lucide-react';
 import Link from 'next/link';
-import React, { useRef, useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import { Trans, useTranslation } from 'react-i18next';
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert';
 import { Button } from '~/components/ui/button';
@@ -12,6 +12,7 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 import { useAuthInfo } from '~/hooks/useAuthInfo';
 import { api } from '~/trpc/react';
 import { useSonarTriggers } from '../Toasts/genericError';
+import { useDomainConfig } from '~/hooks/useDomainConfig';
 
 export const DeleteAccount = () => {
   const { user } = useAuthInfo();
@@ -20,10 +21,18 @@ export const DeleteAccount = () => {
   const closeButton = useRef<HTMLButtonElement>(null);
   const [isTimesheetListOpen, setIsTimesheetListOpen] = useState(false)
   const { triggerGenericError } = useSonarTriggers();
+  const { canTransferTimesheets } = useDomainConfig()
 
   const [timesheets] = api.account.getNumberOfOwnedTimesheets.useSuspenseQuery({
     userId: user?.id ?? ''
   })
+
+  const canDeleteAccount = useMemo(() => {
+    if (canTransferTimesheets) {
+      return timesheets.totalNumber === 0;
+    }
+    return true;
+  }, [timesheets, canTransferTimesheets])
 
   const { mutate: deleteUser, status: deletionStatus } = api.account.deleteAccount.useMutation({
     onSuccess: async () => {
@@ -53,7 +62,7 @@ export const DeleteAccount = () => {
           <CardContent className='grid gap-4 md:gap-8 justify-items-stretch w-full md:items-center'>
 
             {
-              timesheets.totalNumber > 0 && (
+              !canDeleteAccount && (
                 <>
                   <Alert variant="destructive">
                     <AlertTitle><b>{t('account.delete_account.remaining_timesheets.title')}</b></AlertTitle>
@@ -111,7 +120,7 @@ export const DeleteAccount = () => {
               <DialogTrigger asChild>
                 <Button
                   variant="destructive"
-                  disabled={timesheets.totalNumber > 0}
+                  disabled={!canDeleteAccount}
                 >
                   {t('account.delete_account.dialog.label')}
                 </Button>

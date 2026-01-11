@@ -12,6 +12,8 @@ import { TickProvider } from '~/hooks/useTick';
 import { AuthInfoProvider } from '~/hooks/useAuthInfo';
 import { serverSideAuth } from '~/pocketbase/server';
 import type { PBAuthResponse } from '~/pocketbase/builtin.types';
+import { getDomainConfig } from '~/features/domain';
+import { DomainConfigProvider } from '~/hooks/useDomainConfig';
 
 export const metadata: Metadata = {
   title: 'Timesheet',
@@ -35,6 +37,7 @@ export default async function RootLayout({
   });
 
   const pb = await serverSideAuth();
+  const domainConfig = getDomainConfig();
 
   return (
     <html lang="en" className={`${geist.variable}`} suppressHydrationWarning={true}>
@@ -77,9 +80,11 @@ export default async function RootLayout({
               email: (pb.authStore.record as PBAuthResponse['record']).email,
               name: (pb.authStore.record as PBAuthResponse['record']).name
             } : undefined}>
-              <TickProvider>
-                {children}
-              </TickProvider>
+              <DomainConfigProvider values={domainConfig}>
+                <TickProvider>
+                  {children}
+                </TickProvider>
+              </DomainConfigProvider>
             </AuthInfoProvider>
           </TranslationProvider>
         </TRPCReactProvider>

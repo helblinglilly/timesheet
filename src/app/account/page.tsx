@@ -17,7 +17,7 @@ export default async function Account() {
 
   return (
     <div className='grid gap-8'>
-      <h1 className='text-2xl bolder'>{t('account.title')}</h1>
+      <h1 className='text-3xl font-semibold'>{t('account.title')}</h1>
 
       <main className="grid gap-8">
         <YourInfo />

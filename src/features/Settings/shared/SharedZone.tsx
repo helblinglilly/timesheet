@@ -1,12 +1,13 @@
 'use client'
 
 import React, { useMemo } from 'react'
-import { useAuthInfo } from '~/hooks/useAuthInfo';
 import { useTimesheetConfig } from '~/hooks/useTimesheetConfig';
 import { useTranslation } from 'react-i18next';
 import { ShareTimesheet } from '~/features/ShareTimesheet/ShareTimesheet';
 import { ManageSharedUsers } from './ManageSharedUsers';
 import { TransferOwnership } from '~/features/TransferOwnership/TransferOwnership';
+import { useDomainConfig } from '~/hooks/useDomainConfig';
+import { api } from '~/trpc/react';
 
 const ShareZoneContent = () => {
   const { config } = useTimesheetConfig();
@@ -26,16 +27,23 @@ const ShareZoneContent = () => {
 
 export const ShareZone = () => {
   const { t } = useTranslation();
-  const { user } = useAuthInfo();
+  const [user] = api.account.getFullUserDetails.useSuspenseQuery();
   const { config } = useTimesheetConfig();
+  const { canSendEmails, canPerformPBAdminActions } = useDomainConfig();
 
   const isSharedTimesheet = useMemo(() => {
-    return user?.id !== config.user
+    return user.id !== config.user
   }, [user, config])
+
+  if (!canSendEmails || !canPerformPBAdminActions) {
+    return null
+  };
+
 
   if (isSharedTimesheet){
     return null;
   }
+
 
   return (
     <div className="grid gap-4 h-fit">
