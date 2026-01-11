@@ -3,9 +3,55 @@
     "signing_in": "Signing in...",
     "redirecting": "Redirecting...",
     "login": {
-      "title": "Hello stranger",
-      "tagline": "Let's get you started",
-      "social": "Use one of these social accounts to continue"
+      "title": "Log in",
+      "tagline": "Let's get you tracking!",
+      "social": "Use one of these social accounts",
+      "email": {
+        "section_title": "Or use Email/Password",
+        "fields": {
+          "email": {
+            "label": "Email",
+            "placeholder": "me@example.com"
+          },
+          "password": {
+            "label": "Password"
+          },
+          "login_cta": "Log in"
+        },
+        "signup": "Don't have an account yet? <a>Sign up</a>",
+        "forgot_password": "Forgot password?"
+      }
+    },
+    "signup": {
+      "title": "Sign up",
+      "email_title": "Use Email + Password",
+      "fields": {
+        "email": {
+          "title": "Email",
+          "placeholder": "me@example.com"
+        },
+        "password": {
+          "title": "Password",
+          "requirements_hint": "Min 8 characters, 1+ uppercase and 1+ special character",
+          "requirements": {
+            "minLength": "Password must contain at last {{ number }} characters",
+            "uppercase": "Must contain an uppercase letter",
+            "match": "Passwords do not match",
+            "number": "Must contain a number",
+            "special_char": "Must contain a special character"
+          }
+        },
+        "passwordConfirm": {
+          "title": "Confirm password"
+        }
+      },
+      "cta": {
+        "submit": "Sign up",
+        "loading": "Signing up..."
+      },
+      "errors": {
+        "generic": "Something went wrong. Please try again"
+      }
     }
   },
   "common": {
@@ -398,6 +444,9 @@
     },
     "logout": {
       "title": "Log out"
+    },
+    "login": {
+      "title": "Log in"
     }
   },
   "account": {

@@ -39,14 +39,17 @@ export default function OAuthMethod({
         window.location.assign(authMethod.authUrl);
       }}
     >
-      <Image
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        src={iconMap[authMethod.name]}
-        alt=""
-        height={24}
-        width={24}
-
-      />
+      {
+        iconMap[authMethod.name] && (
+          <Image
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            src={iconMap[authMethod.name]}
+            alt=""
+            height={24}
+            width={24}
+          />
+        )
+      }
       {authMethod.displayName}
     </Button>
   );

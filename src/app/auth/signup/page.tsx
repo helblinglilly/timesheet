@@ -1,12 +1,10 @@
-
-import { createTranslation } from '~/i18n/server';
 import { Navbar } from '~/features/Navbar/Navbar';
-
+import { createTranslation } from '~/i18n/server';
+import CreateNewUserForm from './form';
 import { AuthMethodsList } from '~/features/Authentication/OAuthProviders';
-import { Email } from '~/features/Authentication/Email';
 import { getAuthMethods } from '~/features/Authentication/getAuthMethods';
 
-export default async function Login() {
+export default async function Signup() {
   const { t } = await createTranslation();
   const authMethodsPromise = getAuthMethods();
 
@@ -16,17 +14,20 @@ export default async function Login() {
       <div className='px-2 pt-8 grid gap-4 justify-center w-full'>
         <div className='grid gap-4'>
           <div className='grid gap-2'>
-            <p className="text-3xl font-semibold">{t('authentication.login.title')}</p>
-            <p className="text">{t('authentication.login.tagline')}</p>
+            <p className="text-3xl font-semibold">{t('authentication.signup.title')}</p>
           </div>
 
-          <div>
-            <AuthMethodsList authMethodsPromise={authMethodsPromise} />
-          </div>
 
-          <div className="grid gap-2">
-            <p>{ t('authentication.login.email.section_title') }</p>
-            <Email />
+          <div className="grid gap-8">
+            <div>
+              <AuthMethodsList authMethodsPromise={authMethodsPromise} />
+            </div>
+
+            <div className="grid gap-2">
+              <p>{t('authentication.signup.email_title')}</p>
+
+              <CreateNewUserForm />
+            </div>
           </div>
 
         </div>
