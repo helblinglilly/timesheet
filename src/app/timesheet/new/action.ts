@@ -7,17 +7,16 @@ import { withNewRelicWebTransaction } from '~/utils/observability/withNewRelicWe
 import { redirect } from 'next/navigation';
 import newrelic from 'newrelic';
 import { TableNames } from '~/pocketbase/tables.types';
+import z from 'zod';
 
 export interface TimesheetFormState {
-  errors?: {
-    name?: string[] | undefined;
-    minutesPerDay?: string[] | undefined;
-    daysPerWeek?: string[] | undefined;
-    unpaidLunchMinutes?: string[] | undefined;
-    paidLunchMinutes?: string[] | undefined;
-    mode?: string[] | undefined;
-  };
-  message?: string | undefined;
+  errors: string[];
+  properties?: {
+    mode?: {
+      errors: string[];
+    } | undefined;
+    name?: { errors: string[]; } | undefined;
+  } | undefined;
 }
 
 async function createTimesheet(formData: FormData): Promise<TimesheetFormState> {
@@ -25,24 +24,26 @@ async function createTimesheet(formData: FormData): Promise<TimesheetFormState> 
   const { t } = await createTranslation();
   const schema = formSchema(t);
 
+  const hoursPerDay = formData.get('minutesPerDay.hours');
+  const unpaidLunchMinutesRaw = formData.get('unpaidLunchMinutes');
+  const paidLunchMinutesRaw = formData.get('paidLunchMinutes');
+
   const values = {
     name: formData.get('name'),
     minutesPerDay: {
-      hours: formData.get('minutesPerDay.hours'),
-      minutes: formData.get('minutesPerDay.minutes'),
+      hours: hoursPerDay ? Number(hoursPerDay) : undefined,
+      minutes: Number(formData.get('minutesPerDay.minutes') ?? '0'),
     },
-    daysPerWeek: formData.get('daysPerWeek'),
-    unpaidLunchMinutes: formData.get('unpaidLunchMinutes'),
-    paidLunchMinutes: formData.get('paidLunchMinutes'),
+    daysPerWeek: Number(formData.get('daysPerWeek')),
+    unpaidLunchMinutes: unpaidLunchMinutesRaw ? Number(unpaidLunchMinutesRaw) : undefined,
+    paidLunchMinutes: paidLunchMinutesRaw ? Number(paidLunchMinutesRaw) : undefined,
     mode: formData.get('mode'),
   };
 
   const parsed = schema.safeParse(values);
   if (!parsed.success) {
     const { error } = parsed;
-    return {
-      errors: error.flatten().fieldErrors,
-    };
+    return z.treeifyError(error)
   }
 
   try {
@@ -70,7 +71,7 @@ async function createTimesheet(formData: FormData): Promise<TimesheetFormState> 
   catch (err) {
     const pbError = err instanceof Error ? err.message : 'Unknown';
     newrelic.noticeError(new Error(`Failed to create new timesheet with error ${pbError}`));
-    return { message: t('timesheet.new.error_generic') };
+    return { errors: [t('timesheet.new.error_generic')] };
   }
 
   redirect('/dashboard');

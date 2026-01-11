@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { type z } from 'zod';
-import { startTransition, useActionState } from 'react';
+import { startTransition, useActionState, useEffect } from 'react';
 
 import { Button } from '~/components/ui/button';
 import {
@@ -35,19 +35,19 @@ export default function UpdateTimesheet() {
     defaultValues: {
       id: config.id,
       minutesPerDay: {
-        hours: existingMode === 'target' ? Math.floor(config.minutesPerDay / 60) : undefined,
-        minutes: existingMode === 'target' ? config.minutesPerDay % 60 : undefined,
+        hours: existingMode === 'target' ? Math.floor(config.minutesPerDay / 60) : 0,
+        minutes: existingMode === 'target' ? config.minutesPerDay % 60 : 0,
       },
-      daysPerWeek: existingMode === 'target' ? config.daysPerWeek : undefined,
-      unpaidLunchMinutes: existingMode === 'target' ? config.unpaidLunchMinutes : undefined,
-      paidLunchMinutes: existingMode === 'target' ?  config.paidLunchMinutes : undefined,
+      daysPerWeek: existingMode === 'target' ? config.daysPerWeek : 0,
+      unpaidLunchMinutes: existingMode === 'target' ? config.unpaidLunchMinutes : 0,
+      paidLunchMinutes: existingMode === 'target' ?  config.paidLunchMinutes : 0,
       mode: existingMode
     },
   });
 
   const mode = form.watch('mode');
 
-  const [state, formAction, isPending] = useActionState<TimesheetFormState, FormData>(updateTimesheetWithState, {});
+  const [state, formAction, isPending] = useActionState<TimesheetFormState, FormData>(updateTimesheetWithState, { errors: [] });
 
   const onSubmit = async (data: FormValues) => {
     const formData = new FormData();
@@ -72,6 +72,18 @@ export default function UpdateTimesheet() {
       formAction(formData);
     });
   };
+
+  useEffect(() => {
+    if (state?.properties) {
+      Object.entries(state.properties).forEach(([key, value]) => {
+        // @ts-expect-error Does not realise it's a key of
+        form.setError(key, {
+          type: 'server',
+          message: value.errors?.[0] ?? 'Error',
+        });
+      });
+    }
+  }, [state?.properties, form]);
 
   return (
     <Form {...form}>
@@ -145,6 +157,11 @@ export default function UpdateTimesheet() {
                         type="number"
                         placeholder={t('timesheet.edit.fields.minutesPerDay.hours.placeholder')}
                         {...field}
+                        value={field.value ?? ''}
+                        onChange={(e) => {
+                          const val = e.target.valueAsNumber;
+                          field.onChange(isNaN(val) ? 0 : val);
+                        }}
                       />
                     </FormControl>
                     <FormMessage />
@@ -158,7 +175,16 @@ export default function UpdateTimesheet() {
                   <FormItem>
                     <FormLabel>{t('timesheet.edit.fields.minutesPerDay.minutes.label')}</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder={t('timesheet.edit.fields.minutesPerDay.minutes.placeholder')} {...field} />
+                      <Input
+                        type="number"
+                        placeholder={t('timesheet.edit.fields.minutesPerDay.minutes.placeholder')}
+                        {...field}
+                        value={field.value ?? ''}
+                        onChange={(e) => {
+                          const val = e.target.valueAsNumber;
+                          field.onChange(isNaN(val) ? 0 : val);
+                        }}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -173,7 +199,16 @@ export default function UpdateTimesheet() {
                 <FormItem>
                   <FormLabel>{t('timesheet.edit.fields.daysPerWeek.label')}</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder={t('timesheet.edit.fields.daysPerWeek.placeholder')} {...field} />
+                    <Input
+                      type="number"
+                      placeholder={t('timesheet.edit.fields.daysPerWeek.placeholder')}
+                      {...field}
+                      value={field.value ?? ''}
+                      onChange={(e) => {
+                        const val = e.target.valueAsNumber;
+                        field.onChange(isNaN(val) ? 0 : val);
+                      }}
+                    />
                   </FormControl>
                   <FormDescription>
                     {t('timesheet.edit.fields.daysPerWeek.description')}
@@ -202,7 +237,16 @@ export default function UpdateTimesheet() {
                   <FormItem>
                     <FormLabel>{t('timesheet.edit.fields.breaks.unpaid.label')}</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder={t('timesheet.edit.fields.breaks.unpaid.placeholder')} {...field} />
+                      <Input
+                        type="number"
+                        placeholder={t('timesheet.edit.fields.breaks.unpaid.placeholder')}
+                        {...field}
+                        value={field.value ?? ''}
+                        onChange={(e) => {
+                          const val = e.target.valueAsNumber;
+                          field.onChange(isNaN(val) ? 0 : val);
+                        }}
+                      />
                     </FormControl>
                     <FormDescription>
                       {t('timesheet.edit.fields.breaks.unpaid.description')}
@@ -219,7 +263,16 @@ export default function UpdateTimesheet() {
                   <FormItem>
                     <FormLabel>{t('timesheet.edit.fields.breaks.paid.label')}</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder={t('timesheet.edit.fields.breaks.paid.placeholder')} {...field} />
+                      <Input
+                        type="number"
+                        placeholder={t('timesheet.edit.fields.breaks.paid.placeholder')}
+                        {...field}
+                        value={field.value ?? ''}
+                        onChange={(e) => {
+                          const val = e.target.valueAsNumber;
+                          field.onChange(isNaN(val) ? 0 : val);
+                        }}
+                      />
                     </FormControl>
                     <FormDescription>
                       {t('timesheet.edit.fields.breaks.paid.description')}
@@ -235,8 +288,8 @@ export default function UpdateTimesheet() {
 
         <div className="grid w-full">
           <div className="w-full md:max-w-96 md:justify-self-center">
-            {state && (
-              <div className="text-red-500">{state.message}</div>
+            {state?.errors && state.errors.length > 0 && (
+              <div className="text-red-500 mb-2">{state.errors.join(', ')}</div>
             )}
             <Button type="submit" className="w-full">{isPending ? t('timesheet.edit.loading') : t('timesheet.edit.submit')}</Button>
           </div>

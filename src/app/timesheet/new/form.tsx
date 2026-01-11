@@ -34,15 +34,17 @@ export default function NewTargetHoursTimesheet() {
         minutes: undefined,
       },
       daysPerWeek: undefined,
-      unpaidLunchMinutes: undefined,
-      paidLunchMinutes: undefined,
+      unpaidLunchMinutes: 0,
+      paidLunchMinutes: 0,
       mode: undefined,
     },
   });
 
   const mode = form.watch('mode');
 
-  const [state, formAction, isPending] = useActionState<TimesheetFormState, FormData>(createTimesheetWithState, {});
+  const [state, formAction, isPending] = useActionState<TimesheetFormState, FormData>(createTimesheetWithState, {
+    errors: []
+  });
 
   const onSubmit = async (data: FormValues) => {
     const formData = new FormData();
@@ -164,6 +166,11 @@ export default function NewTargetHoursTimesheet() {
                         type="number"
                         placeholder={t('timesheet.new.fields.minutesPerDay.hours.placeholder')}
                         {...field}
+                        value={field.value ?? '' }
+                        onChange={(e) => {
+                          const val = e.target.valueAsNumber;
+                          field.onChange(isNaN(val) ? 0 : val);
+                        }}
                       />
                     </FormControl>
                     <FormMessage />
@@ -177,7 +184,16 @@ export default function NewTargetHoursTimesheet() {
                   <FormItem>
                     <FormLabel>{t('timesheet.new.fields.minutesPerDay.minutes.label')}</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder={t('timesheet.new.fields.minutesPerDay.minutes.placeholder')} {...field} />
+                      <Input
+                        type="number"
+                        placeholder={t('timesheet.new.fields.minutesPerDay.minutes.placeholder')}
+                        {...field}
+                        value={field.value ?? ''}
+                        onChange={(e) => {
+                          const val = e.target.valueAsNumber;
+                          field.onChange(isNaN(val) ? 0 : val);
+                        }}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -192,7 +208,16 @@ export default function NewTargetHoursTimesheet() {
                 <FormItem>
                   <FormLabel>{t('timesheet.new.fields.daysPerWeek.label')}</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder={t('timesheet.new.fields.daysPerWeek.placeholder')} {...field} />
+                    <Input
+                      type="number"
+                      placeholder={t('timesheet.new.fields.daysPerWeek.placeholder')}
+                      {...field}
+                      value={field.value ?? ''}
+                      onChange={(e) => {
+                        const val = e.target.valueAsNumber;
+                        field.onChange(isNaN(val) ? 0 : val);
+                      }}
+                    />
                   </FormControl>
                   <FormDescription>
                     {t('timesheet.new.fields.daysPerWeek.description')}
@@ -221,7 +246,16 @@ export default function NewTargetHoursTimesheet() {
                   <FormItem>
                     <FormLabel>{t('timesheet.new.fields.breaks.unpaid.label')}</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder={t('timesheet.new.fields.breaks.unpaid.placeholder')} {...field} />
+                      <Input
+                        type="number"
+                        placeholder={t('timesheet.new.fields.breaks.unpaid.placeholder')}
+                        {...field}
+                        value={field.value ?? ''}
+                        onChange={(e) => {
+                          const val = e.target.valueAsNumber;
+                          field.onChange(isNaN(val) ? 0 : val);
+                        }}
+                      />
                     </FormControl>
                     <FormDescription>
                       {t('timesheet.new.fields.breaks.unpaid.description')}
@@ -238,7 +272,16 @@ export default function NewTargetHoursTimesheet() {
                   <FormItem>
                     <FormLabel>{t('timesheet.new.fields.breaks.paid.label')}</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder={t('timesheet.new.fields.breaks.paid.placeholder')} {...field} />
+                      <Input
+                        type="number"
+                        placeholder={t('timesheet.new.fields.breaks.paid.placeholder')}
+                        {...field}
+                        value={field.value ?? ''}
+                        onChange={(e) => {
+                          const val = e.target.valueAsNumber;
+                          field.onChange(isNaN(val) ? 0 : val);
+                        }}
+                      />
                     </FormControl>
                     <FormDescription>
                       {t('timesheet.new.fields.breaks.paid.description')}
@@ -254,8 +297,8 @@ export default function NewTargetHoursTimesheet() {
 
         <div className="grid w-full">
           <div className="w-full md:max-w-96 md:justify-self-center">
-            {state && (
-              <div className="text-red-500">{state.message}</div>
+            {state.errors?.length > 0 && (
+              <div className="text-red-500">{state.errors.join(', ')}</div>
             )}
             <Button type="submit" className="w-full">{isPending ? t('timesheet.new.loading') : t('timesheet.new.submit')}</Button>
           </div>

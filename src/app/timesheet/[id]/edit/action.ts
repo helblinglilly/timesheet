@@ -7,17 +7,18 @@ import { withNewRelicWebTransaction } from '~/utils/observability/withNewRelicWe
 import { redirect } from 'next/navigation';
 import newrelic from 'newrelic';
 import { TableNames } from '~/pocketbase/tables.types';
+import z from 'zod';
 
 export interface TimesheetFormState {
-  errors?: {
-    id?: string[] | undefined;
-    minutesPerDay?: string[] | undefined;
-    daysPerWeek?: string[] | undefined;
-    unpaidLunchMinutes?: string[] | undefined;
-    paidLunchMinutes?: string[] | undefined;
-    mode?: string[] | undefined;
-  };
-  message?: string | undefined;
+  errors: string[];
+  properties?: {
+    id?: { errors: string[]; } | undefined;
+    minutesPerDay?: { errors: string[]; } | undefined;
+    daysPerWeek?: { errors: string[]; } | undefined;
+    unpaidLunchMinutes?: { errors: string[]; } | undefined;
+    paidLunchMinutes?: { errors: string[]; } | undefined;
+    mode?: { errors: string[]; } | undefined;
+  } | undefined;
 }
 
 async function updateTimesheet(formData: FormData): Promise<TimesheetFormState> {
@@ -25,24 +26,26 @@ async function updateTimesheet(formData: FormData): Promise<TimesheetFormState> 
   const { t } = await createTranslation();
   const schema = formSchema(t);
 
+  const hoursPerDay = formData.get('minutesPerDay.hours');
+  const unpaidLunchMinutesRaw = formData.get('unpaidLunchMinutes');
+  const paidLunchMinutesRaw = formData.get('paidLunchMinutes');
+
   const values = {
     id: formData.get('id'),
     minutesPerDay: {
-      hours: formData.get('minutesPerDay.hours'),
-      minutes: formData.get('minutesPerDay.minutes'),
+      hours: hoursPerDay ? Number(hoursPerDay) : undefined,
+      minutes: Number(formData.get('minutesPerDay.minutes') ?? '0'),
     },
-    daysPerWeek: formData.get('daysPerWeek'),
-    unpaidLunchMinutes: formData.get('unpaidLunchMinutes'),
-    paidLunchMinutes: formData.get('paidLunchMinutes'),
+    daysPerWeek: Number(formData.get('daysPerWeek')),
+    unpaidLunchMinutes: unpaidLunchMinutesRaw ? Number(unpaidLunchMinutesRaw) : undefined,
+    paidLunchMinutes: paidLunchMinutesRaw ? Number(paidLunchMinutesRaw) : undefined,
     mode: formData.get('mode'),
   };
 
   const parsed = schema.safeParse(values);
   if (!parsed.success) {
     const { error } = parsed;
-    return {
-      errors: error.flatten().fieldErrors,
-    };
+    return z.treeifyError(error);
   }
 
   try {
@@ -66,7 +69,7 @@ async function updateTimesheet(formData: FormData): Promise<TimesheetFormState> 
   catch (err) {
     const pbError = err instanceof Error ? err.message : 'Unknown';
     newrelic.noticeError(new Error(`Failed to update timesheet with error ${pbError}`));
-    return { message: t('timesheet.new.error_generic') };
+    return { errors: [t('timesheet.new.error_generic')] };
   }
 
   redirect(`/timesheet/${parsed.data.id}`);

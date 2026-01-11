@@ -54,7 +54,7 @@ export const EditTimesheetDay = ({
     name: 'breaks',
   });
 
-  const [state, formAction, isPending] = useActionState<TimesheetEditFormState, FormData>(editTimesheetDayWithState, {});
+  const [state, formAction, isPending] = useActionState<TimesheetEditFormState, FormData>(editTimesheetDayWithState, { errors: [] });
 
   const onSubmit = async (data: FormValues) => {
     const formData = new FormData();
@@ -79,16 +79,16 @@ export const EditTimesheetDay = ({
   };
 
   useEffect(() => {
-    if (state?.errors) {
-      Object.entries(state.errors).forEach(([key, messages]) => {
+    if (state?.properties) {
+      Object.entries(state.properties).forEach(([key, value]) => {
         // @ts-expect-error Does not realise it's a key of
         form.setError(key, {
           type: 'server',
-          message: messages?.[0] ?? 'Error',
+          message: value.errors?.[0] ?? 'Error',
         });
       });
     }
-  }, [state?.errors, form]);
+  }, [state?.properties, form]);
 
   return (
     <Form {...form}>
@@ -186,8 +186,8 @@ export const EditTimesheetDay = ({
 
         <div className="grid w-full align-bottom">
           <div className="w-full md:max-w-96 md:justify-self-center">
-            {state && (
-              <div className="text-red-500">{state.message}</div>
+            {state?.errors && state.errors.length > 0 && (
+              <div className="text-red-500 mb-2">{state.errors.join(', ')}</div>
             )}
             <Button type="submit" className="w-full">{isPending ? t('timesheet.[id].edit.save.loading') : t('timesheet.[id].edit.save.cta')}</Button>
           </div>

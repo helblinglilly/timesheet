@@ -106,7 +106,8 @@
         "name": {
           "label": "Name",
           "placeholder": "Facebook",
-          "error_short": "Must be at least 3 characters"
+          "error_short": "Must be at least 3 characters",
+          "error_required": "This field is required"
         },
         "mode": {
           "label": "How you want to track your hours",
@@ -125,12 +126,14 @@
           "hours": {
             "placeholder": "7 hours",
             "label": "hours*",
-            "error_max": "Can't work more than 24h/day"
+            "error_max": "Can't work more than 24h/day",
+            "error_required": "This field is required"
           },
           "minutes": {
             "placeholder": "30 minutes",
             "label": "minutes*",
-            "error_max": "No more than 59 minutes in an hour"
+            "error_max": "No more than 59 minutes in an hour",
+            "error_required": "This field is required"
           }
         },
         "daysPerWeek": {
@@ -138,7 +141,8 @@
           "placeholder": "5 days/week",
           "description": "If your days vary, put down your average",
           "error_min": "If you don't work regular hours, a simple timesheet might work better for you",
-          "error_max": "No more than 7 days in a week"
+          "error_max": "No more than 7 days in a week",
+          "error_required": "This field is required"
         },
         "breaks": {
           "label": "Let's talk breaks",

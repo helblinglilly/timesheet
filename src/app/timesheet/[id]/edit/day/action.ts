@@ -8,16 +8,11 @@ import { formSchema } from './form.schema';
 import { format, set } from 'date-fns';
 import { TableNames } from '~/pocketbase/tables.types';
 import log from '~/utils/log';
+import z from 'zod';
 
 export interface TimesheetEditFormState {
-  errors?: {
-    id?: string[] | undefined;
-    day?: string[] | undefined;
-    clockIn?: string[] | undefined;
-    clockOut?: string[] | undefined;
-    breaks?: string[] | undefined;
-  };
-  message?: string | undefined;
+  errors?: string[];
+  properties?: Record<string, { errors: string[] }>;
 }
 
 function parseBreaksFromFormData(formData: FormData) {
@@ -58,9 +53,7 @@ async function editTimesheetDay(formData: FormData): Promise<TimesheetEditFormSt
   const parsed = schema.safeParse(values);
   if (!parsed.success) {
     const { error } = parsed;
-    return {
-      errors: error.flatten().fieldErrors,
-    };
+    return z.treeifyError(error);
   }
 
   const additionalErrors: Record<string, string[]> = {};
@@ -102,7 +95,11 @@ async function editTimesheetDay(formData: FormData): Promise<TimesheetEditFormSt
   }
 
   if (Object.keys(additionalErrors).length > 0) {
-    return { errors: additionalErrors };
+    const properties: Record<string, { errors: string[] }> = {};
+    for (const [path, errors] of Object.entries(additionalErrors)) {
+      properties[path] = { errors };
+    }
+    return { errors: [], properties };
   }
 
 
@@ -189,7 +186,7 @@ async function editTimesheetDay(formData: FormData): Promise<TimesheetEditFormSt
   catch (err) {
     const pbError = err instanceof Error ? err.message : 'Unknown';
     log.error('Failed to edit timesheet', pbError);
-    return { message: t('timesheet.[id].edit.fields.errors.generic') };
+    return { errors: [t('timesheet.[id].edit.fields.errors.generic')] };
   }
 
   redirect(`/timesheet/${parsed.data.id}?date=${format(new Date(parsed.data.day), 'yyy-LL-dd')}&refetch_date=${format(new Date(parsed.data.day), 'yyy-LL-dd')}`);
