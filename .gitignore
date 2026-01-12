@@ -46,3 +46,4 @@ yarn-error.log*
 .idea
 
 newrelic_agent.log
+assets/*~lock~
