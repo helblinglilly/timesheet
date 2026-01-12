@@ -88,7 +88,7 @@ export default async function Dashboard() {
                   <TimesheetDayProvider timesheetId={timesheet.id} day={today}>
                     <CardContent className="gap-4 grid">
                       <div className="grid md:flex gap-4 w-full md:justify-between">
-                        <Suspense fallback={<Skeleton className="w-full min-h-48 md:min-h-8" />}>
+                        <Suspense fallback={<Skeleton className="w-full min-h-52 md:min-h-10" />}>
                           <ClockInButton className="md:w-1/5" />
                           <BreakInButton className="md:w-1/5" />
                           <BreakOutButton className="md:w-1/5" />
@@ -96,20 +96,20 @@ export default async function Dashboard() {
                         </Suspense>
                       </div>
                       <h3 className="text-lg font-semibold">{ t('timesheet.today.log.title') }</h3>
-                      <Suspense fallback={<div /> }>
+                      <Suspense fallback={<div className="h-8"></div> }>
                         <WorkdayLog />
                       </Suspense>
                     </CardContent>
 
                     <CardFooter>
                       <div className="grid w-full">
-                        <Suspense fallback={<div /> }>
+                        <Suspense fallback={<div className="h-10"></div> }>
                           <HoursWorked from={ new Date() } to={ addDays(new Date(), 1) } />
                         </Suspense>
                       </div>
 
                       <Link href={`/timesheet/${timesheet.id}`} className="w-full md:max-w-1/5">
-                        <Button variant="outline" className="w-full">
+                        <Button variant="outline" className="w-full h-10">
                           {t('dashboard.show_more')}
                         </Button>
                       </Link>

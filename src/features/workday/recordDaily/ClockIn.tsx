@@ -7,6 +7,7 @@ import { Button } from '~/components/ui/button';
 import { useMemo } from 'react';
 import { useTimesheetDay } from '../useTimesheetDay';
 import { endOfWeek, format, startOfWeek } from 'date-fns';
+import { cn } from '~/lib/utils';
 
 export default function ClockInButton({
   className,
@@ -51,7 +52,7 @@ export default function ClockInButton({
     { baseClassName }: { baseClassName: string | undefined },
   ) => (
     <Button
-      className={baseClassName}
+      className={cn('h-10', baseClassName)}
       disabled={disabled}
       onClick={() => {
         clockInMutation.mutate({

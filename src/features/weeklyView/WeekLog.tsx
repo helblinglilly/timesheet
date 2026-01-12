@@ -49,9 +49,9 @@ export const WeekLog = () => {
                 day={format(day, 'yyy-LL-dd')}
                 key={day.toISOString()}
               >
-                <Card className="p-4">
+                <Card className="p-4 w-full gap-0">
                   <Link
-                    className="w-full md:min-w-sm"
+                    className="w-full"
                     href={`/timesheet/${config.id}/edit/day?date=${format(day, 'yyy-LL-dd')}`}
                   >
                     <CardHeader>

@@ -39,7 +39,7 @@ export default async function TimesheetPage(
 
         <TimesheetDayProvider timesheetId={id} day={new Date().toISOString()}>
           <div className="grid md:flex gap-4 w-full md:justify-between">
-            <Suspense fallback={<Skeleton className="w-full min-h-48 md:min-h-8" />}>
+            <Suspense fallback={<Skeleton className="w-full min-h-48 md:min-h-10" />}>
               <ClockInButton className="md:w-1/5" />
               <BreakInButton className="md:w-1/5" />
               <BreakOutButton className="md:w-1/5" />

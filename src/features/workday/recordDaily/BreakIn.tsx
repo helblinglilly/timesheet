@@ -8,6 +8,7 @@ import { useMemo } from 'react';
 import { hasIncompleteBreakEntry } from '~/lib/workday';
 import { useTimesheetDay } from '~/features/workday/useTimesheetDay';
 import { endOfWeek, format, startOfWeek } from 'date-fns';
+import { cn } from '~/lib/utils';
 
 export default function BreakInButton({
   className,
@@ -60,7 +61,7 @@ export default function BreakInButton({
     { baseClassName }: { baseClassName: string | undefined },
   ) => (
     <Button
-      className={baseClassName}
+      className={cn('h-10', baseClassName)}
       disabled={disabled}
       onClick={() => {
         if (!timesheet.timesheet_entry_id) {
