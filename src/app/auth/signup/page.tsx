@@ -6,7 +6,7 @@ import { getAuthMethods } from '~/features/Authentication/getAuthMethods';
 
 export default async function Signup() {
   const { t } = await createTranslation();
-  const authMethodsPromise = getAuthMethods();
+  const authMethods = await getAuthMethods();
 
   return (
     <>
@@ -20,7 +20,7 @@ export default async function Signup() {
 
           <div className="grid gap-8">
             <div>
-              <AuthMethodsList authMethodsPromise={authMethodsPromise} />
+              <AuthMethodsList authMethods={authMethods} />
             </div>
 
             <div className="grid gap-2">

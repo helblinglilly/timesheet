@@ -1,16 +1,14 @@
 'use client';
 
-import { use } from 'react';
 import type { PocketbaseAuthMethods } from '~/pocketbase/builtin.types';
 import OAuthMethod from './OAuthMethod';
 import { useTranslation } from 'react-i18next';
 
 interface AuthMethodsListProps {
-  authMethodsPromise: Promise<(PocketbaseAuthMethods & { authUrl: string })[]>;
+  authMethods: (PocketbaseAuthMethods & { authUrl: string })[];
 }
 
-export function AuthMethodsList({ authMethodsPromise }: AuthMethodsListProps) {
-  const authMethods = use(authMethodsPromise);
+export function AuthMethodsList({ authMethods }: AuthMethodsListProps) {
   const { t } = useTranslation();
 
   return (
