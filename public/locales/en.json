@@ -497,5 +497,39 @@
         "confirm": "Yes, delete my account"
       }
     }
+  },
+  "kiosk_mode": {
+    "name": "Timesheet",
+    "sign_in": "Sign in",
+    "get_started": "Get started",
+    "tagline": "Your time is valuable.<br />Track it.",
+    "jump_to_features": "Learn more",
+    "usp": {
+      "title": "Features",
+      "summary": "Control your data, and access it anywhere.<br />This time tracking app doesn't get in your way.",
+      "self_host": {
+        "title": "Self-Hostable",
+        "content": "Deploy on your own infrastructure. No subscriptions, ads or third parties. Your data is yours - you're in control."
+      },
+      "social_auth": {
+        "title": "OAuth providers",
+        "content": ""
+      },
+      "shared_sheets": {
+        "title": "Share timesheets",
+        "content": "Frustrated by personal and work accounts when switching devices? Just share it with yourself and never worry about this again."
+      }
+    },
+    "self_hosting": {
+      "title": "Easy self-hosting",
+      "subheading": "Get up and running in minutes with Docker. Start the stack below, configure Pocketbase, and you're ready to go.",
+      "docker_compose": "docker-compose.yaml",
+      "disclaimer": "⚠️ You will need to access and configure the Pocketbase backend on initial startup. See <a href=\"https://github.com/helblinglilly/timesheet?tab=readme-ov-file#self-hosting\">Get started</a> for full details."
+    },
+    "call_to_action": {
+      "title": "Ready to take control of your time?",
+      "subheading": "Start tracking your hours today. Self-host your own instance for full control, or try our hosted solution for free."
+    },
+    "footer": "Built at <a href=\"https://github.com/helblinglilly/timesheet\">github.com/helblinglilly/timesheet</a>"
   }
 }
