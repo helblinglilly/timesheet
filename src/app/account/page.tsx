@@ -16,7 +16,7 @@ export default async function Account() {
   }
 
   return (
-    <div className='grid gap-8'>
+    <div className='grid gap-8 justify-center'>
       <h1 className='text-3xl font-semibold'>{t('account.title')}</h1>
 
       <main className="grid gap-8">
