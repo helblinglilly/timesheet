@@ -11,7 +11,7 @@ export const KioskLandingPage = () => {
     <>
       <main className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 text-white">
         {/* Hero Section */}
-        <div className="container mx-auto px-4 py-16">
+        <div className="container mx-auto px-4 py-8">
           <nav className="flex justify-between items-center mb-16">
             <div className="flex items-center gap-2">
               <svg className="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -162,7 +162,7 @@ networks:
               <Trans
                 i18nKey="kiosk_mode.self_hosting.disclaimer"
                 components={{
-                  a: <Link href="/docs/get-started" className="text-blue-400 hover:text-blue-300 underline" />
+                  a: <Link href="https://github.com/helblinglilly/timesheet" className="text-blue-400 hover:text-blue-300 underline" />
                 }}
               />
             </p>
@@ -177,10 +177,10 @@ networks:
               {t('kiosk_mode.call_to_action.subheading')}
             </p>
             <Link
-              href="/auth/login"
+              href="/auth/signup"
               className="inline-block bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-lg font-semibold text-lg transition-colors"
             >
-              Get Started Free
+              {t('kiosk_mode.call_to_action.button')}
             </Link>
           </div>
         </div>

@@ -527,9 +527,10 @@
       "disclaimer": "⚠️ You will need to access and configure the Pocketbase backend on initial startup. See <a href=\"https://github.com/helblinglilly/timesheet?tab=readme-ov-file#self-hosting\">Get started</a> for full details."
     },
     "call_to_action": {
-      "title": "Ready to take control of your time?",
-      "subheading": "Start tracking your hours today. Self-host your own instance for full control, or try our hosted solution for free."
+      "title": "Not ready to self host?",
+      "subheading": "Get started on our managed instance for free today. When you're ready, you can export your data and move to your own instance.",
+      "button": "Try it today"
     },
-    "footer": "Built at <a href=\"https://github.com/helblinglilly/timesheet\">github.com/helblinglilly/timesheet</a>"
+    "footer": "Built at <a>github.com/helblinglilly/timesheet</a>"
   }
 }

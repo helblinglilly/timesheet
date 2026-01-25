@@ -13,7 +13,7 @@ export default async function AuthenticatedLayout({ children }: { children: Reac
   return (
     <>
       <Navbar />
-      <div className="px-8 py-2">
+      <div className="px-4 py-2">
         <Toaster
           invert={true}
           richColors={true}
