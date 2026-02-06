@@ -1,1 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5" viewBox="0 0 1000 1000"><path d="M525 25.766v-.118C775.558 38.667 975 246.226 975 500c0 262.16-212.84 475-475 475-262.16 0-475-212.84-475-475C25 246.226 224.442 38.667 475 25.648v.118a408.08 408.08 0 0 1 50 0Z" style="fill:#ebebeb;stroke:#000;stroke-width:73.79px" transform="matrix(.94939 0 0 .94783 25.305 26.083)"/><path d="M475 125V25.232c16.665-.31 33.335-.31 50 0V125h-50Zm0 849.768V875h50v99.768c-16.665.31-33.335.31-50 0ZM25.232 475.324H125v50H25.232c-.31-16.665-.31-33.335 0-50ZM974.768 525H875v-50h99.768c.31 16.665.31 33.335 0 50Z" style="fill:#020202;fill-opacity:.77;stroke:#000;stroke-width:.21px" transform="matrix(.89695 0 0 .89548 51.525 52.26)"/><path d="M475 125V25.232c16.665-.31 33.335-.31 50 0V125h-50Zm0 849.768V875h50v99.768c-16.665.31-33.335.31-50 0ZM25.232 475.324H125v50H25.232c-.31-16.665-.31-33.335 0-50ZM974.768 525H875v-50h99.768c.31 16.665.31 33.335 0 50Z" style="fill:#020202;fill-opacity:.77;stroke:#000;stroke-width:.21px" transform="matrix(.78407 .43561 -.4349 .78278 308.852 -109.198)"/><path d="M475 125V25.232c16.665-.31 33.335-.31 50 0V125h-50Zm0 849.768V875h50v99.768c-16.665.31-33.335.31-50 0ZM25.232 475.324H125v50H25.232c-.31-16.665-.31-33.335 0-50ZM974.768 525H875v-50h99.768c.31 16.665.31 33.335 0 50Z" style="fill:#020202;fill-opacity:.77;stroke:#000;stroke-width:.21px" transform="matrix(.46736 .76557 -.76431 .4666 627.213 -117.999)"/><path d="M525 25.766v-.118C775.558 38.667 975 246.226 975 500c0 262.16-212.84 475-475 475-262.16 0-475-212.84-475-475C25 246.226 224.442 38.667 475 25.648v.118a408.08 408.08 0 0 1 50 0Z" style="fill:none;stroke:#000;stroke-width:73.79px" transform="matrix(.94939 0 0 .94783 25.305 26.083)"/><path d="M12.459 388.234h62.585v201.93H12.459z" style="stroke:#000;stroke-width:.64px" transform="matrix(1.07583 -.4461 .72485 1.74807 26.525 -506.932)"/><path d="M12.459 388.234h62.585v201.93H12.459z" style="stroke:#000;stroke-width:.88px" transform="matrix(.94455 -.68135 .65009 .90121 219.209 201.251)"/><circle cx="500" cy="500.324" r="39.676" style="fill:#b6253a;stroke:#000;stroke-width:.21px" transform="matrix(1.29984 0 0 1.29771 -151.145 -149.278)"/></svg>
+<svg
+  className="w-8 h-8 text-black"
+  fill="none"
+  stroke="currentColor"
+  viewBox="0 0 24 24"
+>
+  <path
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeWidth="{2}"
+    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+  />
+</svg>
