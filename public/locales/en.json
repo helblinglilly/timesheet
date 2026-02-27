@@ -3,6 +3,16 @@
     "signing_in": "Signing in...",
     "redirecting": "Redirecting...",
     "login": {
+      "loading_methods": "Loading available authentication methods...",
+      "error": {
+        "error_explainer": "We could not establish which authentication methods are available.",
+        "error_impact": "This means you would not be able to log in, access or modify any records.",
+        "title": "Sorry, Timesheet is currently not available.",
+        "heading_user": "If you are a user:",
+        "action_user": "Visit the support page and get in touch with the administrator.",
+        "heading_admin": "If you are the administrator:",
+        "action_admin": "Ensure that the Pocketbase instance (POCKETBASE_URL) is reachable. Details about the error have been logged to the server's console."
+      },
       "title": "Log in",
       "tagline": "Let's get you tracking!",
       "social": "Use one of these social accounts",
