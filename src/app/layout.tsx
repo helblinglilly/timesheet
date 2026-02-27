@@ -17,7 +17,7 @@ import { DomainConfigProvider } from '~/hooks/useDomainConfig';
 
 export const metadata: Metadata = {
   title: 'Timesheet',
-  description: 'Your time is valuable. track it',
+  description: 'Your time is valuable. Track it',
   icons: [{ rel: 'icon', url: '/favicon.ico' }],
 };
 

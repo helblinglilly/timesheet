@@ -305,7 +305,7 @@
       "transfer": {
         "cta": "Transfer Ownership",
         "dialog": {
-          "description": "A request to transfer ownership will be sent to this account.<br />It will be valid for <strong>15 minutes</strong>.<br />Once accepted, it will automatically be shared with you.",
+          "description": "A request to transfer ownership will be sent to this Email address.<br />It will be valid for <strong>15 minutes</strong>.<br />Once the other account has accepted, this timesheet will automatically be shared with you.",
           "fields": {
             "email": {
               "label": "New owner's Email address",
@@ -404,7 +404,7 @@
             },
             "others": {
               "title": "Revoke user access",
-              "description": "List of accounts that are currently able to view and manage this timesheet",
+              "description": "List of accounts that are currently able to view this timesheet",
               "table": {
                 "name": "Name",
                 "email": "Email"
@@ -519,7 +519,7 @@
       "summary": "Control your data, and access it anywhere.<br />This time tracking app doesn't get in your way.",
       "self_host": {
         "title": "Self-Hostable",
-        "content": "Deploy on your own infrastructure. No subscriptions, ads or third parties. Your data is yours - you're in control."
+        "content": "Deploy on your own infrastructure. No subscriptions, ads or third parties. Powered by SQLite."
       },
       "social_auth": {
         "title": "OAuth providers",

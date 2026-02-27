@@ -128,7 +128,7 @@ services:
     container_name: timesheet
     networks:
       - timesheet_network
-    hostname: timesheet.helbling.uk
+    hostname: timesheet.example.com
     pull_policy: always
     restart: unless-stopped
     environment:
