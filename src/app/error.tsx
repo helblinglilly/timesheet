@@ -1,14 +1,31 @@
 'use client';
 
 import React from 'react';
+import { Button } from '~/components/ui/button';
 
 export default function GlobalError({ error, reset }: { error: Error; reset: () => void }) {
   return (
     <html>
       <body>
-        <h2>Something went wrong!</h2>
-        <pre>{error.message}</pre>
-        <button onClick={() => reset()}>Try again</button>
+        <main className="grid justify-center pt-64 p-4">
+
+
+          <h1 className='text-2xl font-bold pb-2'>Oh oh, something <i>really</i> went wrong!</h1>
+          <pre>{error.message}</pre>
+
+          <div className='pt-16'>
+            <div className='grid gap-4'>
+              <h2 className='text-lg'>At this point, you can either:</h2>
+              <div className='justify-center grid gap-8'>
+                <Button onClick={() => reset()}>Try again</Button>
+
+                <a href="/support">
+                  <Button>Visit the support page</Button>
+                </a>
+              </div>
+            </div>
+          </div>
+        </main>
       </body>
     </html>
   );
