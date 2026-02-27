@@ -29,7 +29,6 @@ export const WeekNavigator = () => {
       </Button>
 
       <Link
-        className=""
         href={`/timesheet/${config.id}?date=${format(new Date(), 'yyy-LL-dd')}`}
       >
         <h2 className="text-xl font-semibold">

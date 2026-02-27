@@ -20,6 +20,7 @@ export const env = createEnv({
     EMAIL_SENDER: z.string().optional(),
     KIOSK_MODE: z.coerce.boolean().optional(),
 
+    SUPPORT_EMAIL: z.string().optional(),
   },
 
   /**
@@ -47,7 +48,8 @@ export const env = createEnv({
     SMTP_USER: process.env.SMTP_USER,
     SMTP_PASSWORD: process.env.SMTP_PASSWORD,
     EMAIL_SENDER: process.env.EMAIL_SENDER,
-    KIOSK_MODE: process.env.KIOSK_MODE
+    KIOSK_MODE: process.env.KIOSK_MODE,
+    SUPPORT_EMAIL: process.env.SUPPORT_EMAIL
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
