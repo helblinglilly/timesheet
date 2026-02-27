@@ -1,18 +1,96 @@
-import React, { type HTMLProps } from 'react'
-import iconImport from '../../app/icon.svg'
+import * as React from 'react'
 
-import Image from 'next/image'
-export const Favicon = (props: HTMLProps<HTMLImageElement>) => {
-
-  return (
-    // @ts-expect-error Unhappy prop type
-    <Image
-      {...props}
-      width={20}
-      height={20}
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      src={iconImport}
-      alt="Favicon"
+const Favicon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    xmlSpace="preserve"
+    style={{
+      fillRule: 'evenodd',
+      clipRule: 'evenodd',
+      strokeLinecap: 'round',
+      strokeLinejoin: 'round',
+      strokeMiterlimit: 1.5,
+    }}
+    viewBox="0 0 1000 1000"
+    width={20}
+    height={20}
+    {...props}
+  >
+    <path
+      d="M525 25.766v-.118C775.558 38.667 975 246.226 975 500c0 262.16-212.84 475-475 475-262.16 0-475-212.84-475-475C25 246.226 224.442 38.667 475 25.648v.118a408.08 408.08 0 0 1 50 0Z"
+      style={{
+        fill: '#ebebeb',
+        stroke: '#000',
+        strokeWidth: '73.79px',
+      }}
+      transform="matrix(.94939 0 0 .94783 25.305 26.083)"
     />
-  )
-}
+    <path
+      d="M475 125V25.232c16.665-.31 33.335-.31 50 0V125h-50Zm0 849.768V875h50v99.768c-16.665.31-33.335.31-50 0ZM25.232 475.324H125v50H25.232c-.31-16.665-.31-33.335 0-50ZM974.768 525H875v-50h99.768c.31 16.665.31 33.335 0 50Z"
+      style={{
+        fill: '#020202',
+        fillOpacity: 0.77,
+        stroke: '#000',
+        strokeWidth: '.21px',
+      }}
+      transform="matrix(.89695 0 0 .89548 51.525 52.26)"
+    />
+    <path
+      d="M475 125V25.232c16.665-.31 33.335-.31 50 0V125h-50Zm0 849.768V875h50v99.768c-16.665.31-33.335.31-50 0ZM25.232 475.324H125v50H25.232c-.31-16.665-.31-33.335 0-50ZM974.768 525H875v-50h99.768c.31 16.665.31 33.335 0 50Z"
+      style={{
+        fill: '#020202',
+        fillOpacity: 0.77,
+        stroke: '#000',
+        strokeWidth: '.21px',
+      }}
+      transform="matrix(.78407 .43561 -.4349 .78278 308.852 -109.198)"
+    />
+    <path
+      d="M475 125V25.232c16.665-.31 33.335-.31 50 0V125h-50Zm0 849.768V875h50v99.768c-16.665.31-33.335.31-50 0ZM25.232 475.324H125v50H25.232c-.31-16.665-.31-33.335 0-50ZM974.768 525H875v-50h99.768c.31 16.665.31 33.335 0 50Z"
+      style={{
+        fill: '#020202',
+        fillOpacity: 0.77,
+        stroke: '#000',
+        strokeWidth: '.21px',
+      }}
+      transform="matrix(.46736 .76557 -.76431 .4666 627.213 -117.999)"
+    />
+    <path
+      d="M525 25.766v-.118C775.558 38.667 975 246.226 975 500c0 262.16-212.84 475-475 475-262.16 0-475-212.84-475-475C25 246.226 224.442 38.667 475 25.648v.118a408.08 408.08 0 0 1 50 0Z"
+      style={{
+        fill: 'none',
+        stroke: '#000',
+        strokeWidth: '73.79px',
+      }}
+      transform="matrix(.94939 0 0 .94783 25.305 26.083)"
+    />
+    <path
+      d="M12.459 388.234h62.585v201.93H12.459z"
+      style={{
+        stroke: '#000',
+        strokeWidth: '.64px',
+      }}
+      transform="matrix(1.07583 -.4461 .72485 1.74807 26.525 -506.932)"
+    />
+    <path
+      d="M12.459 388.234h62.585v201.93H12.459z"
+      style={{
+        stroke: '#000',
+        strokeWidth: '.88px',
+      }}
+      transform="matrix(.94455 -.68135 .65009 .90121 219.209 201.251)"
+    />
+    <circle
+      cx={500}
+      cy={500.324}
+      r={39.676}
+      style={{
+        fill: '#b6253a',
+        stroke: '#000',
+        strokeWidth: '.21px',
+      }}
+      transform="matrix(1.29984 0 0 1.29771 -151.145 -149.278)"
+    />
+  </svg>
+)
+export default Favicon

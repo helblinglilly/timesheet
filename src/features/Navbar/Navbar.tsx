@@ -12,7 +12,7 @@ import {
 import { useIsMobile } from '~/hooks/useIsMobile'
 import { useTranslation } from 'react-i18next'
 import { usePathname } from 'next/navigation'
-import { Favicon } from '~/components/ui/favicon'
+import Favicon from '~/components/ui/favicon'
 
 export function Navbar() {
   const isMobile = useIsMobile()
@@ -26,7 +26,7 @@ export function Navbar() {
         <NavigationMenuItem className='text-md'>
           <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
             <Link href="/dashboard" >
-              <div  className='inline-flex gap-2'>
+              <div className='inline-flex gap-2 items-center'>
                 <Favicon />
                 <p>{t('navbar.dashboard.title')}</p>
               </div>

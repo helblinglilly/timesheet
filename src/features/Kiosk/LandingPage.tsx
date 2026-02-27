@@ -4,6 +4,7 @@ import Link from 'next/link';
 import React from 'react'
 import { Trans, useTranslation } from 'react-i18next';
 import { Button } from '~/components/ui/button';
+import Favicon from '~/components/ui/favicon';
 
 export const KioskLandingPage = () => {
   const { t } = useTranslation();
@@ -15,9 +16,7 @@ export const KioskLandingPage = () => {
         <div className="container mx-auto px-4 py-8">
           <nav className="flex justify-between items-center mb-16">
             <div className="flex items-center gap-2">
-              <svg className="w-8 h-8 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
+              <Favicon />
               <span className="text-xl font-bold text-black">{ t('kiosk_mode.name') }</span>
             </div>
             <Link
@@ -142,6 +141,8 @@ services:
       - SMTP_USER=me@example.com
       - SMTP_PASSWORD=mysupersecurepassword
       - EMAIL_SENDER=admin@timesheet.example.com
+      # Optional, to display on the support page
+      - SUPPORT_EMAIL=support@example.com
       # Do not need to be modified
       - POCKETBASE_URL=http://pb_timesheet:8080
       - NODE_ENV=production
@@ -198,9 +199,7 @@ networks:
           <div className="container mx-auto px-4 py-8">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
               <div className="flex items-center gap-2">
-                <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
+                <Favicon />
                 <span className="font-semibold text-black">{ t('kiosk_mode.name') }</span>
               </div>
               <p className="text-gray-700 text-sm">
