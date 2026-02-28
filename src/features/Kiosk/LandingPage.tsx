@@ -123,11 +123,10 @@ export const KioskLandingPage = () => {
 services:
   timesheet:
     ports:
+    # Change port as desired
       - "1234:3000"
     image: ghcr.io/helblinglilly/timesheet:main
     container_name: timesheet
-    networks:
-      - timesheet_network
     hostname: timesheet.example.com
     pull_policy: always
     restart: unless-stopped
@@ -151,18 +150,13 @@ services:
     image: ghcr.io/helblinglilly/pocketbase:0.36.1
     container_name: pb_timesheet
     restart: unless-stopped
-    networks:
-      - timesheet_network
     volumes:
       - /var/timesheet:/pb/pb_data
     # Only required during initial setup
     ports:
       - "8080:8080"
 
-networks:
-  timesheet_network:
-    name: timesheet_network
-  driver: bridge`}</code>
+`}</code>
               </pre>
             </div>
 

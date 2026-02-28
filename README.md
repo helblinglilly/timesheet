@@ -36,30 +36,18 @@ The app is usable without configuring any social providers. Providers will becom
 ```yaml
 # docker-compose.yaml
 services:
-  timesheet_pb:
-    image: pocketbase:0.29.0
-    # Alternatively, if you don't want to build the image yourself
-    # image: nxtgencat/pocketbase:0.29.0
-    container_name: timesheet_pb
-    restart: unless-stopped
-    networks:
-      - timesheet_network
-    volumes:
-      - /var/timesheet:/pb/pb_data
-    # Only required during initial setup
+  timesheet:
     ports:
-      - "8081:8080"
-
-  timesheet_app:
-    ports:
-      - "3000:3000"
+    # Change port as desired
+      - "1234:3000"
     image: ghcr.io/helblinglilly/timesheet:main
-    container_name: timesheet_app
+    container_name: timesheet
+    hostname: timesheet.example.com
     pull_policy: always
     restart: unless-stopped
     environment:
-      - POCKETBASE_SUPERUSER_EMAIL=See "Pocketbase" step above
-      - POCKETBASE_SUPERUSER_PASSWORD=See "Pocketbase" step above
+      - POCKETBASE_SUPERUSER_EMAIL=admin@example.com
+      - POCKETBASE_SUPERUSER_PASSWORD=supersecurepassword
       - NEXT_PUBLIC_HOST=https://timesheet.example.com
       # Optional, but required to send Emails
       - SMTP_HOST=smtp.example.com
@@ -67,18 +55,21 @@ services:
       - SMTP_USER=me@example.com
       - SMTP_PASSWORD=mysupersecurepassword
       - EMAIL_SENDER=admin@timesheet.example.com
+      # Optional, to display on the support page
+      - SUPPORT_EMAIL=support@example.com
       # Do not need to be modified
       - POCKETBASE_URL=http://pb_timesheet:8080
       - NODE_ENV=production
-    depends_on:
-      timesheet_pb:
-    # Optional, if you have watchtower running to keep the image up to date
-    labels: { com.centurylinklabs.watchtower.enable: true }
-    
-networks:
-  timesheet_network:
-    name: timesheet_network
-  driver: bridge
+
+  pb_timesheet:
+    image: ghcr.io/helblinglilly/pocketbase:0.36.1
+    container_name: pb_timesheet
+    restart: unless-stopped
+    volumes:
+      - /var/timesheet:/pb/pb_data
+    # Only required during initial setup
+    ports:
+      - "8080:8080"
 ```
 
 To expose this service to the internet, either configure your own proxy like [Caddie](https://caddyserver.com/) or use something like [Cloudflare tunnels](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/). The Pocketbase instance, after setup is complete, will no longer need to be accessible by anyone besides the timesheet_app container.
