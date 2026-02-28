@@ -1,5 +1,7 @@
 .env
 Dockerfile
+standalone.dockerfile
+pocketbase.dockerfile
 .dockerignore
 node_modules
 npm-debug.log
@@ -7,3 +9,4 @@ README.md
 .next
 .git
 newrelic_agent.log
+pb_setup/pb_setup
