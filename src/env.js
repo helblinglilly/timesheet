@@ -21,6 +21,9 @@ export const env = createEnv({
     KIOSK_MODE: z.coerce.boolean().optional(),
 
     SUPPORT_EMAIL: z.string().optional(),
+
+    NEW_RELIC_APP_NAME: z.string().optional(),
+    NEW_RELIC_LICENSE_KEY: z.string().optional(),
   },
 
   /**
@@ -30,7 +33,7 @@ export const env = createEnv({
    */
   client: {
     // NEXT_PUBLIC_CLIENTVAR: z.string(),
-    NEXT_PUBLIC_HOST: z.string()
+    NEXT_PUBLIC_HOST: z.string(),
   },
 
   /**
@@ -49,7 +52,9 @@ export const env = createEnv({
     SMTP_PASSWORD: process.env.SMTP_PASSWORD,
     EMAIL_SENDER: process.env.EMAIL_SENDER,
     KIOSK_MODE: process.env.KIOSK_MODE,
-    SUPPORT_EMAIL: process.env.SUPPORT_EMAIL
+    SUPPORT_EMAIL: process.env.SUPPORT_EMAIL,
+    NEW_RELIC_APP_NAME: process.env.NEW_RELIC_APP_NAME,
+    NEW_RELIC_LICENSE_KEY: process.env.NEW_RELIC_LICENSE_KEY,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**

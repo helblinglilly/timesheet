@@ -5,6 +5,7 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import resourcesToBackend from 'i18next-resources-to-backend';
 import { initReactI18next } from 'react-i18next';
 import { getOptions } from './settings';
+import log from '~/utils/log';
 
 // Initialize i18next for client-side
 i18next
@@ -22,7 +23,7 @@ i18next
       caches: ['cookie'],
     },
   }).catch((err) => {
-    console.error(err);
+    log.error('Translation failure', err)
   });
 
 export default i18next;

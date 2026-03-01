@@ -12,6 +12,7 @@ import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import { Tooltip, TooltipContent, TooltipTrigger } from '~/components/ui/tooltip';
 import { api } from '~/trpc/react';
+import log from '~/utils/log';
 
 export const YourInfo = () => {
   const [user] = api.account.getFullUserDetails.useSuspenseQuery();
@@ -40,8 +41,7 @@ export const YourInfo = () => {
   }, [user, t])
 
   if (!user) {
-    // eslint-disable-next-line no-console
-    console.error('Rendering null', new Error('"user" was nullish in client component when server-side checks succeeded'))
+    log.error('Rendering null on account section', new Error('"user" was nullish in client component when server-side checks succeeded'))
     return null;
   }
 

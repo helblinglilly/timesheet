@@ -13,6 +13,7 @@ import { useAuthInfo } from '~/hooks/useAuthInfo';
 import { api } from '~/trpc/react';
 import { useSonarTriggers } from '../Toasts/genericError';
 import { useDomainConfig } from '~/hooks/useDomainConfig';
+import log from '~/utils/log';
 
 export const DeleteAccount = () => {
   const { user } = useAuthInfo();
@@ -44,8 +45,7 @@ export const DeleteAccount = () => {
   })
 
   if (!user) {
-    // eslint-disable-next-line no-console
-    console.error('Rendering null', new Error('"user" was nullish in client component when server-side checks succeeded'))
+    log.error('Rendering null for delete account section', new Error('"user" was nullish in client component when server-side checks succeeded'))
     return null;
   }
 

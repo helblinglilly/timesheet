@@ -5,10 +5,12 @@ import React from 'react'
 import { Trans, useTranslation } from 'react-i18next';
 import { Button } from '~/components/ui/button';
 import Favicon from '~/components/ui/favicon';
+import log from '~/utils/log';
 
 export const KioskLandingPage = () => {
   const { t } = useTranslation();
 
+  log.error('Testing from the homepage', new Error('testing'));
   return (
     <>
       <main className="min-h-screen bg-gradient-to-b from-white to-gray-50">

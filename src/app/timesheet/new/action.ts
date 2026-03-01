@@ -5,7 +5,7 @@ import { serverSideAuth } from '~/pocketbase/server';
 import { createTranslation } from '~/i18n/server';
 import { withNewRelicWebTransaction } from '~/utils/observability/withNewRelicWebTransaction';
 import { redirect } from 'next/navigation';
-import newrelic from 'newrelic';
+import log from '~/utils/log';
 import { TableNames } from '~/pocketbase/tables.types';
 import z from 'zod';
 
@@ -70,7 +70,7 @@ async function createTimesheet(formData: FormData): Promise<TimesheetFormState> 
   }
   catch (err) {
     const pbError = err instanceof Error ? err.message : 'Unknown';
-    newrelic.noticeError(new Error(`Failed to create new timesheet with error ${pbError}`));
+    log.error('Failed to create new timesheet', new Error(pbError));
     return { errors: [t('timesheet.new.error_generic')] };
   }
 

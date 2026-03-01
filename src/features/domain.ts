@@ -16,12 +16,18 @@ export function getDomainConfig() {
   ]
   const canPerformPBAdminActions = requiredAdminEnvVars.every((value) => !!value);
 
+  const hasAnalytics =
+    env.NODE_ENV  === 'production' &&
+    env.NEXT_PUBLIC_HOST === 'https://timesheet.helbling.uk' &&
+    (!!env.NEW_RELIC_LICENSE_KEY)
+
   return {
     canSendEmails,
     canPerformPBAdminActions,
     canTransferTimesheets: canSendEmails && canPerformPBAdminActions,
     canShareTimesheets: canSendEmails && canPerformPBAdminActions,
     hasFullSetup: canSendEmails && canPerformPBAdminActions,
+    hasAnalytics,
   }
 }
 

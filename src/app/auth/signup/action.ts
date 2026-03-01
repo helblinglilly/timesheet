@@ -5,7 +5,7 @@ import { createTranslation } from '~/i18n/server';
 import Pocketbase from 'pocketbase';
 import { withNewRelicWebTransaction } from '~/utils/observability/withNewRelicWebTransaction';
 import { redirect } from 'next/navigation';
-import newrelic from 'newrelic';
+import log from '~/utils/log';
 import { TableNames } from '~/pocketbase/tables.types';
 import z from 'zod';
 import { env } from '~/env';
@@ -70,7 +70,7 @@ async function createUser(formData: FormData): Promise<SignupFormState> {
     );
   } catch (err) {
     const pbError = err instanceof Error ? err.message : 'Unknown';
-    newrelic.noticeError(new Error(`Failed to sign up new user with Email/Password with error ${pbError}`));
+    log.error('Failed to sign up new user with Email/Password', new Error(pbError));
     return { errors: [t('authentication.signup.errors.generic')] };
   }
 

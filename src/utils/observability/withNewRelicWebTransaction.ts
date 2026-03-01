@@ -1,29 +1,40 @@
-import newrelic from 'newrelic';
+import 'server-only';
+import type newrelic from 'newrelic';
 
-/**
- * Wraps the provided async function in a New Relic web transaction.
- *
- * @param name - The name of the transaction (will appear in New Relic).
- * @param fn - The async function to execute within the transaction.
- * @returns The result of the async function.
- */
+type NewRelicAgent = typeof newrelic;
+
+function getAgent(): NewRelicAgent | null {
+  // eslint-disable-next-line no-restricted-syntax
+  if (!process.env.NEW_RELIC_LICENSE_KEY) return null;
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    return require('newrelic') as NewRelicAgent;
+  } catch {
+    return null;
+  }
+}
+
 export async function withNewRelicWebTransaction<T>(
   name: string,
   fn: () => Promise<T>,
 ): Promise<T> {
+  const agent = getAgent();
+
+  if (!agent) {
+    return fn();
+  }
+
   return await new Promise<T>((resolve, reject) => {
-    newrelic.startWebTransaction(name, () => {
-      const transaction = newrelic.getTransaction();
+    agent.startWebTransaction(name, () => {
+      const transaction = agent.getTransaction();
       (async () => {
         try {
           const result = await fn();
           resolve(result);
-        }
-        catch (err) {
+        } catch (err) {
           // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
           reject(err);
-        }
-        finally {
+        } finally {
           transaction.end();
         }
       })().catch((err) => {

@@ -5,6 +5,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useTimesheetConfig } from '~/hooks/useTimesheetConfig';
 import { subtractDurations } from '~/utils/date';
+import log from '~/utils/log';
 
 export const TargetHours = ({
   numberOfDays,
@@ -24,9 +25,8 @@ export const TargetHours = ({
   const { isPositive, duration: difference } = subtractDurations(duration, targetMinutes);
 
   const hasTargetHours = !(config.minutesPerDay === 0 && config.daysPerWeek === 0);
-  if (!hasTargetHours){
-    // eslint-disable-next-line no-console
-    console.warn('<TargetHours /> was attempted to render for a Timesheet that does not have target hours. You should try to guard against this at a higher level than this.')
+  if (!hasTargetHours) {
+    log.warning('<TargetHours /> was attempted to render for a Timesheet that does not have target hours. You should try to guard against this at a higher level than this.')
     return null;
   }
 
