@@ -123,13 +123,17 @@ export const KioskLandingPage = () => {
 services:
   timesheet:
     ports:
-    # Change port as desired
       - "1234:3000"
-    image: ghcr.io/helblinglilly/timesheet:main
+      # Optional - to expose the Pocketbase backend for Administration or OAuth setup
+      # - "8080:8080"
+    image: ghcr.io/helblinglilly/timesheet-standalone:main
     container_name: timesheet
     hostname: timesheet.example.com
     pull_policy: always
     restart: unless-stopped
+    volumes:
+      # Where your data will be stored
+      - /var/timesheet:/pb/pb_data
     environment:
       - POCKETBASE_SUPERUSER_EMAIL=admin@example.com
       - POCKETBASE_SUPERUSER_PASSWORD=supersecurepassword
@@ -143,18 +147,7 @@ services:
       # Optional, to display on the support page
       - SUPPORT_EMAIL=support@example.com
       # Do not need to be modified
-      - POCKETBASE_URL=http://pb_timesheet:8080
       - NODE_ENV=production
-
-  pb_timesheet:
-    image: ghcr.io/helblinglilly/pocketbase:0.36.1
-    container_name: pb_timesheet
-    restart: unless-stopped
-    volumes:
-      - /var/timesheet:/pb/pb_data
-    # Only required during initial setup
-    ports:
-      - "8080:8080"
 
 `}</code>
               </pre>
