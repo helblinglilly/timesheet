@@ -470,6 +470,7 @@
       "avatar_alt": "Generic, non-customisable Avatar",
       "name": {
         "label": "Name:",
+        "empty_name_placeholder": "[no name]",
         "change_name": {
           "open_dialog_aria": "{{ name }}, press to edit",
           "title": "Change your name",
@@ -534,7 +535,7 @@
       "title": "Easy self-hosting",
       "subheading": "Get up and running in minutes with Docker. Start the stack below, configure Pocketbase, and you're ready to go.",
       "docker_compose": "docker-compose.yaml",
-      "disclaimer": "⚠️ You will need to access and configure the Pocketbase backend on initial startup. See <a href=\"https://github.com/helblinglilly/timesheet?tab=readme-ov-file#self-hosting\">Get started</a> for full details."
+      "disclaimer": "ℹ️ See <a href=\"https://github.com/helblinglilly/timesheet?tab=readme-ov-file#self-hosting\">Get started</a> for full details."
     },
     "call_to_action": {
       "title": "Not ready to self host?",

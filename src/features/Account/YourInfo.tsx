@@ -3,7 +3,7 @@
 import { format } from 'date-fns';
 import { FilePenLine } from 'lucide-react';
 import Image from 'next/image';
-import React, { useRef } from 'react'
+import React, { useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
@@ -32,6 +32,12 @@ export const YourInfo = () => {
     }
   });
 
+  const username = useMemo(() => {
+    if (user.name.length === 0) {
+      return t('account.your_info.name.empty_name_placeholder')
+    }
+    return user.name;
+  }, [user, t])
 
   if (!user) {
     // eslint-disable-next-line no-console
@@ -68,7 +74,7 @@ export const YourInfo = () => {
                       {t('account.your_info.name.label')}
                     </Label>
                     <span className='inline-flex gap-2'>
-                      <p id="name">{user.name}</p>
+                      <p id="name">{username}</p>
                       <FilePenLine className='p-1' />
                     </span>
                   </div>
