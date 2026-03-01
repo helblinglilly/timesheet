@@ -17,7 +17,11 @@ async function AuthMethods() {
         <AuthMethodsList authMethods={authMethods} />
 
         <div className="grid gap-2">
-          <p>{ t('authentication.login.email.section_title') }</p>
+          {
+            authMethods.length > 0 && (
+              <p>{ t('authentication.login.email.section_title') }</p>
+            )
+          }
         </div>
         <Email />
       </div>

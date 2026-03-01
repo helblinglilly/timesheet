@@ -19,9 +19,13 @@ export default async function Signup() {
 
 
           <div className="grid gap-8">
-            <div>
-              <AuthMethodsList authMethods={authMethods} />
-            </div>
+            {
+              authMethods.length > 0 && (
+                <div>
+                  <AuthMethodsList authMethods={authMethods} />
+                </div>
+              )
+            }
 
             <div className="grid gap-2">
               <p>{t('authentication.signup.email_title')}</p>

@@ -11,6 +11,10 @@ interface AuthMethodsListProps {
 export function AuthMethodsList({ authMethods }: AuthMethodsListProps) {
   const { t } = useTranslation();
 
+  if (authMethods.length === 0) {
+    return null;
+  }
+
   return (
     <div className="grid gap-4 w-full">
       <p className="">{t('authentication.login.social')}</p>

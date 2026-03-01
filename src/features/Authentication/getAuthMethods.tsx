@@ -11,10 +11,10 @@ export async function getAuthMethods() {
     throw new Error(`Non-200 status code ${res.status}`);
   }
 
-  const body = await res.json() as { authProviders: PocketbaseAuthMethods[] };
+  const body = await res.json() as { authProviders?: PocketbaseAuthMethods[] };
   const headersList = await headers();
 
-  return body.authProviders.map((method) => ({
+  return (body.authProviders ?? []).map((method) => ({
     ...method,
     authUrl: `${method.authUrl}${headersList.get('x-forwarded-proto')}://${headersList.get('host')}/auth/redirect`,
   }));
