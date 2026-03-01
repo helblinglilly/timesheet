@@ -11,7 +11,7 @@ export default function GlobalError({ error, reset }: { error: Error; reset: () 
 
 
           <h1 className='text-2xl font-bold pb-2'>Oh oh, something <i>really</i> went wrong!</h1>
-          <pre>{error.message}</pre>
+          <pre className="max-w-full sm:max-w-1/2">{error.message}</pre>
 
           <div className='pt-16'>
             <div className='grid gap-4'>
