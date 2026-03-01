@@ -32,10 +32,6 @@ WORKDIR /pb_setup
 COPY pb_setup/ .
 RUN go build -o pb_setup .
 
-##### POCKETBASE
-
-FROM ghcr.io/helblinglilly/pocketbase:0.36.1 AS pocketbase
-
 ##### RUNNER
 
 FROM node:20-alpine AS runner
@@ -53,10 +49,7 @@ ENV NEW_RELIC_LOG=stdout
 # PocketBase runs in the same container
 ENV POCKETBASE_URL=http://localhost:8080
 
-# PocketBase binary
-COPY --from=pocketbase /pb/pocketbase /pb/pocketbase
-
-# Go setup/migrations binary
+# Go setup/migrations binary (acts as the PocketBase server with embedded migrations)
 COPY --from=go-builder /pb_setup/pb_setup /pb/pb_setup
 
 # Next.js app

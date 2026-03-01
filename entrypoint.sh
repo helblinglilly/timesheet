@@ -3,9 +3,12 @@ set -e
 
 PB_DATA_DIR="${PB_DATA_DIR:-/pb/pb_data}"
 
-# ── Start PocketBase in the background ───────────────────────────────────────
+# ── Start PocketBase (with embedded migrations) in the background ─────────────
+# Using pb_setup instead of pocketbase directly so that Go migrations are
+# automatically applied on serve, and the running process has the correct
+# collections state from the moment it is ready.
 echo "[entrypoint] Starting PocketBase..."
-/pb/pocketbase serve --http=0.0.0.0:8080 --dir="$PB_DATA_DIR" &
+/pb/pb_setup serve --http=0.0.0.0:8080 --dir="$PB_DATA_DIR" &
 PB_PID=$!
 
 # ── Wait for PocketBase to be ready ──────────────────────────────────────────
@@ -22,11 +25,6 @@ for i in $(seq 1 30); do
   fi
   sleep 1
 done
-
-# ── Run migrations (idempotent - safe to run on every startup) ────────────────
-echo "[entrypoint] Running migrations..."
-/pb/pb_setup migrate up --dir="$PB_DATA_DIR"
-echo "[entrypoint] Migrations complete."
 
 # ── Start Next.js in the foreground ──────────────────────────────────────────
 echo "[entrypoint] Starting Next.js..."
