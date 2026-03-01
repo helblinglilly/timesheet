@@ -1,15 +1,5 @@
 # Timesheet
 
-## Get started
-
-```sh
-npm i
-cp .env.example .env
-
-# Populate POCKETBASE_URL in the .env file
-npm run dev
-```
-
 ## Self-Hosting
 
 This app creates a Docker image for a NextJS app alongside a Pocketbase instance which can easily be self-hosted.
