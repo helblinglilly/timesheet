@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <!-- Clock face -->
+  <circle cx="8" cy="8" r="7.5" fill="#ebebeb" stroke="#000" stroke-width="2"/>
+  <!-- Minute hand: pointing to ~56min (upper-left), long -->
+  <rect x="-1.5" y="-5" width="3" height="5" rx="1" fill="#111"
+    transform="translate(8,8) rotate(-24)"/>
+  <!-- Hour hand: pointing to ~4-5 o'clock (lower-right), short -->
+  <rect x="-1.5" y="-3.5" width="3" height="3.5" rx="1" fill="#111"
+    transform="translate(8,8) rotate(144)"/>
+</svg>
