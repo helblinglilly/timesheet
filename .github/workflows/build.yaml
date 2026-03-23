@@ -128,12 +128,16 @@ jobs:
     runs-on: production
     needs: main-merge
     steps:
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u helblinglilly --password-stdin
+
+      - name: Pull new image
+        run: docker compose -f ~/timesheet.docker-compose.yaml pull
+
       - name: Stop and remove old container
         run: |
           docker compose -f ~/timesheet.docker-compose.yaml down || true
 
-      - name: Log in to GitHub Container Registry
-        run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u helblinglilly --password-stdin
 
       - name: Launch docker-compose
         run: docker compose -f ~/timesheet.docker-compose.yaml up -d
