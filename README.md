@@ -1,5 +1,7 @@
 # Timesheet
 
+![Main dashboard](./.github/screenshots/main.png)
+
 ## Self-Hosting
 
 This app creates a Docker image for a NextJS app alongside a Pocketbase instance which can easily be self-hosted.
