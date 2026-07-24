@@ -12,7 +12,6 @@ import { serverSideAuth } from '~/pocketbase/server';
 import type { PBAuthResponse } from '~/pocketbase/builtin.types';
 import { getDomainConfig } from '~/features/domain';
 import { DomainConfigProvider } from '~/hooks/useDomainConfig';
-import { getBrowserTimingHeader } from '~/utils/observability/newrelic-server';
 
 export const metadata: Metadata = {
   title: 'Timesheet',
@@ -34,39 +33,31 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const browserAgentScript = getBrowserTimingHeader();
-
   const pb = await serverSideAuth();
   const domainConfig = getDomainConfig();
 
   return (
-    <html lang="en" className={`${geist.variable}`} suppressHydrationWarning={true}>
+    <html
+      lang="en"
+      className={`${geist.variable}`}
+      suppressHydrationWarning={true}
+    >
+      {domainConfig.hasAnalytics && (
+        <>
+          <Script
+            id="nr-spa"
+            src="/newrelic-spa.js"
+            strategy="beforeInteractive"
+          />
 
-      {
-        domainConfig.hasAnalytics && (
-          <>
-            <Script
-              id="nr-spa"
-              src="/newrelic-spa.js"
-              strategy="beforeInteractive"
-            />
+          <Script
+            src="https://analytics.helbling.uk/script.js"
+            data-website-id="78d18f80-ac24-487d-8545-9e22266159b3"
+            strategy="afterInteractive"
+          />
 
-            {browserAgentScript && (
-              <Script
-                id="nr-browser-agent"
-                strategy="beforeInteractive"
-                dangerouslySetInnerHTML={{ __html: browserAgentScript }}
-              />
-            )}
-
-            <Script
-              src="https://analytics.helbling.uk/script.js"
-              data-website-id="78d18f80-ac24-487d-8545-9e22266159b3"
-              strategy="afterInteractive"
-            />
-
-            <Script id="outbound-link-tracking" strategy="afterInteractive">
-              {`
+          <Script id="outbound-link-tracking" strategy="afterInteractive">
+            {`
               (() => {
                 const name = 'outbound-link-click';
                 document.querySelectorAll('a').forEach(a => {
@@ -77,23 +68,28 @@ export default async function RootLayout({
                 });
               })();
             `}
-            </Script>
-          </>
-        )
-      }
+          </Script>
+        </>
+      )}
 
       <body>
         <TRPCReactProvider>
           <TranslationProvider locale="en">
-            <AuthInfoProvider user={pb.authStore.record ? {
-              id: (pb.authStore.record as PBAuthResponse['record']).id,
-              email: (pb.authStore.record as PBAuthResponse['record']).email,
-              name: (pb.authStore.record as PBAuthResponse['record']).name
-            } : undefined}>
+            <AuthInfoProvider
+              user={
+                pb.authStore.record
+                  ? {
+                    id: (pb.authStore.record as PBAuthResponse['record']).id,
+                    email: (pb.authStore.record as PBAuthResponse['record'])
+                      .email,
+                    name: (pb.authStore.record as PBAuthResponse['record'])
+                      .name,
+                  }
+                  : undefined
+              }
+            >
               <DomainConfigProvider values={domainConfig}>
-                <TickProvider>
-                  {children}
-                </TickProvider>
+                <TickProvider>{children}</TickProvider>
               </DomainConfigProvider>
             </AuthInfoProvider>
           </TranslationProvider>

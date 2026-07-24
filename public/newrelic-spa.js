@@ -1,4 +1,4 @@
-;window.NREUM||(NREUM={});NREUM.init={distributed_tracing:{enabled:true},performance:{capture_measures:true},browser_consent_mode:{enabled:false},privacy:{cookies_enabled:true},ajax:{capture_payloads:'off'}};
+;window.NREUM||(NREUM={});NREUM.init={distributed_tracing:{enabled:true},proxy:{assets:"newrelic.helbling.uk/assets",beacon:"newrelic.helbling.uk"},performance:{capture_measures:true},browser_consent_mode:{enabled:false},privacy:{cookies_enabled:true},ajax:{capture_payloads:'off'}};
 
 ;NREUM.loader_config={accountID:"4391691",trustKey:"4391691",agentID:"538745195",licenseKey:"NRJS-814f95c36967f82d131",applicationID:"399201589"};
 ;NREUM.info={beacon:"bam.eu01.nr-data.net",errorBeacon:"bam.eu01.nr-data.net",licenseKey:"NRJS-814f95c36967f82d131",applicationID:"399201589",sa:1};
