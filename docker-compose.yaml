@@ -57,7 +57,7 @@ services:
       restart_policy:
         condition: any
     volumes:
-      - /mnt/timesheet:/pb/pb_data
+      - /var/lib/timesheet/pb_data:/pb/pb_data
 
 networks:
   timesheet_network:
