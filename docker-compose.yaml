@@ -1,0 +1,85 @@
+version: "3.8"
+
+services:
+  timesheet:
+    ports:
+      - "7000:3000"
+    image: ${TIMESHEET_IMAGE:-ghcr.io/helblinglilly/timesheet:main}
+    networks:
+      - timesheet_network
+    secrets:
+      - NEW_RELIC_LICENSE_KEY
+      - POCKETBASE_SUPERUSER_EMAIL
+      - POCKETBASE_SUPERUSER_PASSWORD
+      - SMTP_HOST
+      - SMTP_USER
+      - SMTP_PASSWORD
+    command:
+      - /bin/sh
+      - -ec
+      - |
+        for name in NEW_RELIC_LICENSE_KEY POCKETBASE_SUPERUSER_EMAIL POCKETBASE_SUPERUSER_PASSWORD SMTP_HOST SMTP_USER SMTP_PASSWORD; do
+          export "$$name=$$(cat /run/secrets/$$name)"
+        done
+        exec node /app/server.js
+    deploy:
+      replicas: 1
+      update_config:
+        order: start-first
+        failure_action: rollback
+      restart_policy:
+        condition: any
+    hostname: timesheet.helbling.uk
+    environment:
+      - NEW_RELIC_APP_NAME=timesheet
+      - POCKETBASE_URL=http://pb_timesheet:8080
+      - NEXT_PUBLIC_HOST=https://timesheet.helbling.uk
+      - SMTP_PORT=587
+      - EMAIL_SENDER=noreply@timesheet.helbling.uk
+      - SUPPORT_EMAIL=support@timesheet.helbling.uk
+      - NODE_ENV=production
+      - HOSTNAME=0.0.0.0
+      - KIOSK_MODE=true
+
+  pb_timesheet:
+    image: ghcr.io/helblinglilly/pocketbase:0.36.1
+    networks:
+      - timesheet_network
+    ports:
+      - "8081:8080"
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.timesheet.data == true
+      update_config:
+        order: stop-first
+      restart_policy:
+        condition: any
+    volumes:
+      - /mnt/timesheet:/pb/pb_data
+
+networks:
+  timesheet_network:
+    name: timesheet_network
+    driver: overlay
+
+secrets:
+  NEW_RELIC_LICENSE_KEY:
+    external: true
+    name: timesheet_NEW_RELIC_LICENSE_KEY_${DEPLOY_VERSION:?DEPLOY_VERSION is required}
+  POCKETBASE_SUPERUSER_EMAIL:
+    external: true
+    name: timesheet_POCKETBASE_SUPERUSER_EMAIL_${DEPLOY_VERSION:?DEPLOY_VERSION is required}
+  POCKETBASE_SUPERUSER_PASSWORD:
+    external: true
+    name: timesheet_POCKETBASE_SUPERUSER_PASSWORD_${DEPLOY_VERSION:?DEPLOY_VERSION is required}
+  SMTP_HOST:
+    external: true
+    name: timesheet_SMTP_HOST_${DEPLOY_VERSION:?DEPLOY_VERSION is required}
+  SMTP_USER:
+    external: true
+    name: timesheet_SMTP_USER_${DEPLOY_VERSION:?DEPLOY_VERSION is required}
+  SMTP_PASSWORD:
+    external: true
+    name: timesheet_SMTP_PASSWORD_${DEPLOY_VERSION:?DEPLOY_VERSION is required}

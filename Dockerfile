@@ -32,6 +32,7 @@ RUN npm run build
 ##### RUNNER
 
 FROM node:20-alpine AS runner
+RUN apk add --no-cache curl
 WORKDIR /app
 
 ENV NODE_ENV=production
@@ -53,6 +54,7 @@ COPY --from=builder /app/.next/static ./.next/static
 
 EXPOSE 3000
 ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
 
 ENV TZ=Europe/London
 
