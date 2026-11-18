@@ -38,7 +38,7 @@ services:
       - EMAIL_SENDER=noreply@timesheet.helbling.uk
       - SUPPORT_EMAIL=support@timesheet.helbling.uk
       - NODE_ENV=production
-      - HOSTNAME=0.0.0.0
+      - HOSTNAME=timesheet.helbling.uk
       - KIOSK_MODE=true
 
   pb_timesheet:
